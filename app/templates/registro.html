@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="static/css/estilosAlumnos.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <img src="https://www.ipn.mx/assets/files/main/img/template/pleca-ipn.png" alt="img">
+        </div>
+    
+        <div class="instituto">
+          <h1>INSTITUTO POLITÉCNICO NACIONAL</h1>
+          <h2> ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACIÓN</h2>
+          <h3> UNIDAD SANTO TOMÁS</h3>
+          
+        </div>
+
+        <div class="logo">
+            <img src="https://www.escasto.ipn.mx/assets/files/main/img/logotipos-UR/ns/ESCA-STO.png" alt="img">
+        </div>
+
+    </header>
+
+
+    <div class="wrap-datos">
+        <div class="subs">
+            <h3>
+                SUBDIRECCIÓN DE APOYOS EDUCATIVOS E INTEGRACIÓN SOCIAL
+            </h3>
+            <h3>
+                DEPARTAMENTO DE EXTENSIÓN Y APOYOS EDUCATIVOS
+            </h3>
+        </div>
+    </div>
+
+    <nav class="barra-navegacion">
+        <div>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Conocenos</a></li>
+                <li><a href="#">Investigación</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="main-page">
+        <div class="wrap-datos">
+            <div class="registro-carta" id="idregistro">
+                <h1>Registro al sistema</h1>
+                <div>
+                    <h4> Para poder realizar el registro al sistema, se requiere subir la Carta Compromiso emitida por el SISS</h4>
+                </div>
+                
+
+                <form action="/registro/confirmacion_datos" method="post" enctype="multipart/form-data">
+                    <div class="dp-campo">
+                        <div>
+                            <label>Carta</label>
+                            <div class="Idp-campo">
+                                <input type="file" name="archivo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo">
+                        <div>
+                            <label></label>
+                            <div class="Idp-submit">
+                                <input type="submit">
+                            </div>   
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <!--<script src="/js/lecturaJSONAlumno.js"></script>
+        <div class="wrap-datos">
+            <div class="datos-personales" id="idPersonales">
+                <h1>Datos</h1>
+                
+                <div class="dp-campo">
+                    <div>
+                        <label>Nombre(s)</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-nombre" type="text" readonly="readonly" placeholder="Nombre(s)" value='{{ data.nombre }}' />
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+                <div class="dp-campo">
+                    
+                    <div class="dp-apellidoM">
+                        <label>Apellidos</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-apellidoP" type="text" readonly="readonly" placeholder="Apellido Paterno" value='{{data.a_paterno}}'/>
+                            <input id="Idp-apellidoM" type="text" readonly="readonly" placeholder="Apellido Materno" value='{{data.a_materno}}'/>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    
+                    <div class="dp-boleta">
+                        <label>Boleta</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{data.boleta}}'/>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    <div class="dp-CURP">
+                        <label>CURP</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-CURP" type="text" readonly="readonly" placeholder="CURP" value='{{data.curp}}'/>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="dp-campo">
+                    <div class="dp-Carrera">
+                        <label class="dp-Carrera">Carrera</label>
+                        <div class="Idp-campo">
+                            <select name ="carrera"type="text" placeholder="Carrera" disabled="true" required >
+                                <option value="0" {% if data.carrera==0 %} selected="selected" {% endif %}>Seleccione</option>
+                                <option value="1" {% if data.carrera==1 %} selected="selected" {% endif %}>Administración y Administración Pública</option>
+                                <option value="2" {% if data.carrera==2 %} selected="selected" {% endif %}>Comercio y Relaciones Internacionales</option>
+                                <option value="3" {% if data.carrera==3 %} selected="selected" {% endif %}>Contabilidad</option>
+                                <option value="4" {% if data.carrera==4 %} selected="selected" {% endif %}>Educación y Pedagogía</option>
+                                <option value="5" {% if data.carrera==5 %} selected="selected" {% endif %}>Salud y Medicina</option> 
+                            </select>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    
+                    <div class="dp-Semestre">
+                        <label class="dp-Semestre">Semestre</label>
+                        <div class="Idp-campo">
+                            <select name ="semestre"type="text" placeholder="Semestre" required >
+                                <option value="0">Seleccione</option>
+                                <option value="1" {% if data.semestre==1 %} selected="selected" {% endif %}>1</option>
+                                <option value="2" {% if data.semestre==2 %} selected="selected" {% endif %}>2</option>
+                                <option value="3" {% if data.semestre==3 %} selected="selected" {% endif %}>3</option>
+                                <option value="4" {% if data.semestre==4 %} selected="selected" {% endif %}>4</option>
+                                <option value="5" {% if data.semestre==5 %} selected="selected" {% endif %}>5</option>
+                                <option value="6" {% if data.semestre==6 %} selected="selected" {% endif %}>6</option>
+                                <option value="7" {% if data.semestre==7 %} selected="selected" {% endif %}>7</option>
+                                <option value="8" {% if data.semestre==8 %} selected="selected" {% endif %}>8</option>
+                                <option value="9" {% if data.semestre==9 %} selected="selected" {% endif %}>9</option>
+                                <option value="10" {% if data.semestre==10 %} selected="selected" {% endif %}>10</option> 
+                              </select>
+                              <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="dp-campo">
+                    
+                    <div class="dp-Genero">
+                        <label class="dp-Genero">Género</label>
+                        <div class="Idp-campo">
+                            <select name ="semestre"type="text" placeholder="Genero" disabled="true" required >
+                                <option value="0" >Seleccione</option>
+                                <option value="M" {% if data.genero==1 %} selected="selected" {% endif %}>Masculino</option>
+                                <option value="F" {% if data.genero==2 %} selected="selected" {% endif %}>Femenino</option>
+                              </select>
+                              <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    <div>
+                        <label>Prestatario</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-prestatario" type="text" placeholder="Prestatario" value='{{data.prestatario}}'/>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+                <div class="dp-campo">
+
+                    <div class="dp-FInicio">
+                        <label>Fecha inicio Servicio Social</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-FInicio" type="date" placeholder="Fecha Inicio"value="{{data.fechainicio}}"/>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+
+                    <div class="dp-FTermino">
+                        <label>Fecha término Servicio Social</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fechatermino}}"/>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    
+                    <div class="dp-email">
+                        <label>Correo Electronico</label>
+                        <div class="Idp-campo">
+                            <input id="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value='{{data.correo}}'/>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        -->
+
+    </div>
+
+    <script src="static/js/funciones.js"></script>
+    <!--<script src="/js/lecturaJSONAlumno.js"></script>-->
+    
+</body>
+</html> 
