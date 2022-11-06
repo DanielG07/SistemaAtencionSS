@@ -91,13 +91,4 @@ function cambiarFormLF() {
     MD.style.display = "none";
   }
   
-  function cambiarMDatos(){
-    let DP = document.getElementById("idPersonales");
-    let P = document.getElementById("idProductividad");
-    let MD = document.getElementById("idModificarDatos");
-  
-    DP.style.display = "none";
-    P.style.display = "none";
-    MD.style.display = "block";
-  }
   
