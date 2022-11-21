@@ -23,4 +23,4 @@ pip install -r requerimientos.txt
 python .\app\pruebaform.py
 ```
 
-** Nota: ** Revisar que siempre se este trabajando en el entorno * (env) *
+**Nota:** Revisar que siempre se este trabajando en el entorno *(env)*
