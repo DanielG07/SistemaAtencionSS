@@ -4,13 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    #return "<h1>Hola Mundo!!!!!!!!</h1>"
-    cursos = ['PHP','Python','Java']
     data={
-        'titulo':'Este es el titulo',
-        'bienvenida':'saludos',
-        'cursos':cursos,
-        'numero_cursos':len(cursos)
+        'titulo':'Sistema Servicio Social'
     }
     return render_template('index.html',data=data)
 

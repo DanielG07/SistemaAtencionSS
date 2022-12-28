@@ -2,15 +2,10 @@
 
 {% block title %}{{ data.titulo }}{% endblock %}
 
+{% block header %}
+{% include 'components/header.html' %}
+{% endblock %}
+
 {% block body %}
-<h1>{{ data.bienvenida }}</h1>
-{% if data.numero_cursos > 0 %}
-<ul>
-    {% for c in data.cursos %}
-    <li> {{ c }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<h2> No existen cursos...</h2>
-{% endif %}
+
 {% endblock %}
