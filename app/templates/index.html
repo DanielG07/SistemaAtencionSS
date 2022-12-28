@@ -8,4 +8,48 @@
 
 {% block body %}
 
+<div class="main-page">
+    
+    <div class="wrap-datos">
+
+        <p>El Sistema Instrainstitucional de Registro y Seguimiento para Servicio Social de la ESCA Unidad Santo Tomas tiene como objetivo acompañar al alumno en todo el proceso de gestión para llevar a cabo el Servicio Social. Desde el momento en que envía su expediente una vez validado exitosamente hasta la culminación del mismo a través de la entrega de su constancia de liberación de Servicio Social emitida por la Dirección de Egresados y Servicio Social (DEYSS).</p>
+
+        <div class="registro-carta" id="idregistro">
+            
+            <form action="/registro/confirmacion_datos" method="post" enctype="multipart/form-data">
+                <div class="dp-campo">
+                    <div class="center-content">
+                        <label>Usuario</label>
+                        <div class="Idp-campo">
+                            <input name="boleta">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    <div class="center-content">
+                        <label>Contraseña</label>
+                        <div class="Idp-campo">
+                            <input type="password" name="contrasena">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    <div class="center-content">
+                        <div class="Idp-submit">
+                            <input type="submit">
+                        </div>   
+                    </div>
+                </div>
+            </form>
+
+            <p>¿Aun no cuentas con una cuenta? <a href="/registro">Registrate</a></p>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}
