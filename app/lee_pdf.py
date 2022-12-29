@@ -35,7 +35,7 @@ def putField(pdf, campo, bboxes, notFound='No disponible'):
 def pdf_to_dict(archivoPDF):	
 		pdf = pdfquery.PDFQuery(archivoPDF)
 		pdf.load(0)
-		#pdf.tree.write(archivoPDF+'.xml', pretty_print = True, encoding="utf-8")
+		pdf.tree.write(archivoPDF+'.xml', pretty_print = True, encoding="utf-8")
 
 		datos_comprobante["archivo"]=archivoPDF	
 
@@ -228,7 +228,7 @@ def pdf_to_dict(archivoPDF):
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("30.0, 601.551, 306.15, 608.551")',
 		'LTTextLineHorizontal:in_bbox("38.0, 600.93, 232.49, 610.93")',	
-		
+		'LTTextLineHorizontal:in_bbox("30.0, 601.551, 339.624, 608.551")',
 		]
 
 		putField(pdf, "prestatario", bboxes, notFound='No disponible')
@@ -236,7 +236,6 @@ def pdf_to_dict(archivoPDF):
 		# Lista de posiciones donde se encuentra el Código del Prestatario
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("457.0, 600.93, 566.56, 610.93")',	
-		
 		]
 
 		putField(pdf, "codigo", bboxes, notFound='No disponible')
