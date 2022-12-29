@@ -4,15 +4,17 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    #return "<h1>Hola Mundo!!!!!!!!</h1>"
-    cursos = ['PHP','Python','Java']
     data={
-        'titulo':'Este es el titulo',
-        'bienvenida':'saludos',
-        'cursos':cursos,
-        'numero_cursos':len(cursos)
+        'titulo':'Sistema Servicio Social'
     }
     return render_template('index.html',data=data)
+
+@app.route('/registro')
+def registroUsuario():
+    data={
+        'titulo':'Registro'
+    }
+    return render_template('registro.html',data=data)
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)

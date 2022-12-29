@@ -170,7 +170,7 @@ span.diana {
     text-align: right;
     padding-left: 15px;
     height: 20%;
-    width: 20%;
+    width: 10%;
 }
 
 .wrap-datos .datos-personales input{
@@ -204,8 +204,9 @@ span.diana {
 }
 
 .registro-carta{
-    height: 100%;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
 .wrap-datos{
@@ -218,11 +219,12 @@ span.diana {
 }
 
 a:hover{
-    color: #868585;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 a{
-    color: #FFFFFF;
+    color: #48A8E6;
 }
 
 .lista-navegacion div ul li{
@@ -369,4 +371,9 @@ a{
 body {
     background: #FFFFFF;
     font-family: sans-serif;
+}
+
+.center-content {
+    justify-content: center;
+    align-items: center;
 }
