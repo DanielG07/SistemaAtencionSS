@@ -1,61 +1,6 @@
 
-
-
 .modificar-datos-personales{
     display: none;
-}
-
-
-span.diana {
-    position: fixed;
-    display: none;
-}
-  
-.diana+a {
-    display: block;
-    float: left;
-    height: 32px;
-    line-height: 32px;
-    padding: 0 10px;
-    border: 1px solid  rgba(104, 36, 68, 1);
-    background-color: rgba(104, 36, 68, 0.90);
-    margin-bottom: -1px;
-    border-radius: 8px 8px 0 0;
-    margin-right: 10px;
-    text-decoration: none;
-}
-  
-.diana:target+a {
-    background-color:rgba(104, 36, 68, 0.98);
-    border-bottom-color: rgba(104, 36, 68, 1);
-}
-  
-#pnl_1, #pnl_2, #pnl_3, #pnl_4, #pnl_5 {
-    position: absolute;
-    top: 31px;
-    left: 0;
-    border: none;
-    clear: both;
-    overflow: hidden;
-    border: 1px solid  rgba(104, 36, 68, 1);
-    background-color: rgba(104, 36, 68, 0.90);
-    border-radius: 0 0 8px 8px;
-}
-  
-#pnl_1>div, #pnl_2>div, #pnl_3>div, #pnl_4>div, #pnl_5>div {
-    transition: all 0.1s ease;
-    padding: 30px;
-    display: none;
-}
-  
-#uno:target~#pnl_1, #dos:target~#pnl_2, #tres:target~#pnl_3, #cuatro:target~#pnl_4, #quinto:target~#pnl_5 {
-    position: static;
-    /*border: 1px solid #ddd;*/
-}
-  
-#uno:target~#pnl_1>div, #dos:target~#pnl_2>div, #tres:target~#pnl_3>div, #cuatro:target~#pnl_4>div, #quinto:target~#pnl_5>div {
-    display: block;
-    transition: all 1s ease;
 }
 
 .productividad{
@@ -105,6 +50,7 @@ span.diana {
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
+    border-radius: 7px;
 }
   
 .wrap-datos button:hover, .wrap-datos button:active, .wrap-datos button:focus {
@@ -112,19 +58,12 @@ span.diana {
 }
 
 .wrap-datos .dp-campo .Idp-campo{
-    width: 75%;
+    width: 100%;
 }
 
 
 .wrap-datos .dp-campo .Idp-submit{
     width: 75%;
-}
-
-
-.messages p{
-    width: 100%;
-    height: auto;
-    padding-right: 15px;
 }
 
 .wrap-datos .dp-campo div{
@@ -225,30 +164,6 @@ a:hover{
 
 a{
     color: #48A8E6;
-}
-
-.lista-navegacion div ul li{
-    border-bottom: 1px dotted;
-    width: 80%;
-    border-color: #FFFFFF;
-    list-style-type: none;
-    margin-bottom: 2px;
-}
-
-.lista-navegacion div p{
-    text-align: center;
-    font-weight: 400;
-    font-size: 1.1rem;
-    color: #FFFFFF;
-}
-
-.lista-navegacion{
-    margin: auto auto auto 10px;
-    width: 90%;
-    min-width: 160px;
-    color: rgba(255,255,255,1);
-    background-color: rgba(104,36,68,.9);
-    padding: 10px;
 }
 
 .wrap-navegacion{
@@ -361,11 +276,6 @@ a{
     margin-block-end: 0.10em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-}
-
-
-.tabs-coordinador p,.tabs-coordinador h2{
-    color: rgba(255,255,255,1);
 }
 
 body {

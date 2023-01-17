@@ -209,15 +209,6 @@
     text-align: center;
   }
   
-  .titulado, .correo-skype {
-    width: auto;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  
-  
   .hiper a{
     color: white;
     text-decoration: none;
