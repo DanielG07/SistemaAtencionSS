@@ -22,16 +22,16 @@ h1, h2, h3, h4{
 }
 
 h1{
-    font-size: 3.2rem;
+    font-size: 3.0rem;
 }
 h2{
-    font-size: 2.4rem;
+    font-size: 2.2rem;
 }
 h3{
-    font-size: 1.8rem;
+    font-size: 1.4rem;
 }
 h4{
-    font-size: 1.4rem;
+    font-size: 1rem;
 }
 img{
     width: auto;
@@ -109,9 +109,7 @@ p{
 /* Barra nav */
 
 .barra-navegacion{
-    margin-top: 2rem;
     background:var(--primario);
-   
 }
 
 @media (min-width: 768px){
@@ -127,10 +125,12 @@ p{
 .barra-navegacion__enlace{
     display: block;
     text-align: center;
-    font-size: 1.8rem;
+    font-family: var(--fuenteParrafos);
+    font-size: 1.5rem;
     color: var(--blanco);
     list-style-type: none; 
     padding-bottom: 1rem;
+    margin-left: 5rem;
 }
 .barra-navegacion a:hover{
     color: #868585;
@@ -214,6 +214,11 @@ p{
     font-weight: normal;
     font-size: 1rem;
     margin-bottom: 4rem;
+}
+.Idp-submit{
+        font-family: var(--fuenteParrafos);
+        font-weight: normal;
+        font-size: 1rem;
 }
 /*  */
 
