@@ -18,7 +18,7 @@ html{
 
 h1, h2, h3, h4{
     font-family: var(--fuenteHeading);
-    line-height: 0.8;
+    line-height: 1.2;
 }
 
 h1{
@@ -212,7 +212,7 @@ p{
 .Registrate{
     font-family: var(--fuenteParrafos);
     font-weight: normal;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 4rem;
 }
 /*  */
