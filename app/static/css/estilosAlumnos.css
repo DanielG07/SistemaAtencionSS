@@ -61,7 +61,6 @@
     width: 100%;
 }
 
-
 .wrap-datos .dp-campo .Idp-submit{
     width: 75%;
 }
@@ -140,12 +139,6 @@
 .datos-personales{
     height: 100%;
     width: 100%;
-}
-
-.registro-carta{
-    justify-content: center;
-    align-items: center;
-    align-content: center;
 }
 
 .wrap-datos{
@@ -287,3 +280,43 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.azul {
+    background-color: #48A8E6;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+.form-item .form-campo {
+    display: inline-block;
+    width: 100%;
+}
+
+.form-item .form-label {
+    display: inline-block;
+    width: 20%;
+}
+
+.titulo {
+    width: 80%;
+    margin: auto;
+    text-align: justify;
+}
+
+/* @media(max-width: 768px) {
+    .form-item {
+        flex-direction: column;
+    }
+} */

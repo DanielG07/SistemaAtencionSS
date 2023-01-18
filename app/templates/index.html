@@ -9,42 +9,40 @@
 {% block body %}
 
 <div class="main-page">
+
+    <div class="titulo">
+        <p class="">El Sistema Instrainstitucional de Registro y Seguimiento para Servicio Social de la ESCA Unidad Santo Tomas tiene como objetivo acompañar al alumno en todo el proceso de gestión para llevar a cabo el Servicio Social. Desde el momento en que envía su expediente una vez validado exitosamente hasta la culminación del mismo a través de la entrega de su constancia de liberación de Servicio Social emitida por la Dirección de Egresados y Servicio Social (DEYSS).</p>
+    </div>
     
     <div class="wrap-datos">
 
-        <p>El Sistema Instrainstitucional de Registro y Seguimiento para Servicio Social de la ESCA Unidad Santo Tomas tiene como objetivo acompañar al alumno en todo el proceso de gestión para llevar a cabo el Servicio Social. Desde el momento en que envía su expediente una vez validado exitosamente hasta la culminación del mismo a través de la entrega de su constancia de liberación de Servicio Social emitida por la Dirección de Egresados y Servicio Social (DEYSS).</p>
-
-        <div class="registro-carta" id="idregistro">
+        <div class="inicio-sesion-form" id="idregistro">
             
-            <form action="/registro/confirmacion_datos" method="post" enctype="multipart/form-data">
-                <div class="dp-campo">
-                    <div class="center-content">
-                        <label>Usuario</label>
-                        <div class="Idp-campo">
-                            <input name="boleta">
-                        </div>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <div class="form-item">
+                    <label class="form-label">Boleta:</label>
+                    <div class="form-campo">
+                        <input name="boleta">
                     </div>
                 </div>
 
-                <div class="dp-campo">
-                    <div class="center-content">
-                        <label>Contraseña</label>
-                        <div class="Idp-campo">
-                            <input type="password" name="contrasena">
-                        </div>
+                <div class="form-item">
+                    <label class="form-label">Contraseña:</label>
+                    <div class="form-campo">
+                        <input type="password" name="contrasena">
                     </div>
                 </div>
 
                 <div class="dp-campo">
                     <div class="center-content">
                         <div class="Idp-submit">
-                            <input type="submit">
+                            <input type="submit" value="Iniciar Sesión">
                         </div>   
                     </div>
                 </div>
             </form>
 
-            <p>¿Aun no cuentas con una cuenta? <a href="/registro">Registrate</a></p>
+            <p>¿Aún no cuentas con una cuenta? <a href="/registro">Registrate</a></p>
 
         </div>
 
