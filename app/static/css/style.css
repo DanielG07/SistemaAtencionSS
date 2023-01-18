@@ -139,9 +139,6 @@ p{
     padding-bottom: unset;
 }
 
-
-
-
 .parrafo-index{
     text-align: center;
     font-family: var(--fuenteParrafos);
@@ -153,6 +150,15 @@ p{
 
 /* wrapdatos */
 
+.main-page {
+    width: 90%;
+    height: auto;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
 .formulario1{
     display: flex;
     width: 100%;
