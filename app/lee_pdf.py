@@ -186,7 +186,7 @@ def pdf_to_dict(archivoPDF):
 				puente = pdf.pq(bbox).text()
 				if len(puente) != 0:
 					if puente == 'XX':
-						datos_comprobante["Sexo"].append('Masculino')	
+						datos_comprobante["sexo"] = "Masculino"	
 					flag = True
 		if flag == False:
 			# Lista de posiciones donde se encuentra el campo Sexo F
@@ -198,10 +198,10 @@ def pdf_to_dict(archivoPDF):
 					puente = pdf.pq(bbox).text()
 					if len(puente) != 0:
 						if puente == 'XX':
-							datos_comprobante["Sexo"].append('Femenino')
+							datos_comprobante["sexo"] = "Femenino"
 						flag = True
 			if flag == False:
-				datos_comprobante["Sexo"].append('No disponible')
+				datos_comprobante["sexo"] = "No disponible"
 
 		# Lista de posiciones donde se encuentra Código Postal
 		bboxes = [
@@ -433,11 +433,32 @@ def pdf_to_dict(archivoPDF):
 		datos_comprobante['fecha_termino'] = conversiondate(datos_comprobante['fecha_termino'])
 
 
-		if(datos_comprobante['carrera']=='UPIITA INGENIERO EN TELEMÁTICA'):
+		if(datos_comprobante['carrera']=='ESCA.UST CONTADOR PÚBLICO'):
+			datos_comprobante['id_carrera']=1
+
+		if(datos_comprobante['carrera']=='ESCA.UST LICENCIADO EN RELACIONES COMERCIALES'):
+			datos_comprobante['id_carrera']=2
+
+		if(datos_comprobante['carrera']=='ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES'):
+			datos_comprobante['id_carrera']=3
+
+		if(datos_comprobante['carrera']=='ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL'):
+			datos_comprobante['id_carrera']=4
+
+		if(datos_comprobante['carrera']=='ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL.'):
 			datos_comprobante['id_carrera']=5
 
+		if(datos_comprobante['carrera']=='ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)'):
+			datos_comprobante['id_carrera']=6
+
+		if(datos_comprobante['carrera']=='ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES'):
+			datos_comprobante['id_carrera']=7
+
 		if(datos_comprobante['sexo']=='Masculino'):
-			datos_comprobante['id_sexo']=1	
+			datos_comprobante['id_sexo']=1
+
+		if(datos_comprobante['sexo']=='Femenino'):
+			datos_comprobante['id_sexo']=2	
 
 		return datos_comprobante
 
