@@ -32,6 +32,7 @@ def registro():
         'semestre': request.form['Idp-semestre'],
         'genero': request.form['Idp-genero'],
         'prestatario': request.form['Idp-prestatario'],
+        'programa': request.form['Idp-programa'],
         'fecha_inicio': request.form['Idp-FInicio'],
         'fecha_fin': request.form['Idp-FTermino'],
         'correo': request.form['Idp-email'],
