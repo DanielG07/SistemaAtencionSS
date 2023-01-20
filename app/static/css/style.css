@@ -8,6 +8,23 @@
     --negro: #000000;
     --boton:  #722f37;
 }
+
+/* PRUEBAS CAMBI0 DE FUENTE J.CRUZ */
+
+@font-face
+{
+ font-family: 'fuenteRegular';
+ src: url('../fuentes/Cantarell-Bold.ttf');
+}
+
+@font-face
+{
+ font-family: 'fuenteParrafo';
+ src: url('../fuentes/HindSiliguri-Medium.ttf');
+}
+
+
+
 html{
     box-sizing: border-box;
     font-size: 62.5% /* 1 rem = 10px*/  
@@ -20,6 +37,16 @@ h1, h2, h3, h4{
     font-family: var(--fuenteHeading);
     line-height: 1.2;
 }
+
+
+/*h1, h2, h3, h4{
+    font-family: 'fuenteRegular';
+    line-height: 1.2;
+}
+*/
+
+
+
 
 h1{
     font-size: 3.0rem;
@@ -39,9 +66,13 @@ img{
 a{
     text-decoration: none;
 }
+
+
 p{
     font-family: var(--fuenteParrafos);
 }
+
+
 .no-margin{
     margin: 0;
 }
@@ -139,13 +170,22 @@ p{
     padding-bottom: unset;
 }
 
-.parrafo-index{
+/*.parrafo-index{
     text-align: center;
     font-family: var(--fuenteParrafos);
     font-weight: normal;
     font-size: 1.5rem;
     margin: 2rem 4rem;
 }
+*/
+.parrafo-index{
+    text-align: center;
+    font-family:'fuenteParrafo';
+    font-weight: normal;
+    font-size: 1.5rem;
+    margin: 2rem 4rem;
+}
+
 
 
 /* wrapdatos */
@@ -226,5 +266,6 @@ p{
         font-weight: normal;
         font-size: 1rem;
 }
-/*  */
+
+
 
