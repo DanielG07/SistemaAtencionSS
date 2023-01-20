@@ -28,6 +28,7 @@ def registro():
         'apellidoP': request.form['Idp-apellidoM'],
         'boleta': request.form['Idp-Boleta'],
         'curp': request.form['Idp-CURP'],
+        'clave_carrera': request.form['Idp-c_carrera'],
         'carrera': request.form['Idp-carrera'],
         'semestre': request.form['Idp-semestre'],
         'genero': request.form['Idp-genero'],
