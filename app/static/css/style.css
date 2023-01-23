@@ -42,6 +42,10 @@ a{
 p{
     font-family: var(--fuenteParrafos);
 }
+table {
+    border-collapse: separate; 
+    border-spacing: 1em 1em;
+}
 .no-margin{
     margin: 0;
 }

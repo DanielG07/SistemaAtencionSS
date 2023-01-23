@@ -1,0 +1,56 @@
+{% extends './layout.html' %}
+
+{% block title %}{{ data.titulo }}{% endblock %}
+
+{% block header %}
+{% include 'components/headerAdmin.html' %}
+{% endblock %}
+
+{% block body %}
+
+<div class="main-page">
+    <div class="contenido">
+        <h3>Expedientes</h3>
+        <p>Permite revisar los expedientes por alumno, permitiendo revisar los reportes ademas de permitir subir la constancia de liberación.</p>
+        <table>
+            <tr>
+                <th>Boleta</th>
+                <th>Nombre</th>
+                <th>Carrera</th>
+                <th>Semestre</th>
+                <th>Genero</th>
+                <th>Prestatario</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha de Termino</th>
+                <th>Correo Electronico</th>
+                <th>Estatus</th>
+                <th># Registro</th>
+                <th>Registro Lista</th>
+                <th>Fecha de envio</th>
+            </tr>
+            {% for item in registros %}
+            <tr class="item-table">
+                <td class="centrar-texto">
+                    <a href={{"/" + item.boleta}}>
+                        {{item.boleta}}
+                    </a>
+                </td>
+                <td>{{item.nombre}}</td>
+                <td class="centrar-texto">{{item.carrera}}</td>
+                <td class="centrar-texto">{{item.semestre}}</td>
+                <td class="centrar-texto">{{item.genero}}</td>
+                <td>{{item.prestatario}}</td>
+                <td class="centrar-texto">{{item.f_inicio}}</td>
+                <td class="centrar-texto">{{item.f_termino}}</td>
+                <td class="centrar-texto">{{item.correo_electronico}}</td>
+                <td class="centrar-texto">{{item.estatus}}</td>
+                <td class="centrar-texto">{{item.numero}}</td>
+                <td class="centrar-texto">{{item.registro_lista}}</td>
+                <td class="centrar-texto">{{item.f_envio}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}
