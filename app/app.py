@@ -211,5 +211,31 @@ def estadisticasAdmin():
     }
     return render_template('admin/estadisticas.html',data=data)
 
+
+#PRUEBAS PARA INICIO DE SESION SIN BASE DE DATOS#
+@app.route('/inicio', methods=['POST'])
+def inicio():
+    data = {
+        'boleta': request.form['boleta'],
+        'contrasena': request.form['contrasena']
+    }
+    print(data)
+
+    return render_template('inicio.html',data=data)
+
+
+@app.route('/inicio')
+def bienvenida():
+    data={
+        'boleta':'Registro',
+        'contrasena':'1234545'
+    }
+    return render_template('inicio.html',data=data)
+
+
+
 if __name__== '__main__':
     app.run(debug=True,port=5000)
+
+
+

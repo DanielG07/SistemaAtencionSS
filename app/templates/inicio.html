@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="../static/css/estilosAlumnos.css">
+</head>
+
+{% block header %}
+{% include 'components/header.html' %}
+{% endblock %}
+
+<body>    
+    <div class="main-page">
+        <div class="wrap-datos">
+            <h1>Bienvenido al sistema: {{ data.boleta }}</h1>
+            <div>
+                <h4> Tu contraseña es: {{data.contrasena}}</h4>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/funciones.js"></script>
+    <!--<script src="/js/lecturaJSONAlumno.js"></script>-->
+    
+</body>
+</html> 
