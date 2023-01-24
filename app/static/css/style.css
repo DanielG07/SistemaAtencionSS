@@ -59,6 +59,7 @@ h3{
 }
 h4{
     font-size: 1rem;
+    font-family: 'fuenteParrafo';
 }
 img{
     width: auto;
@@ -69,17 +70,10 @@ a{
 
 
 p{
-    font-family: var(--fuenteParrafos);
+    font-family: 'fuenteParrafo';
 }
-<<<<<<< HEAD
 
 
-=======
-table {
-    border-collapse: separate; 
-    border-spacing: 1em 1em;
-}
->>>>>>> bfd8344a930bc54ab299c9cd1952ed5257fb4419
 .no-margin{
     margin: 0;
 }
@@ -165,7 +159,7 @@ table {
 .barra-navegacion__enlace{
     display: block;
     text-align: center;
-    font-family: var(--fuenteParrafos);
+    font-family: 'fuenteParrafo';
     font-size: 1.5rem;
     color: var(--blanco);
     list-style-type: none; 
@@ -228,15 +222,17 @@ table {
   }
  
   
-  .formulario1  input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus{
+  .formulario1  input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus,
+  .main-page input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus{
     background: var(--primario);
     color: var(--blanco);
 } 
 
-.formulario1 input {
+.formulario1 input,
+.main-page input {
     font-family: sans-serif;
     background: #f5f5f5;
-    width: 100%;
+    width: 90%;
     border: 1px solid #f5f5f5;
     border-radius: 7px;
     margin-bottom: 15px;
@@ -281,4 +277,19 @@ table {
 }
 
 
+/*Registro*/
+
+/* .registro-carta{
+   font-family:  'fuenteParrafo';
+
+}
+.dp-campo_registro{
+    display: flex;
+    flex-direction: column;
+}
+.Idp-submit_registro{
+    font-family: 'fuenteParrafo';
+    font-weight: normal;
+    font-size: 1rem;
+} */
 

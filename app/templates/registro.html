@@ -1,18 +1,12 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <!-- <link rel="stylesheet" href="static/css/style.css"> -->
-    <link rel="stylesheet" href="static/css/estilosAlumnos.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- <link rel="stylesheet" href="static/css/estilosAlumnos.css"> -->
 </head>
-=======
-{% extends './layout.html' %}
-
-{% block title %}{{ data.titulo }}{% endblock %}
->>>>>>> bfd8344a930bc54ab299c9cd1952ed5257fb4419
 
 {% block header %}
 {% include 'components/header.html' %}
@@ -20,50 +14,19 @@
 
 {% block body %}
     
-<<<<<<< HEAD
-    <div class="main-page">
-        <div class="wrap-datos">
-            <div id="idregistro">
-                <h1>Registro al sistema</h1>
-                <div>
-                    <h4> Para poder realizar el registro al sistema, se requiere subir la Carta Compromiso emitida por el SISS</h4>
-                </div>
-                
-
-                <form action="/registro/confirmacion_datos" method="post" enctype="multipart/form-data">
-                    <div class="dp-campo">
-                        <div>
-                            <label>Carta</label>
-                            <div class="Idp-campo">
-                                <input type="file" name="archivo">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="dp-campo">
-                        <div>
-                            <label></label>
-                            <div class="Idp-submit">
-                                <input type="submit">
-                            </div>   
-                        </div>
-                    </div>
-                </form>
-=======
 <div class="main-page">
     <div class="wrap-datos">
-        <div class="registro-carta" id="idregistro">
+        <div id="idregistro">
             <h1>Registro al sistema</h1>
             <div>
                 <h4> Para poder realizar el registro al sistema, se requiere subir la Carta Compromiso emitida por el SISS</h4>
->>>>>>> bfd8344a930bc54ab299c9cd1952ed5257fb4419
             </div>
             
 
             <form action="/registro/confirmacion_datos" method="post" enctype="multipart/form-data">
-                <div class="dp-campo">
+                <div class="dp-campo_registro">
                     <div>
-                        <label>Carta</label>
+                        <label class="form-label">Carta</label>
                         <div class="Idp-campo">
                             <input type="file" name="archivo">
                         </div>
@@ -73,7 +36,7 @@
                 <div class="dp-campo">
                     <div>
                         <label></label>
-                        <div class="Idp-submit">
+                        <div class="Idp-submit_registro">
                             <input type="submit">
                         </div>   
                     </div>
