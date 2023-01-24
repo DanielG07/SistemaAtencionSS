@@ -71,8 +71,15 @@ a{
 p{
     font-family: var(--fuenteParrafos);
 }
+<<<<<<< HEAD
 
 
+=======
+table {
+    border-collapse: separate; 
+    border-spacing: 1em 1em;
+}
+>>>>>>> bfd8344a930bc54ab299c9cd1952ed5257fb4419
 .no-margin{
     margin: 0;
 }
@@ -130,7 +137,7 @@ p{
     display: flex;
     justify-content: center;
     text-align: center;
-    margin: 0 2rem;
+    margin: 0 auto;
     
 }
 @media (min-width: 768px){

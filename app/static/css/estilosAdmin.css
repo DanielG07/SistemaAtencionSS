@@ -1,0 +1,27 @@
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}
+
+.contenido {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    margin: 10px auto 10px;
+    width: 80%;
+}
+
+.item-table {
+    margin: 0 10px 0;
+}
+
+.center-content {
+    
+}
