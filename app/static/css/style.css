@@ -83,6 +83,8 @@ p{
     text-align: center;
 }
 
+
+
 /* Header */
 .header {
     width: 90%;
@@ -205,9 +207,13 @@ p{
     justify-content: center;
 }
 .form-label{
-    font-family: var(--fuenteHeading);
+    font-family: 'fuenteParrafo';
     font-weight: bold;
     justify-content: center;
+  }
+  .Idp-submit-letra{
+    font-family: 'fuenteParrafo';
+    font-size: 1rem;
   }
   .inicio-sesion-form{
     width: 100%;
@@ -253,16 +259,16 @@ p{
 }
 
 .dp-campo{
-    font-family: var(--fuenteParrafos);
+    font-family: 'fuenteParrafo';
 }
 .Registrate{
-    font-family: var(--fuenteParrafos);
+    font-family: 'fuenteParrafo';
     font-weight: normal;
     font-size: 1rem;
     margin-bottom: 4rem;
 }
 .Idp-submit{
-        font-family: var(--fuenteParrafos);
+        font-family: 'fuenteParrafo';
         font-weight: normal;
         font-size: 1rem;
 }

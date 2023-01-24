@@ -65,12 +65,12 @@
                         </div>
                     </div>
                     
-                    <div class="dp-campo">
+                    <div class="dp-carrera">
                         <div class="dp-Carrera">
                             <label class="dp-Carrera">Carrera</label>
                             <div class="Idp-campo">
-                                
-                                <select name ="Idp-carrera" type="text" placeholder="Carrera" required >
+                                <div class="Idp-carrera">
+                                <select  name ="Idp-carrera" type="text" placeholder="Carrera" required >
                                     <option value="0">Seleccione</option>
                                     <option value="1" {% if data.id_carrera==1 %} selected="selected" {% endif %}>ESCA.UST CONTADOR PÚBLICO</option>
                                     <option value="2" {% if data.id_carrera==2 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN RELACIONES COMERCIALES</option>
@@ -80,6 +80,7 @@
                                     <option value="6" {% if data.id_carrera==6 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)</option>
                                     <option value="7" {% if data.id_carrera==7 %} selected="selected" {% endif %}>ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES</option>   
                                 </select>
+                               </div>
                                 <input name="Idp-c_carrera" type="text" readonly="readonly" placeholder="Clave Carrera" value='{{data.clave_carrera}}' />
                                 <div class="messages"></div>
                             </div>

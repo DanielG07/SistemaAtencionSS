@@ -320,3 +320,31 @@ body {
         flex-direction: column;
     }
 } */
+
+
+/* 
+.wrap-datos .dp-carrera div{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+    height: auto;
+} */
+
+/* .wrap-datos .dp-carrera div{
+    margin-top: 200px;
+} */
+
+.Idp-carrera{
+ margin-bottom: 15px;
+}
+@media (min-width: 768px){
+    .wrap-datos .dp-carrera div{
+        margin: unset;
+        margin-right: 5px;
+        display: flex;
+        flex-direction: row;
+        text-align: right;
+        height: auto;
+    }
+}
