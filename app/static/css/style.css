@@ -101,7 +101,7 @@ table {
     display: flex;
     justify-content: center;
     text-align: center;
-    margin: 0 2rem;
+    margin: 0 auto;
     
 }
 @media (min-width: 768px){
