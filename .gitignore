@@ -26,6 +26,10 @@ htmlcov/
 # Custom
 *.pdf
 app/pdfs/*
+<<<<<<< HEAD
 
 #
 app/pruebas/*
+=======
+*.xlsx
+>>>>>>> 40768cc (Añadimos archivo base para generar excel y boton en paginas de preregistro y expediente)

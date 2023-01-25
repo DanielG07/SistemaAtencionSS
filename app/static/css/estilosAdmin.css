@@ -22,6 +22,26 @@
     margin: 0 10px 0;
 }
 
+.row-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.button {
+    background: rgba(104, 36, 68, 1);
+    color: #FFFFFF;
+    border: 1px solid #050505;
+    border-radius: 7px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 1.5em;
+}
+
+.button:hover {
+    background: rgba(104, 36, 68, 0.87);
+}
+
 .center-content {
     
 }
