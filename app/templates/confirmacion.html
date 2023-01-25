@@ -30,7 +30,20 @@
 
                 <div class="dp-campo">
                     
-<<<<<<< HEAD
+                    <div class="dp-apellidoM">
+                        <label>Apellidos</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-apellidoP" type="text" readonly="readonly" placeholder="Apellido Paterno" value='{{data.paterno}}' />
+                            <input name="Idp-apellidoM" type="text" readonly="readonly" placeholder="Apellido Materno" value='{{data.materno}}'/>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                </div>
+
+                <div class="dp-campo">
+                    
                     <div class="dp-carrera">
                         <div class="dp-Carrera">
                             <label class="dp-Carrera">Carrera</label>
@@ -50,16 +63,8 @@
                                 <input name="Idp-c_carrera" type="text" readonly="readonly" placeholder="Clave Carrera" value='{{data.clave_carrera}}' />
                                 <div class="messages"></div>
                             </div>
-=======
-                    <div class="dp-apellidoM">
-                        <label>Apellidos</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-apellidoP" type="text" readonly="readonly" placeholder="Apellido Paterno" value='{{data.paterno}}' />
-                            <input name="Idp-apellidoM" type="text" readonly="readonly" placeholder="Apellido Materno" value='{{data.materno}}'/>
->>>>>>> bfd8344a930bc54ab299c9cd1952ed5257fb4419
                         </div>
                         
-<<<<<<< HEAD
                         <div class="dp-Semestre">
                             <label class="dp-Semestre">Semestre</label>
                             <div class="Idp-campo">
@@ -80,78 +85,64 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
 
-                    <div class="dp-campo">
+                <div class="dp-campo">
+                    
+                    <div class="dp-Genero">
+                        <label class="dp-Genero">Género</label>
+                        <div class="Idp-campo">
+                            <select name ="Idp-genero"type="text" placeholder="Genero" required >
+                                <option value="0">Seleccione</option>
+                                <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
+                                <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Masculino</option>>Femenino</option>
+                            </select>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    <div>
+                        <label>Prestatario</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
+                        </div>
                         
-                        <div class="dp-Genero">
-                            <label class="dp-Genero">Sexo</label>
-                            <div class="Idp-campo">
-                                <select name ="Idp-genero"type="text" placeholder="Genero" required >
-                                    <option value="0">Seleccione</option>
-                                    <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
-                                    <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>>
-                                </select>
-                                <div class="messages"></div>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="dp-campo">
-                        <div>
-                            <label>Prestatario</label>
-                            <div class="Idp-campo">
-                                <input name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
-                            </div>
-                            
+                </div>
+
+                <div class="dp-campo">
+
+                    <div class="dp-FInicio">
+                        <label>Fecha inicio Servicio Social</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{data.fecha_inicio}}"/>
                         </div>
-
-                    </div>
-
-                    <div class="dp-campo">
-                        <div>
-                            <label>Programa</label>
-                            <div class="Idp-campo">
-                                <input name="Idp-programa" type="text" placeholder="Programa" value="{{data.programa}}"/>
-                            </div>
-                            
-                        </div>
-
-                    </div>
-
-                    <div class="dp-campo">
-
-                        <div class="dp-FInicio">
-                            <label>Fecha inicio Servicio Social</label>
-                            <div class="Idp-campo">
-                                <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{data.fecha_inicio}}"/>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div class="dp-campo">
-
-                        <div class="dp-FTermino">
-                            <label>Fecha término Servicio Social</label>
-                            <div class="Idp-campo">
-                                <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div class="dp-campo">
                         
-                        <div class="dp-email">
-                            <label>Correo Electronico</label>
-                            <div class="Idp-campo">
-                                <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
-                            </div>
-                            
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+
+                    <div class="dp-FTermino">
+                        <label>Fecha término Servicio Social</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>
                         </div>
-=======
->>>>>>> bfd8344a930bc54ab299c9cd1952ed5257fb4419
+                        
+                    </div>
+                </div>
+
+                <div class="dp-campo">
+                    
+                    <div class="dp-email">
+                        <label>Correo Electronico</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
+                        </div>
                     </div>
                 </div>
 
@@ -165,6 +156,7 @@
                         
                     </div>
                 </div>
+            </div>
 
                 <div class="dp-campo">
                     <div class="dp-CURP">
@@ -226,7 +218,7 @@
                             <select name ="Idp-genero"type="text" placeholder="Genero" required >
                                 <option value="0">Seleccione</option>
                                 <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
-                                <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Masculino</option>>Femenino</option>
+                                <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>
                             </select>
                             <div class="messages"></div>
                         </div>

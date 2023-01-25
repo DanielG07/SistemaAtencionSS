@@ -72,8 +72,10 @@ a{
 p{
     font-family: 'fuenteParrafo';
 }
-
-
+table {
+    border-collapse: separate; 
+    border-spacing: 1em 1em;
+}
 .no-margin{
     margin: 0;
 }
