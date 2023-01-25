@@ -62,6 +62,11 @@ id_carrera int primary key not null,
 DESCPCION_CARRERARA VARCHAR(15)
 );
 GO
+ALTER TABLE TABLE_CARRERA
+ALTER COLUMN DESCPCION_CARRERARA VARCHAR(200)
+
+GO
+
 Create table TABLE_SEXO
 (
 Id_Sexo int primary key not null,
@@ -75,7 +80,3 @@ Id_Tipo_Users int primary key not null,
 Descripcion_user varchar(20)
 )
 GO
-
-CONSTRAINT Id_user
-FOREIGN KEY Id_data_users
-REFERENCES parent_table_name(column1,column2,..)
