@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="static/css/estilosAlumnos.css">
+
 <div class="main-page">
     <div class="wrap-datos">
         <form action="/registro" method="post">
@@ -19,7 +19,7 @@
 
                 <div class="dp-campo">
                     <div>
-                        <label>Nombre(s)</label>
+                        <label class="label_confirmacion">Nombre(s)</label>
                         <div class="Idp-campo">
                             <input name="Idp-nombre" type="text" readonly="readonly" placeholder="Nombre(s)" value='{{ data.nombre }}'/>
                         </div>
@@ -31,7 +31,7 @@
                 <div class="dp-campo">
                     
                     <div class="dp-apellidoM">
-                        <label>Apellidos</label>
+                        <label class="label_confirmacion">Apellidos</label>
                         <div class="Idp-campo">
                             <input name="Idp-apellidoP" type="text" readonly="readonly" placeholder="Apellido Paterno" value='{{data.paterno}}' />
                             <input name="Idp-apellidoM" type="text" readonly="readonly" placeholder="Apellido Materno" value='{{data.materno}}'/>
@@ -40,127 +40,20 @@
                     </div>
                 </div>
 
-                </div>
-
-                <div class="dp-campo">
-                    
-                    <div class="dp-carrera">
-                        <div class="dp-Carrera">
-                            <label class="dp-Carrera">Carrera</label>
-                            <div class="Idp-campo">
-                                <div class="Idp-carrera">
-                                <select  name ="Idp-carrera" type="text" placeholder="Carrera" required >
-                                    <option value="0">Seleccione</option>
-                                    <option value="1" {% if data.id_carrera==1 %} selected="selected" {% endif %}>ESCA.UST CONTADOR PÚBLICO</option>
-                                    <option value="2" {% if data.id_carrera==2 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN RELACIONES COMERCIALES</option>
-                                    <option value="3" {% if data.id_carrera==3 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES</option>
-                                    <option value="4" {% if data.id_carrera==4 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL</option>
-                                    <option value="5" {% if data.id_carrera==5 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL</option>
-                                    <option value="6" {% if data.id_carrera==6 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)</option>
-                                    <option value="7" {% if data.id_carrera==7 %} selected="selected" {% endif %}>ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES</option>   
-                                </select>
-                               </div>
-                                <input name="Idp-c_carrera" type="text" readonly="readonly" placeholder="Clave Carrera" value='{{data.clave_carrera}}' />
-                                <div class="messages"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="dp-Semestre">
-                            <label class="dp-Semestre">Semestre</label>
-                            <div class="Idp-campo">
-                                <select name ="Idp-semestre" type="text" placeholder="Semestre" required >
-                                    <option value="0">Seleccione</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option> 
-                                </select>
-                                <div class="messages"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="dp-campo">
-                    
-                    <div class="dp-Genero">
-                        <label class="dp-Genero">Género</label>
-                        <div class="Idp-campo">
-                            <select name ="Idp-genero"type="text" placeholder="Genero" required >
-                                <option value="0">Seleccione</option>
-                                <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
-                                <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Masculino</option>>Femenino</option>
-                            </select>
-                            <div class="messages"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dp-campo">
-                    <div>
-                        <label>Prestatario</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
-                        </div>
-                        
-                    </div>
-
-                </div>
-
-                <div class="dp-campo">
-
-                    <div class="dp-FInicio">
-                        <label>Fecha inicio Servicio Social</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{data.fecha_inicio}}"/>
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div class="dp-campo">
-
-                    <div class="dp-FTermino">
-                        <label>Fecha término Servicio Social</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div class="dp-campo">
-                    
-                    <div class="dp-email">
-                        <label>Correo Electronico</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="dp-campo">
                     
                     <div class="dp-boleta">
-                        <label>Boleta</label>
+                        <label class="label_confirmacion">Boleta</label>
                         <div class="Idp-campo">
                             <input name="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{data.boleta}}'/>
                         </div>
                         
                     </div>
                 </div>
-            </div>
 
                 <div class="dp-campo">
                     <div class="dp-CURP">
-                        <label>CURP</label>
+                        <label class="label_confirmacion">CURP</label>
                         <div class="Idp-campo">
                             <input name="Idp-CURP" type="text" readonly="readonly" placeholder="CURP" value='{{data.curp}}'/>
                         </div>
@@ -170,7 +63,7 @@
                 
                 <div class="dp-campo">
                     <div class="dp-Carrera">
-                        <label class="dp-Carrera">Carrera</label>
+                        <label class="label_confirmacion">Carrera</label>
                         <div class="Idp-campo">
                             <select name ="Idp-carrera" type="text" placeholder="Carrera" required >
                                 <option value="0">Seleccione</option>
@@ -189,7 +82,7 @@
                 <div class="dp-campo">
                     
                     <div class="dp-Semestre">
-                        <label class="dp-Semestre">Semestre</label>
+                        <label class="label_confirmacion">Semestre</label>
                         <div class="Idp-campo">
                             <select name ="Idp-semestre" type="text" placeholder="Semestre" required >
                                 <option value="0">Seleccione</option>
@@ -213,12 +106,12 @@
                 <div class="dp-campo">
                     
                     <div class="dp-Genero">
-                        <label class="dp-Genero">Género</label>
+                        <label class="label_confirmacion">Género</label>
                         <div class="Idp-campo">
                             <select name ="Idp-genero"type="text" placeholder="Genero" required >
                                 <option value="0">Seleccione</option>
                                 <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
-                                <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>
+                                <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>>Femenino</option>
                             </select>
                             <div class="messages"></div>
                         </div>
@@ -227,7 +120,7 @@
 
                 <div class="dp-campo">
                     <div>
-                        <label>Prestatario</label>
+                        <label class="label_confirmacion">Prestatario</label>
                         <div class="Idp-campo">
                             <input name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
                         </div>
@@ -239,7 +132,7 @@
                 <div class="dp-campo">
 
                     <div class="dp-FInicio">
-                        <label>Fecha inicio Servicio Social</label>
+                        <label class="label_confirmacion">Fecha inicio Servicio Social</label>
                         <div class="Idp-campo">
                             <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{data.fecha_inicio}}"/>
                         </div>
@@ -250,7 +143,7 @@
                 <div class="dp-campo">
 
                     <div class="dp-FTermino">
-                        <label>Fecha término Servicio Social</label>
+                        <label class="label_confirmacion">Fecha término Servicio Social</label>
                         <div class="Idp-campo">
                             <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>
                         </div>
@@ -261,7 +154,7 @@
                 <div class="dp-campo">
                     
                     <div class="dp-email">
-                        <label>Correo Electronico</label>
+                        <label class="label_confirmacion">Correo Electronico</label>
                         <div class="Idp-campo">
                             <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
                         </div>
@@ -271,7 +164,7 @@
             </div>
 
             <div  class="dp-campo">
-                <button class="Idp-campo" type="submit" id="boton">Guardar</button>
+                <button class="Idp-campo label_confirmacion" type="submit" id="boton">Guardar</button>
             </div>
             
         </form>

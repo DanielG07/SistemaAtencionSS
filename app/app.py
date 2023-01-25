@@ -168,7 +168,7 @@ def registro():
 
     return redirect(url_for("index"))
 
-@app.route("/registro/confirmacion_datos", methods=['POST'])
+@app.route("/confirmacion_datos", methods=['POST'])
 def uploader():
     if request.method == "POST":
         f = request.files['archivo']
