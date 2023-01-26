@@ -190,7 +190,8 @@ table {
 
 /* wrapdatos */
 
-.main-page {
+.main-page,
+.main-page1 {
     width: 90%;
     height: auto;
     margin: 0px auto;
