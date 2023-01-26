@@ -308,6 +308,9 @@ table {
     font-weight: normal;
     font-size: 1rem;
 } */
+.Idp-campo{
+    font-size: 1.5rem;
+}
 .wrap-datos .dp-campo div {
     margin-top: 5px;
     width: 100%;
@@ -340,6 +343,7 @@ table {
   .Idp-campo select::-ms-expand {
     display: none;
 }
+
 
   .Idp-campo select{
     display: inline-block;
