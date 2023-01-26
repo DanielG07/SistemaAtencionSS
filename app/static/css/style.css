@@ -293,21 +293,6 @@ table {
     font-family: 'fuenteParrafo';
 }
 
-/*Registro*/
-
-/* .registro-carta{
-   font-family:  'fuenteParrafo';
-
-}
-.dp-campo_registro{
-    display: flex;
-    flex-direction: column;
-}
-.Idp-submit_registro{
-    font-family: 'fuenteParrafo';
-    font-weight: normal;
-    font-size: 1rem;
-} */
 .Idp-campo{
     font-size: 1.5rem;
 }
@@ -334,54 +319,43 @@ table {
     font-family: 'fuenteParrafo';
     margin-top: 1rem;
   }
-  .Idp-campo input,
-  .Idp-campo select{
-    appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: inherit;
-  }
-  .Idp-campo select::-ms-expand {
-    display: none;
-}
-
-
-  .Idp-campo select{
-    display: inline-block;
-	width: 100%;
-	cursor: pointer;
-  	padding: 7px 10px;
-  	height: 42px;
-  	outline: 0; 
-  	border: 0;
-	border-radius: 0;
-	background: #f0f0f0;
-	color: #7b7b7b;
-	font-size: 1em;
-	color: #999;
-	font-family: 
-	'Quicksand', sans-serif;
-	border:2px solid rgba(0,0,0,0.2);
-    border-radius: 12px;
-    position: relative;
-    transition: all 0.25s ease;
-  }
-
-  .Idp-campo select:hover{
-    background: #B1E8CD;
-  }
-  .Idp-campo i{
-	position: absolute;
-	right: 20px;
-	top: calc(50% - 13px);
-	width: 16px;
-	height: 16px;
-	display: block;
-	border-left:4px solid #2AC176;
-	border-bottom:4px solid #2AC176;
-	transform: rotate(-45deg); /* Giramos el cuadrado */
-	transition: all 0.25s ease;
-}
  
-.cIdp-campo:hover i{
-	margin-top: 3px;
-}
+  .select-css {
+   
+    font-size: 16px;
+    font-family: 'fuenteParrafo';
+    font-weight: 400;
+    color: #444;
+    line-height: 1.3;
+    padding: .4em 1.4em .3em .8em;
+    width: 400px;
+    max-width: 100%; 
+    box-sizing: border-box;
+    margin: 0;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0,0,0,.03);
+    border-radius: .3em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-repeat: no-repeat, repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: .65em auto, 100%;
+   }
+   .select-css::-ms-expand {
+    display: none;
+   }
+   .select-css:hover {
+    border-color: #888;
+   }
+   .select-css:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+    box-shadow: 0 0 0 3px -moz-mac-focusring;
+    color: #222; 
+    outline: none;
+   }
+   .select-css option {
+    font-weight:normal;
+   }

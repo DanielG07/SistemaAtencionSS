@@ -65,7 +65,7 @@
                     <div class="dp-Carrera">
                         <label class="label_confirmacion">Carrera</label>
                         <div class="Idp-campo">
-                            <select name ="Idp-carrera" type="text" placeholder="Carrera" required >
+                            <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" required >
                                 <option value="0">Seleccione</option>
                                 <option value="1" {% if data.id_carrera==1 %} selected="selected" {% endif %}>Administración y Administración Pública</option>
                                 <option value="2" {% if data.id_carrera==2 %} selected="selected" {% endif %}>Comercio y Relaciones Internacionales</option>
@@ -84,7 +84,7 @@
                     <div class="dp-Semestre">
                         <label class="label_confirmacion">Semestre</label>
                         <div class="Idp-campo">
-                            <select name ="Idp-semestre" type="text" placeholder="Semestre" required >
+                            <select class="select-css" name ="Idp-semestre" type="text" placeholder="Semestre" required >
                                 <option value="0">Seleccione</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -108,7 +108,7 @@
                     <div class="dp-Genero">
                         <label class="label_confirmacion">Género</label>
                         <div class="Idp-campo">
-                            <select name ="Idp-genero"type="text" placeholder="Genero" required >
+                            <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero" required >
                                 <option value="0">Seleccione</option>
                                 <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
                                 <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>>Femenino</option>
@@ -164,7 +164,7 @@
             </div>
 
             <div  class="dp-campo">
-                <button class="Idp-campo label_confirmacion" type="submit" id="boton">Guardar</button>
+                <input class="Idp-campo label_confirmacion" type="submit" id="boton" value="Guardar"> 
             </div>
             
         </form>
