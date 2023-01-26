@@ -10,8 +10,14 @@
 
 <div class="main-page">
     <div class="contenido">
-        <h3>Expedientes</h3>
-        <p>Permite revisar los expedientes por alumno, permitiendo revisar los reportes ademas de permitir subir la constancia de liberación.</p>
+        <div class="row-container">
+            <div>
+                <h3>Expedientes</h3>
+                <p>Permite revisar los expedientes por alumno, permitiendo revisar los reportes ademas de permitir subir la constancia de liberación.</p>
+            </div>
+            
+            <a><button class="btnExport button">Generar Excel</button></a>
+        </div>
         <table>
             <tr>
                 <th>Boleta</th>
@@ -52,5 +58,31 @@
         </table>
     </div>
 </div>
+
+<script>
+    attachEventToBtnExport()
+
+    function attachEventToBtnExport() {
+        const bntExportElement = document.querySelector( '.btnExport' )
+        bntExportElement.addEventListener( 'click', exportExcel )
+    }
+
+    async function exportExcel() {
+        let response = await fetch( '/generar_emision' )
+        let blobResponse = await response.blob()
+        const fileName = 'preregistros.xlsx'
+        downloadExcelSilently( blobResponse, fileName )
+    }
+    function downloadExcelSilently( blobExcelFile, filename ) {
+        const url = window.URL.createObjectURL( blobExcelFile );
+        const hiddenAnchor = document.createElement( "a" );
+        hiddenAnchor.style.display = "none";
+        hiddenAnchor.href = url;
+        hiddenAnchor.download = filename;
+        document.body.appendChild( hiddenAnchor );
+        hiddenAnchor.click();
+        window.URL.revokeObjectURL( url );
+    }
+</script>
 
 {% endblock %}

@@ -12,8 +12,8 @@
     <div class="contenido">
         <div class="row-container">
             <div>
-                <h3>Preregistro</h3>
-                <p>Este apartado nos permite visualizar los alumnos que estan solicitando la aceptación de su preregistro, donde al seleccionar </p>
+                <h3>Completados</h3>
+                <p>Permite visualizar y descargar excel de los alumnos que ya terminaron el servicio social.</p>
             </div>
             
             <a><button class="btnExport button">Generar Excel</button></a>
@@ -35,25 +35,25 @@
                 <th>Fecha de envio</th>
             </tr>
             {% for item in registros %}
-                <tr class="item-table">
-                    <td class="centrar-texto">
-                        <a href={{"/" + item.boleta}}>
-                            {{item.boleta}}
-                        </a>
-                    </td>
-                    <td>{{item.nombre}}</td>
-                    <td class="centrar-texto">{{item.carrera}}</td>
-                    <td class="centrar-texto">{{item.semestre}}</td>
-                    <td class="centrar-texto">{{item.genero}}</td>
-                    <td>{{item.prestatario}}</td>
-                    <td class="centrar-texto">{{item.f_inicio}}</td>
-                    <td class="centrar-texto">{{item.f_termino}}</td>
-                    <td class="centrar-texto">{{item.correo_electronico}}</td>
-                    <td class="centrar-texto">{{item.estatus}}</td>
-                    <td class="centrar-texto">{{item.numero}}</td>
-                    <td class="centrar-texto">{{item.registro_lista}}</td>
-                    <td class="centrar-texto">{{item.f_envio}}</td>
-                </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">
+                    <a href={{"/" + item.boleta}}>
+                        {{item.boleta}}
+                    </a>
+                </td>
+                <td>{{item.nombre}}</td>
+                <td class="centrar-texto">{{item.carrera}}</td>
+                <td class="centrar-texto">{{item.semestre}}</td>
+                <td class="centrar-texto">{{item.genero}}</td>
+                <td>{{item.prestatario}}</td>
+                <td class="centrar-texto">{{item.f_inicio}}</td>
+                <td class="centrar-texto">{{item.f_termino}}</td>
+                <td class="centrar-texto">{{item.correo_electronico}}</td>
+                <td class="centrar-texto">{{item.estatus}}</td>
+                <td class="centrar-texto">{{item.numero}}</td>
+                <td class="centrar-texto">{{item.registro_lista}}</td>
+                <td class="centrar-texto">{{item.f_envio}}</td>
+            </tr>
             {% endfor %}
         </table>
     </div>
@@ -68,7 +68,7 @@
     }
 
     async function exportExcel() {
-        let response = await fetch( '/generar_preregistros' )
+        let response = await fetch( '/generar_emision' )
         let blobResponse = await response.blob()
         const fileName = 'preregistros.xlsx'
         downloadExcelSilently( blobResponse, fileName )
