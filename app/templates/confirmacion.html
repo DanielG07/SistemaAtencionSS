@@ -18,52 +18,56 @@
                 </div>
 
                 <div class="dp-campo">
-                    <div>
                         <label class="label_confirmacion">Nombre(s)</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-nombre" type="text" readonly="readonly" placeholder="Nombre(s)" value='{{ data.nombre }}'/>
-                        </div>
-                        
-                    </div>
-
+                            <input class="Idp-campo" 
+                            name="Idp-nombre" 
+                            type="text" 
+                            readonly="readonly" 
+                            placeholder="Nombre(s)" 
+                            value='{{ data.nombre }}'/>
                 </div>
 
-                <div class="dp-campo">
-                    
-                    <div class="dp-apellidoM">
-                        <label class="label_confirmacion">Apellidos</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-apellidoP" type="text" readonly="readonly" placeholder="Apellido Paterno" value='{{data.paterno}}' />
-                            <input name="Idp-apellidoM" type="text" readonly="readonly" placeholder="Apellido Materno" value='{{data.materno}}'/>
-                        </div>
-                        
+                    <div class=" dp-campo dp-apellidoM blue">
+                        <label class="label_confirmacion">Apellidos</label>  
+                        <div class="dos-columnas ">
+                            <input class="Idp-campo" 
+                            name="Idp-apellidoP" 
+                            type="text" readonly="readonly" 
+                            placeholder="Apellido Paterno" 
+                            value='{{data.paterno}}' />
+                            <input class="Idp-campo" 
+                            name="Idp-apellidoM" 
+                            type="text" 
+                            readonly="readonly" 
+                            placeholder="Apellido Materno" 
+                            value='{{data.materno}}'/>      
+                        </div>                   
                     </div>
-                </div>
 
-                <div class="dp-campo">
-                    
-                    <div class="dp-boleta">
-                        <label class="label_confirmacion">Boleta</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{data.boleta}}'/>
-                        </div>
-                        
-                    </div>
-                </div>
+    <div class="dos-columnas">      
+            <div class="dp-medio dp-campo green">
+                <label class="label_confirmacion">Boleta</label>
+                <div class="Idp-campo">
+                    <input name="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{data.boleta}}'/>
+                </div>        
+        </div>
 
-                <div class="dp-campo">
-                    <div class="dp-CURP">
-                        <label class="label_confirmacion">CURP</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-CURP" type="text" readonly="readonly" placeholder="CURP" value='{{data.curp}}'/>
-                        </div>
-                        
-                    </div>
+        
+            <div class="dp-medio red dp-campo no-margin">
+                <label class="label_confirmacion">CURP</label>
+                <div class="Idp-campo">
+                    <input name="Idp-CURP" 
+                    type="text" 
+                    readonly="readonly" 
+                    placeholder="CURP" 
+                    value='{{data.curp}}'/>
                 </div>
+        </div>
+    </div>
                 
-                <div class="dp-campo">
-                    <div class="dp-Carrera">
-                        <label class="label_confirmacion">Carrera</label>
+                
+                    <div class="dp-campo dp-Carrera ">
+                        <label class="label_confirmacion ">Carrera</label>
                         <div class="Idp-campo">
                             <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" required >
                                 <option value="0">Seleccione</option>
@@ -77,9 +81,11 @@
                             <div class="messages"></div>
                         </div>
                     </div>
-                </div>
+                
 
-                <div class="dp-campo">
+
+               <div class="dos-columnas">
+                <div class="dp-campo dp-medio">
                     
                     <div class="dp-Semestre">
                         <label class="label_confirmacion">Semestre</label>
@@ -102,8 +108,7 @@
                     </div>
                 </div>
 
-
-                <div class="dp-campo">
+                <div class="dp-campo dp-medio">
                     
                     <div class="dp-Genero">
                         <label class="label_confirmacion">Género</label>
@@ -117,39 +122,32 @@
                         </div>
                     </div>
                 </div>
+               </div>
 
-                <div class="dp-campo">
-                    <div>
-                        <label class="label_confirmacion">Prestatario</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
-                        </div>
-                        
-                    </div>
 
+
+                <div class="dp-campo ">
+                        <label class="label_confirmacion lbl-confirm">Prestatario</label>     
+                            <input class="Idp-campo" name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
                 </div>
 
-                <div class="dp-campo">
-
-                    <div class="dp-FInicio">
+        
+                   <div class="dos-columnas">
+                    <div class="dp-campo dp-FInicio">
                         <label class="label_confirmacion">Fecha inicio Servicio Social</label>
                         <div class="Idp-campo">
                             <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{data.fecha_inicio}}"/>
-                        </div>
-                        
-                    </div>
+                        </div>     
                 </div>
 
-                <div class="dp-campo">
-
-                    <div class="dp-FTermino">
+              
+                    <div class="dp-campo dp-FTermino">
                         <label class="label_confirmacion">Fecha término Servicio Social</label>
                         <div class="Idp-campo">
-                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>
-                        </div>
-                        
+                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>   
                     </div>
                 </div>
+                   </div>
 
                 <div class="dp-campo">
                     

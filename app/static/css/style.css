@@ -222,14 +222,16 @@ table {
  
   
   .formulario1  input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus,
-  .main-page input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus{
+  .main-page input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus,
+  .main-page1 input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus{
     background: var(--primario);
     color: var(--blanco);
     cursor: pointer;
 } 
 
 .formulario1 input,
-.main-page input {
+.main-page input,
+.main-page1 input{
     font-family: sans-serif;
     background: #f5f5f5;
     width: 90%;
@@ -295,6 +297,7 @@ table {
 
 .Idp-campo{
     font-size: 1.5rem;
+    /* margin: 1rem 0; */
 }
 .wrap-datos .dp-campo div {
     margin-top: 5px;
@@ -321,17 +324,15 @@ table {
   }
  
   .select-css {
-   
     font-size: 16px;
     font-family: 'fuenteParrafo';
     font-weight: 400;
     color: #444;
     line-height: 1.3;
-    padding: .4em 1.4em .3em .8em;
     width: 400px;
     max-width: 100%; 
     box-sizing: border-box;
-    margin: 0;
+    margin: 0rem;
     border: 1px solid #aaa;
     box-shadow: 0 1px 0 1px rgba(0,0,0,.03);
     border-radius: .3em;
@@ -359,3 +360,59 @@ table {
    .select-css option {
     font-weight:normal;
    }
+   .dp-Genero{
+    margin: 1rem 0;
+   }
+.label_confirmacion{
+    margin: 1rem 0;
+}
+@media (min-width: 768px){
+    .dos-columnas{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;   
+        gap: 2rem;
+    }
+    /* .tres-columnas{
+        display: flex;
+         gap: 10rem; 
+        justify-content: space-between;
+    }
+    */
+    
+    .dp-campo{
+        width: 100%;
+    }
+    
+   
+    .ajuste{
+        width: 98%;
+    }
+
+    .dp-izq input{
+        width: 98%;
+        margin-right: 1rem;
+    } 
+    .dp-der input{
+        width: 98%;
+        margin-left: 1rem;
+    } 
+    .dp-medio{
+        width: 48%;
+    }
+    
+    .main-page input,   
+    .main-page select {
+        width: 100%;
+    }
+    
+}
+/* .red{
+    background-color: red;
+}
+.blue{
+    background-color: blue;
+}
+.green{
+    background-color: green;
+} */
