@@ -170,7 +170,43 @@
                     
                     </div>
                 </div>
+
+                <div class="dp-campo">  
+                    <div class="dp-direccion">
+                        <label class="label_confirmacion">Dirección</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-direccion" type="text" readonly="readonly" placeholder="Dirección" value="{{data.direccion}}"/>
+                        </div>
+                    
+                    </div>
+                </div>
+
+                <div class="dos-columnas">
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-CodPostal">
+                            <label class="label_confirmacion">Código Postal</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-codPostal" type="text" readonly="readonly" placeholder="CodPostal" value='{{ data.codigo_postal}}'/>
+                                <div class="messages"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-alcaldia">
+                            <label class="label_confirmacion">Alcaldía y Estado</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-alcaldia" type="text" readonly="readonly" placeholder="Alcaldía" value='{{ data.alcaldia}}'/>
+                                <div class="messages"></div>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+               </div>
                 
+
+
+
                 <div>
                     <h4> DATOS DEL PRESTATARIO</h4>
                 </div>
@@ -178,16 +214,28 @@
 
                 <div class="dp-campo ">
                         <label class="label_confirmacion lbl-confirm">Prestatario</label>     
-                            <input class="Idp-campo" name="Idp-prestatario" type="text" readonly="readonly" placeholder="Prestatario" value="{{data.prestatario}}"/>
+                            <input class="Idp-campo" name="Idp-prestatario" type="text" readonly="readonly" placeholder="Prestatario" value="{{data.prestatario}}" />
                 </div>
                 
-                <div class="dp-campo dp-cod_prestatario">
+                <div class="dp-campo ">
                     <label class="label_confirmacion">Código del prestatario</label>
                     <div class="Idp-campo">
                         <input name="Idp-cod_prestatario" type="text" readonly="readonly" placeholder="Cod_prestatario" value='{{ data.codigo }}'/>
                     </div>   
                 </div>
-        
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion lbl-confirm">Programa</label>     
+                        <input class="Idp-campo" name="Idp-programa" type="text" readonly="readonly" placeholder="Programa" value="{{data.programa}}" />
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Clave del Programa</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-clave_programa" type="text" readonly="readonly" placeholder="Clave_programa" value='{{ data.clave_programa }}'/>
+                    </div>   
+                </div>
+
                 <div class="dos-columnas">
                     <div class="dp-campo dp-FInicio">
                         <label class="label_confirmacion">Fecha inicio Servicio Social</label>

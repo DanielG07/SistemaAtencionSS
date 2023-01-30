@@ -432,6 +432,8 @@ def pdf_to_dict(archivoPDF):
 		##QUITAR LOS ESPACIOS EN BLANCO DEL CÓDIGO DEL PRESTATARIO
 		datos_comprobante['codigo']=datos_comprobante['codigo'].replace(" ","")
 
+		datos_comprobante['clave_programa']=datos_comprobante['clave_programa'].replace(" ","")
+
 		datos_comprobante['fecha_inicio'] = conversiondate(datos_comprobante['fecha_inicio'])
 		datos_comprobante['fecha_termino'] = conversiondate(datos_comprobante['fecha_termino'])
 
