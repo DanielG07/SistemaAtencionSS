@@ -26,4 +26,6 @@ htmlcov/
 # Custom
 *.pdf
 app/pdfs/*
+app/pruebas/*
+app/__pycache__/*
 *.xlsx

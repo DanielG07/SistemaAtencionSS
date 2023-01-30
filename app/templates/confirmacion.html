@@ -10,13 +10,20 @@
 
 <div class="main-page">
     <div class="wrap-datos">
+        {% if error %}
+        <p style="color: red">{{ error }}</p>
+        {% endif %}
         <form action="/registro" method="post">
             <div class="datos-personales" id="idPersonales">
-                <h1>Registro al sistema</h1>
+                <h1>REGISTRO AL SISTEMA</h1>
                 <div>
                     <h4> Revise sus datos recuperados por el archivo de carta compromiso emitido por el SISS</h4>
                 </div>
 
+
+                <div>
+                    <h4> DATOS DEL PRESTADOR</h4>
+                </div>
                 <div class="dp-campo">
                         <label class="label_confirmacion">Nombre(s)</label>
                             <input class="Idp-campo" 
@@ -27,7 +34,7 @@
                             value='{{ data.nombre }}'/>
                 </div>
 
-                    <div class=" dp-campo dp-apellidoM blue">
+                <div class=" dp-campo dp-apellidoM blue">
                         <label class="label_confirmacion">Apellidos</label>  
                         <div class="dos-columnas ">
                             <input class="Idp-campo" 
@@ -42,46 +49,53 @@
                             placeholder="Apellido Materno" 
                             value='{{data.materno}}'/>      
                         </div>                   
-                    </div>
-
-    <div class="dos-columnas">      
-            <div class="dp-medio dp-campo green">
-                <label class="label_confirmacion">Boleta</label>
-                <div class="Idp-campo">
-                    <input name="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{data.boleta}}'/>
-                </div>        
-        </div>
-
-        
-            <div class="dp-medio red dp-campo no-margin">
-                <label class="label_confirmacion">CURP</label>
-                <div class="Idp-campo">
-                    <input name="Idp-CURP" 
-                    type="text" 
-                    readonly="readonly" 
-                    placeholder="CURP" 
-                    value='{{data.curp}}'/>
                 </div>
-        </div>
-    </div>
-                
-                
-                    <div class="dp-campo dp-Carrera ">
-                        <label class="label_confirmacion ">Carrera</label>
-                        <div class="Idp-campo">
-                            <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" required >
-                                <option value="0">Seleccione</option>
-                                <option value="1" {% if data.id_carrera==1 %} selected="selected" {% endif %}>Administración y Administración Pública</option>
-                                <option value="2" {% if data.id_carrera==2 %} selected="selected" {% endif %}>Comercio y Relaciones Internacionales</option>
-                                <option value="3" {% if data.id_carrera==3 %} selected="selected" {% endif %}>Contabilidad</option>
-                                <option value="4" {% if data.id_carrera==4 %} selected="selected" {% endif %}>Educación y Pedagogía</option>
-                                <option value="5" {% if data.id_carrera==5 %} selected="selected" {% endif %}>Salud y Medicina</option>
-                                <option value="5" {% if data.id_carrera==5 %} selected="selected" {% endif %}>UPIITA INGENIERO EN TELEMÁTICA</option>  
-                            </select>
-                            <div class="messages"></div>
+
+                <div class="dos-columnas">      
+                        <div class="dp-medio dp-campo green">
+                            <label class="label_confirmacion">Boleta</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{data.boleta}}'/>
+                            </div>        
                         </div>
-                    </div>
+
+            
+                        <div class="dp-medio red dp-campo no-margin">
+                            <label class="label_confirmacion">CURP</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-CURP" 
+                                type="text" 
+                                readonly="readonly" 
+                                placeholder="CURP" 
+                                value='{{data.curp}}'/>
+                            </div>
+                        </div>
+                </div>
                 
+                <div class="dp-campo dp-Carrera ">
+                    <label class="label_confirmacion ">Carrera</label>
+                    <div class="Idp-campo">
+                        <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" required >
+                            <option value="0">Seleccione</option>
+                            <option value="ESCA.UST CONTADOR PÚBLICO" {% if data.id_carrera==1 %} selected="selected" {% endif %}>ESCA.UST CONTADOR PÚBLICO</option>
+                            <option value="ESCA.UST LICENCIADO EN RELACIONES COMERCIALES" {% if data.id_carrera==2 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN RELACIONES COMERCIALES</option>
+                            <option value="ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES" {% if data.id_carrera==3 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES</option>
+                            <option value="ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL" {% if data.id_carrera==4 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL</option>
+                            <option value="ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL." {% if data.id_carrera==5 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL.</option>
+                            <option value="ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)" {% if data.id_carrera==6 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)</option>
+                            <option value="ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES" {% if data.id_carrera==7 %} selected="selected" {% endif %}>ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES</option>  
+                        </select>
+                        <div class="messages"></div>
+                    </div>
+                </div>
+
+                <div class="dp-campo dp-clave_carrera">
+                    <label class="label_confirmacion">Clave de la carrera</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-clave_carrera" type="text" readonly="readonly" placeholder="Clave_carrera" value='{{ data.clave_carrera }}'/>
+                        <div class="messages"></div>
+                    </div>   
+                </div>
 
 
                <div class="dos-columnas">
@@ -111,7 +125,7 @@
                 <div class="dp-campo dp-medio">
                     
                     <div class="dp-Genero">
-                        <label class="label_confirmacion">Género</label>
+                        <label class="label_confirmacion">Sexo</label>
                         <div class="Idp-campo">
                             <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero" required >
                                 <option value="0">Seleccione</option>
@@ -124,41 +138,74 @@
                 </div>
                </div>
 
+               <div class="dos-columnas">
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-telefono">
+                            <label class="label_confirmacion">Teléfono</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-telefono" type="text" readonly="readonly" placeholder="Telefono" value='{{ data.tel_particular}}'/>
+                                <div class="messages"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-escolaridad">
+                            <label class="label_confirmacion">Escolaridad</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-escolaridad" type="text" readonly="readonly" placeholder="Escolaridad" value='{{ data.escolaridad}}'/>
+                                <div class="messages"></div>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+               </div>
+
+               <div class="dp-campo">  
+                    <div class="dp-email">
+                        <label class="label_confirmacion">Correo electrónico</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+                <div>
+                    <h4> DATOS DEL PRESTATARIO</h4>
+                </div>
 
 
                 <div class="dp-campo ">
                         <label class="label_confirmacion lbl-confirm">Prestatario</label>     
-                            <input class="Idp-campo" name="Idp-prestatario" type="text" placeholder="Prestatario" value="{{data.prestatario}}"/>
+                            <input class="Idp-campo" name="Idp-prestatario" type="text" readonly="readonly" placeholder="Prestatario" value="{{data.prestatario}}"/>
                 </div>
-
+                
+                <div class="dp-campo dp-cod_prestatario">
+                    <label class="label_confirmacion">Código del prestatario</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-cod_prestatario" type="text" readonly="readonly" placeholder="Cod_prestatario" value='{{ data.codigo }}'/>
+                    </div>   
+                </div>
         
-                   <div class="dos-columnas">
+                <div class="dos-columnas">
                     <div class="dp-campo dp-FInicio">
                         <label class="label_confirmacion">Fecha inicio Servicio Social</label>
                         <div class="Idp-campo">
                             <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{data.fecha_inicio}}"/>
                         </div>     
-                </div>
+                    </div>
 
               
                     <div class="dp-campo dp-FTermino">
                         <label class="label_confirmacion">Fecha término Servicio Social</label>
                         <div class="Idp-campo">
-                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>   
+                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{data.fecha_termino}}"/>
+                        </div>   
                     </div>
                 </div>
-                   </div>
 
-                <div class="dp-campo">
-                    
-                    <div class="dp-email">
-                        <label class="label_confirmacion">Correo Electronico</label>
-                        <div class="Idp-campo">
-                            <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
-                        </div>
-                        
-                    </div>
-                </div>
+
             </div>
 
             <div  class="dp-campo">

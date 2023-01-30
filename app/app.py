@@ -213,25 +213,61 @@ def registroUsuario():
 
 @app.route('/registro', methods=['POST'])
 def registro():
-    data = {
-        'nombre': request.form['Idp-nombre'],
-        'apellidoM': request.form['Idp-apellidoP'],
-        'apellidoP': request.form['Idp-apellidoM'],
-        'boleta': request.form['Idp-Boleta'],
-        'curp': request.form['Idp-CURP'],
-        'clave_carrera': request.form['Idp-carrera'],
-        'carrera': request.form['Idp-carrera'],
-        'semestre': request.form['Idp-semestre'],
-        'genero': request.form['Idp-genero'],
-        'prestatario': request.form['Idp-prestatario'],
-        # 'programa': request.form['Idp-programa'],
-        'fecha_inicio': request.form['Idp-FInicio'],
-        'fecha_fin': request.form['Idp-FTermino'],
-        'correo': request.form['Idp-email'],
-    }
-    print(data)
+    if request.method == "POST":
+        data = {
+            'nombre': request.form['Idp-nombre'],
+            'paterno': request.form['Idp-apellidoP'],
+            'materno': request.form['Idp-apellidoM'],
+            'boleta': request.form['Idp-Boleta'],
+            'curp': request.form['Idp-CURP'],
+            'carrera': request.form['Idp-carrera'],
+            'clave_carrera': request.form['Idp-clave_carrera'],
+            'id_carrera': '',
+            'semestre': request.form['Idp-semestre'],
+            'sexo': request.form['Idp-genero'],
+            'id_sexo': '',
+            'tel_particular':request.form['Idp-telefono'],
+            'escolaridad':request.form['Idp-escolaridad'],
+            'prestatario': request.form['Idp-prestatario'],
+            'codigo': request.form['Idp-cod_prestatario'],
+            # 'programa': request.form['Idp-programa'],
+            'fecha_inicio': request.form['Idp-FInicio'],
+            'fecha_termino': request.form['Idp-FTermino'],
+            'correo': request.form['Idp-email'],
+        }
 
-    return redirect(url_for("index"))
+        ## CARRERA
+        if data['carrera']=='ESCA.UST CONTADOR PÚBLICO':
+            data['id_carrera']=1
+        if data['carrera']=='ESCA.UST LICENCIADO EN RELACIONES COMERCIALES':
+            data['id_carrera']=2
+        if data['carrera']=='ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES':
+            data['id_carrera']=3
+        if data['carrera']=='ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL':
+            data['id_carrera']=4
+        if data['carrera']=='ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL.':
+            data['id_carrera']=5
+        if data['carrera']=='ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)':
+            data['id_carrera']=6
+        if data['carrera']=='ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES':
+            data['id_carrera']=7
+        ## SEXO
+        if data['sexo']=='Masculino':
+            data['id_sexo']=1
+        if data['sexo']=='Femenino':
+            data['id_sexo']=2
+
+        print(data)
+        error = False
+        if data['semestre'] == '0':
+            error=True
+        if error== False:
+            return "Registro Exitoso"
+        else:
+            error = "Por favor, rellene todos los campos"
+            return render_template("confirmacion.html", data=data,error=error)
+    
+    return render_template("confirmacion.html",data=data ,error=error)
 
 @app.route("/confirmacion_datos", methods=['POST'])
 def uploader():
@@ -244,7 +280,7 @@ def uploader():
         print(ruta)
         registro = lectura(ruta)
         data=registro
-        print(data)
+        #print(data)
         return render_template('confirmacion.html',data=data)  
 
 @app.route('/admin', methods=['GET', 'POST'])
