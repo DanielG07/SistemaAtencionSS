@@ -367,6 +367,15 @@ table {
 .label_confirmacion{
     margin: 1rem 0;
 }
+
+.error-message{
+    color: red;
+    margin: 1rem 0;
+    font-family: 'fuenteParrafo';
+    margin-top: 1rem;
+  }
+
+
 @media (min-width: 768px){
     .dos-columnas{
         display: flex;

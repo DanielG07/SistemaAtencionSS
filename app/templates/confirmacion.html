@@ -10,9 +10,6 @@
 
 <div class="main-page">
     <div class="wrap-datos">
-        {% if error %}
-        <p style="color: red">{{ error }}</p>
-        {% endif %}
         <form action="/registro" method="post">
             <div class="datos-personales" id="idPersonales">
                 <h1>REGISTRO AL SISTEMA</h1>
@@ -24,6 +21,12 @@
                 <div>
                     <h4> DATOS DEL PRESTADOR</h4>
                 </div>
+
+                {% if error %}
+                <div class="error-message">
+                    <h4 >{{ error }}</h4>                    
+                </div>
+                {% endif %}
                 <div class="dp-campo">
                         <label class="label_confirmacion">Nombre(s)</label>
                             <input class="Idp-campo" 
