@@ -340,7 +340,11 @@ def pdf_to_dict(archivoPDF):
 		# Lista de posiciones donde se encuentra el Responsable
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 253.05, 551.93")',	
-		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 273.05, 551.93")',	
+		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 273.05, 551.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 278.63, 551.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 285.02, 551.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 304.16, 551.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 541.93, 351.40, 551.93")',
 		
 		]
 
@@ -348,9 +352,15 @@ def pdf_to_dict(archivoPDF):
 
 		# Lista de posiciones donde se encuentra el Cargo del Responsable
 		bboxes = [
-		'LTTextLineHorizontal:in_bbox("38.0, 514.551, 270.61, 521.551")',	
-		'LTTextLineHorizontal:in_bbox("38.0, 513.93, 275.85, 523.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 514.551, 270.61,  521.551")',	
+		'LTTextLineHorizontal:in_bbox("38.0, 513.93,  275.85,  523.93")',
 		'LTTextLineHorizontal:in_bbox("38.0, 514.551, 293.164, 521.551")',
+		'LTTextLineHorizontal:in_bbox("38.0, 513.93,  285.83,  523.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 513.93,  301.39,  523.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 513.93,  350.39,  523.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 514.551, 384.584, 521.551")',
+		'LTTextLineHorizontal:in_bbox("38.0, 514.551, 421.516, 521.551")',
+		'LTTextLineHorizontal:in_bbox("38.0, 514.551, 432.793, 521.551")',
 		
 		]
 
@@ -359,7 +369,12 @@ def pdf_to_dict(archivoPDF):
 		# Lista de posiciones donde se encuentra el Teléfono del Responsable
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 419.29, 523.93")',
-		
+		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 419.29, 523.93")',
+		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 422.07, 523.93")',
+		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 472.02, 523.93")',
+		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 472.02, 523.93")',
+		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 527.71, 523.93")',
+		'LTTextLineHorizontal:in_bbox("322.0, 513.93, 552.74, 523.93")',
 		]
 
 		putField(pdf, "tel_responsable", bboxes, notFound='No disponible')
@@ -392,6 +407,11 @@ def pdf_to_dict(archivoPDF):
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 337.29, 439.93")',
 		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 375.64, 439.93")',
+		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 393.43, 439.93")',
+		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 420.01, 439.93")',
+		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 430.02, 439.93")',
+		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 436.78, 439.93")',
+		'LTTextLineHorizontal:in_bbox("246.0, 429.93, 482.9,  439.93")',
 		
 		]
 
@@ -400,14 +420,32 @@ def pdf_to_dict(archivoPDF):
 		# Lista de posiciones donde se encuentra ubicacion calleynum
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 249.16, 492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 251.94, 492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 262.5,  492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 275.0,  492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 312.24, 492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 342.51, 492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 365.87, 492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 368.68, 492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 482.93, 384.7,  492.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 483.551,346.462, 490.551")',
+		'LTTextLineHorizontal:in_bbox("38.0, 483.551,461.584, 490.551")',
 		
 		]
 
 		putField(pdf, "ubicacion_calleynum", bboxes, notFound='No disponible')
 
-		# Lista de posiciones donde se encuentra ubicacion calleynum
+		# Lista de posiciones donde se encuentra ubicacion colonia
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 185.27, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 196.38, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 205.42, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 230.01, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 275.22, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 295.28, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 329.7,  480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 362.51, 480.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 470.93, 431.41, 480.93")',
 		
 		]
 
@@ -416,7 +454,13 @@ def pdf_to_dict(archivoPDF):
 		# Lista de posiciones donde se encuentra ubicacion alcaldia
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 229.7, 467.93")',
-		
+		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 272.5, 467.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 282.2, 467.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 329.7, 467.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 352.2, 467.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 355.83,467.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 457.93, 360.0, 467.93")',
+	
 		]
 
 		putField(pdf, "ubicacion_alcaldia", bboxes, notFound='No disponible')
@@ -424,6 +468,7 @@ def pdf_to_dict(archivoPDF):
 		# Lista de posiciones donde se encuentra ubicacion codpos
 		bboxes = [
 		'LTTextLineHorizontal:in_bbox("38.0, 442.93, 88.03, 452.93")',
+		'LTTextLineHorizontal:in_bbox("38.0, 442.93, 93.59, 452.93")',
 		
 		]
 
