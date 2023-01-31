@@ -234,6 +234,7 @@ def registro():
             'prestatario': request.form['Idp-prestatario'],
             'codigo': request.form['Idp-cod_prestatario'],
             'programa': request.form['Idp-programa'],
+            'clave_programa':request.form['Idp-clave_programa'],
             'fecha_inicio': request.form['Idp-FInicio'],
             'fecha_termino': request.form['Idp-FTermino'],
             'correo': request.form['Idp-email'],
