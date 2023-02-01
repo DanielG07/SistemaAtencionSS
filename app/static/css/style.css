@@ -378,10 +378,14 @@ table {
     font-family: 'fuenteParrafo';
     margin-top: 1rem;
   }
-  .red{ 
+
+  .red{
+    background-color: var(--rojo);
+  }
+  .banner_error{ 
     width: 90%;
     margin-left: 5%;
-    background-color: var(--rojo);
+    
     border-radius: 7px; 
 }
 
@@ -396,7 +400,7 @@ table {
         padding: 2rem;
         font-size: 2rem;
       }
-      .red{ 
+      .banner_error{ 
         width: 100%;
         margin: inherit;
     }
