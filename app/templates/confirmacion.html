@@ -23,7 +23,10 @@
                 </div>
 
                 {% if error %}
-                    <h4 class="error-message" >{{ error }}</h4>                    
+                <div class=" red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ error }}</p> 
+                </div>
+                                      
                 {% endif %}
                 <div class="dp-campo">
                         <label class="label_confirmacion">Nombre(s)</label>
@@ -61,7 +64,7 @@
                         </div>
 
             
-                        <div class="dp-medio red dp-campo no-margin">
+                        <div class="dp-medio  dp-campo no-margin">
                             <label class="label_confirmacion">CURP</label>
                             <div class="Idp-campo">
                                 <input name="Idp-CURP" 

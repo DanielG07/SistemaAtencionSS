@@ -7,6 +7,7 @@
     --blanco: #FFFFFFFF;
     --negro: #000000;
     --boton:  #722f37;
+    --rojo: #8B0000;
 }
 
 /* PRUEBAS CAMBI0 DE FUENTE J.CRUZ */
@@ -369,12 +370,20 @@ table {
 }
 
 .error-message{
-    color: red;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
     margin: 1rem 0;
+    padding: 1.5rem 0;
     font-family: 'fuenteParrafo';
     margin-top: 1rem;
   }
-
+  .red{ 
+    width: 90%;
+    margin-left: 5%;
+    background-color: var(--rojo);
+    border-radius: 7px; 
+}
 
 @media (min-width: 768px){
     .dos-columnas{
@@ -383,6 +392,16 @@ table {
         justify-content: space-between;   
         gap: 2rem;
     }
+    .error-message{
+        padding: 2rem;
+        font-size: 2rem;
+      }
+      .red{ 
+        width: 100%;
+        margin: inherit;
+    }
+    
+    
     /* .tres-columnas{
         display: flex;
          gap: 10rem; 
@@ -417,10 +436,9 @@ table {
     }
     
 }
-/* .red{
-    background-color: red;
-}
-.blue{
+
+
+/* .blue{
     background-color: blue;
 }
 .green{
