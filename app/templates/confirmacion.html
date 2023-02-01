@@ -106,9 +106,9 @@
                 <div class="dp-campo dp-medio">
                     
                     <div class="dp-Semestre">
-                        <label class="label_confirmacion">Semestre</label>
+                        <label class="label_confirmacion">Semestre {% if errorsemestre %} {{errorsemestre}} {% endif %}</label>
                         <div class="Idp-campo">
-                            <select class="select-css" name ="Idp-semestre" type="text" placeholder="Semestre" required >
+                            <select class="select-css"  {% if errorsemestre %} style="border-color: #8B0000;" {% endif %} name ="Idp-semestre" type="text" placeholder="Semestre" required >
                                 <option value="0">Seleccione</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>

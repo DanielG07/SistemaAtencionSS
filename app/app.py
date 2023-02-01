@@ -263,13 +263,16 @@ def registro():
 
         print(data)
         error = False
+        errorsemestre = False
         if data['semestre'] == '0':
             error=True
+            errorsemestre = True
         if error== False:
             return "Registro Exitoso"
         else:
+            errorsemestre = "Seleccione un semestre"
             error = "Por favor, rellene todos los campos"
-            return render_template("confirmacion.html", data=data,error=error)
+            return render_template("confirmacion.html", data=data,error=error, errorsemestre= errorsemestre)
     
     return render_template("confirmacion.html",data=data ,error=error)
 
