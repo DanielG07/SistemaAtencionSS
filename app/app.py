@@ -243,10 +243,11 @@ def registro():
             'ubicacion_calleynum':request.form['Idp-Calleynum'],
             'ubicacion_colonia':request.form['Idp-Colonia'],
             'ubicacion_alcaldia':request.form['Idp-Alcaldia_prestatario'],
-            'ubicacion_codpos':request.form['Idp-ubicacion_codpos'],
+            'ubicacion_codpos':request.form['Idp-cpPrestatario'],
+            'contrasena':request.form['Idp-contraseña'],
+            'confirmarcontrasena':request.form['Idp-Confirmar-contraseña'],
             
         }
-
         ## CARRERA
         if data['carrera']=='ESCA.UST CONTADOR PÚBLICO':
             data['id_carrera']=1
@@ -269,19 +270,17 @@ def registro():
             data['id_sexo']=2
 
         print(data)
-        error = False
-        errorsemestre = False
-        if data['semestre'] == '0':
-            error=True
-            errorsemestre = True
-        if error== False:
+        errorcontrasena = False
+        if data['contrasena']!=data['confirmarcontrasena']:
+            errorcontrasena=True
+
+        if  errorcontrasena==False:
             return "Registro Exitoso"
         else:
-            errorsemestre = "Seleccione un semestre"
-            error = "Por favor, rellene todos los campos"
-            return render_template("confirmacion.html", data=data,error=error, errorsemestre= errorsemestre)
+            errorcontrasena = "Las contraseñas deben ser iguales"
+            return render_template("confirmacion.html", data=data, errorcontrasena=errorcontrasena)
     
-    return render_template("confirmacion.html",data=data ,error=error)
+    return render_template("confirmacion.html",data=data ,errorcontrasena=errorcontrasena)
 
 @app.route("/confirmacion_datos", methods=['POST'])
 def uploader():

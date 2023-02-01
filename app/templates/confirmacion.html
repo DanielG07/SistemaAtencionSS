@@ -316,6 +316,32 @@
                     </div>   
                 </div>
 
+                <div>
+                    <h4> GENERACIÓN DE CONTRASEÑA </h4>
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Contraseña</label>
+                    <div class="Idp-campo">
+                        <input id="password" name="Idp-contraseña" type="password"  placeholder="Contraseña" required/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Confirmar Contraseña</label>
+                    <div class="Idp-campo">
+                        <input id="confirmPassword" name="Idp-Confirmar-contraseña" type="password"  placeholder="Confirmar Contraseña" required/>
+                    </div>   
+                </div>
+
+                {% if errorcontrasena %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorcontrasena }}</p> 
+                </div>
+                                      
+                {% endif %}
+
+                <div id="errorMessage"></div>
 
 
             </div>
@@ -345,6 +371,20 @@
     });
   </script>
 
+
+<script>
+    function validatePassword() {
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirmPassword").value;
+      var errorMessage = document.getElementById("errorMessage");
+  
+      if (password != confirmPassword) {
+        errorMessage.innerHTML = "Las contraseñas no coinciden";
+      } else {
+        errorMessage.innerHTML = "";
+      }
+    }
+  </script>
 <script src="static/js/funciones.js"></script>
 
 {% endblock %}
