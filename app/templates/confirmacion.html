@@ -79,8 +79,8 @@
                 <div class="dp-campo dp-Carrera ">
                     <label class="label_confirmacion ">Carrera</label>
                     <div class="Idp-campo">
-                        <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" required >
-                            <option value="0">Seleccione</option>
+                        <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" disabled required >
+                            <option value="">Seleccione</option>
                             <option value="ESCA.UST CONTADOR PÚBLICO" {% if data.id_carrera==1 %} selected="selected" {% endif %}>ESCA.UST CONTADOR PÚBLICO</option>
                             <option value="ESCA.UST LICENCIADO EN RELACIONES COMERCIALES" {% if data.id_carrera==2 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN RELACIONES COMERCIALES</option>
                             <option value="ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES" {% if data.id_carrera==3 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES</option>
@@ -106,10 +106,10 @@
                 <div class="dp-campo dp-medio">
                     
                     <div class="dp-Semestre">
-                        <label class="label_confirmacion">Semestre {% if errorsemestre %} {{errorsemestre}} {% endif %}</label>
+                        <label id="errorMessage" class="label_confirmacion" >Semestre</label>
                         <div class="Idp-campo">
-                            <select class="select-css"  {% if errorsemestre %} style="border-color: #8B0000;" {% endif %} name ="Idp-semestre" type="text" placeholder="Semestre" required >
-                                <option value="0">Seleccione</option>
+                            <select id= "id_semestre"class="select-css"  {% if errorsemestre %} style="border-color: #8B0000; border: 1px double #8B0000;" {% endif %} name ="Idp-semestre" type="text" placeholder="Semestre" required >
+                                <option value="">Seleccione</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -131,8 +131,8 @@
                     <div class="dp-Genero">
                         <label class="label_confirmacion">Sexo</label>
                         <div class="Idp-campo">
-                            <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero" required >
-                                <option value="0">Seleccione</option>
+                            <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero"  disabled required >
+                                <option value="">Seleccione</option>
                                 <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
                                 <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>>Femenino</option>
                             </select>
@@ -267,6 +267,23 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById("id_semestre").addEventListener("change", function() 
+    {
+        var selectedOption = this.value;
+        var errorMessage = document.getElementById("errorMessage");
+  
+        if (selectedOption === "") 
+        {
+            errorMessage.style.color = "red";
+        }     
+        else 
+        {
+            errorMessage.style.color = "#000000";
+        }
+    });
+  </script>
 
 <script src="static/js/funciones.js"></script>
 
