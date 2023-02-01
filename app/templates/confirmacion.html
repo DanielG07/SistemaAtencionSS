@@ -79,7 +79,7 @@
                 <div class="dp-campo dp-Carrera ">
                     <label class="label_confirmacion ">Carrera</label>
                     <div class="Idp-campo">
-                        <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera" disabled required >
+                        <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera"  required >
                             <option value="">Seleccione</option>
                             <option value="ESCA.UST CONTADOR PÚBLICO" {% if data.id_carrera==1 %} selected="selected" {% endif %}>ESCA.UST CONTADOR PÚBLICO</option>
                             <option value="ESCA.UST LICENCIADO EN RELACIONES COMERCIALES" {% if data.id_carrera==2 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN RELACIONES COMERCIALES</option>
@@ -131,7 +131,7 @@
                     <div class="dp-Genero">
                         <label class="label_confirmacion">Sexo</label>
                         <div class="Idp-campo">
-                            <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero"  disabled required >
+                            <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero"   required >
                                 <option value="">Seleccione</option>
                                 <option value="Masculino" {% if data.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
                                 <option value="Femenino" {% if data.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>>Femenino</option>
@@ -256,6 +256,66 @@
                         </div>   
                     </div>
                 </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Responsable</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-responsable" type="text" readonly="readonly" placeholder="Responsable" value='{{ data.responsable }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Cargo</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-cargo" type="text" readonly="readonly" placeholder="Cargo" value='{{ data.cargo }}'/>
+                    </div>   
+                </div>
+
+                <div class="dos-columnas">
+                    <div class="dp-campo">
+                        <label class="label_confirmacion">Teléfono Responsable</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-responsable" type="text" placeholder="Teléfono Responsable" value="{{data.tel_responsable}}"/>
+                        </div>     
+                    </div>
+
+              
+                    <div class="dp-campo dp-FTermino">
+                        <label class="label_confirmacion">Correo Prestatario</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-correo_prestatario" type="text" placeholder="Correo Responsable" value="{{data.correo_prestatario}}"/>
+                        </div>   
+                    </div>
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Calle y Número</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-Calleynum" type="text" readonly="readonly" placeholder="Calle y Número" value='{{ data.ubicacion_calleynum }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Colonia</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-Colonia" type="text" readonly="readonly" placeholder="Colonia" value='{{ data.ubicacion_colonia }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Alcaldía y Estado</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-Alcaldia_prestatario" type="text" readonly="readonly" placeholder="Alaldía" value='{{ data.ubicacion_alcaldia }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Código Postal</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-cpPrestatario" type="text" readonly="readonly" placeholder="Código Postal" value='{{ data.ubicacion_codpos }}'/>
+                    </div>   
+                </div>
+
 
 
             </div>

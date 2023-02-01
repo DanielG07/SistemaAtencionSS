@@ -226,6 +226,7 @@ def registro():
             'semestre': request.form['Idp-semestre'],
             'sexo': request.form['Idp-genero'],
             'id_sexo': '',
+            'correo': request.form['Idp-email'],
             'tel_particular':request.form['Idp-telefono'],
             'escolaridad':request.form['Idp-escolaridad'],
             'direccion':request.form['Idp-direccion'],
@@ -237,7 +238,13 @@ def registro():
             'clave_programa':request.form['Idp-clave_programa'],
             'fecha_inicio': request.form['Idp-FInicio'],
             'fecha_termino': request.form['Idp-FTermino'],
-            'correo': request.form['Idp-email'],
+            'responsable':request.form['Idp-responsable'],
+            'cargo':request.form['Idp-cargo'],
+            'ubicacion_calleynum':request.form['Idp-Calleynum'],
+            'ubicacion_colonia':request.form['Idp-Colonia'],
+            'ubicacion_alcaldia':request.form['Idp-Alcaldia_prestatario'],
+            'ubicacion_codpos':request.form['Idp-ubicacion_codpos'],
+            
         }
 
         ## CARRERA
