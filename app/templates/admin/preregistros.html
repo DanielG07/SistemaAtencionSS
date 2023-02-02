@@ -9,7 +9,7 @@
 {% block body %}
 
 <div class="main-page">
-    <div class="contenido">
+    <div class="contenido center-content">
         <div class="row-container">
             <div>
                 <h3>Preregistro</h3>
@@ -37,7 +37,7 @@
             {% for item in registros %}
                 <tr class="item-table">
                     <td class="centrar-texto">
-                        <a href={{"/" + item.boleta}}>
+                        <a href="/admin/expediente/{{item.boleta}}">
                             {{item.boleta}}
                         </a>
                     </td>
@@ -68,7 +68,7 @@
     }
 
     async function exportExcel() {
-        let response = await fetch( '/generar_preregistros' )
+        let response = await fetch( '/admin/generar_preregistros' )
         let blobResponse = await response.blob()
         const fileName = 'preregistros.xlsx'
         downloadExcelSilently( blobResponse, fileName )
