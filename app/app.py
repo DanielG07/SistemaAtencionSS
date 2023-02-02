@@ -1,201 +1,12 @@
 import os
-from io import BytesIO
-import xlsxwriter
 from flask import Flask, redirect, render_template, request, url_for, send_file
+from utils.funcion_excel import createApiResponse
+from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 
 app = Flask(__name__)
 app.config['UPLOADER_FOLDER'] = "./app/pdfs"
-
-preregistro_mock = [
-    {
-        "boleta": "2019640295",
-        "nombre": "Daniel González Jiménez",
-        "carrera": "I. T.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "ESCA UST",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ESPERA",
-        "numero": "-",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640296",
-        "nombre": "Jorge Angel Cruz Meneses",
-        "carrera": "I. T.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "UNIDAD PROFESIONAL INTERDISCIPLINARIA DE INGENIERIA Y TECNOLOGIAS AVANZADAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ESPERA",
-        "numero": "-",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640297",
-        "nombre": "Joshep Irvin Camacho Dominguez",
-        "carrera": "I. T.",
-        "semestre": "9",
-        "genero": "Femenino",
-        "prestatario": "ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACION, UNIDAD SANTO TOMAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "RECHAZADO",
-        "numero": "-",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640298",
-        "nombre": "Guillermo Ian Rodriguez Mancera",
-        "carrera": "I. T.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACION, UNIDAD SANTO TOMAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ESPERA",
-        "numero": "-",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021",
-    },
-]
-
-registro_mock = [
-    {
-        "boleta": "2019640295",
-        "nombre": "Daniel González Jiménez",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "ESCA UST",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ACEPTADO",
-        "numero": "21140/002",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640296",
-        "nombre": "Jorge Angel Cruz Meneses",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "UNIDAD PROFESIONAL INTERDISCIPLINARIA DE INGENIERIA Y TECNOLOGIAS AVANZADAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ACEPTADO",
-        "numero": "21140/003",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640297",
-        "nombre": "Joshep Irvin Camacho Dominguez",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Femenino",
-        "prestatario": "ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACION, UNIDAD SANTO TOMAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ACEPTADO",
-        "numero": "21140/004",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640298",
-        "nombre": "Guillermo Ian Rodriguez Mancera",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACION, UNIDAD SANTO TOMAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "ACEPTADO",
-        "numero": "21140/005",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-]
-
-completados_mock = [
-    {
-        "boleta": "2019640295",
-        "nombre": "Daniel González Jiménez",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "ESCA UST",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "COMPLETADO",
-        "numero": "21140/002",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640296",
-        "nombre": "Jorge Angel Cruz Meneses",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "UNIDAD PROFESIONAL INTERDISCIPLINARIA DE INGENIERIA Y TECNOLOGIAS AVANZADAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "COMPLETADO",
-        "numero": "21140/003",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640297",
-        "nombre": "Joshep Irvin Camacho Dominguez",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Femenino",
-        "prestatario": "ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACION, UNIDAD SANTO TOMAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "COMPLETADO",
-        "numero": "21140/004",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-    {
-        "boleta": "2019640298",
-        "nombre": "Guillermo Ian Rodriguez Mancera",
-        "carrera": "I. B.",
-        "semestre": "9",
-        "genero": "Masculino",
-        "prestatario": "ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACION, UNIDAD SANTO TOMAS",
-        "f_inicio": "01/10/2021",
-        "f_termino": "01/05/2022",
-        "correo_electronico": "dgonzalezj1501@alumno.ipn.mx",
-        "estatus": "COMPLETADO",
-        "numero": "21140/005",
-        "registro_lista": "15",
-        "f_envio": "01/01/2021"
-    },
-]
 
 @app.route('/')
 def index():
@@ -303,14 +114,14 @@ def indexAdmin():
     }
     return render_template('admin/main.html',data=data)
 
-@app.route('/expedientes')
+@app.route('/admin/expedientes')
 def reportesAdmin():
     data={
         'titulo':'Expedientes - Administrador'
     }
     return render_template('admin/expedientes.html',data=data, registros = registro_mock)
 
-@app.route('/completados')
+@app.route('/admin/completados')
 def completadosAdmin():
     data={
         'titulo':'Completados - Administrador'
@@ -318,69 +129,65 @@ def completadosAdmin():
     return render_template('admin/completados.html',data=data, registros = completados_mock)
 
 
-@app.route('/preregistros')
+@app.route('/admin/preregistros')
 def preregistrosAdmin():
     data={
         'titulo':'Preregistros - Administrador'
     }
     return render_template('admin/preregistros.html',data=data, registros = preregistro_mock)
 
-@app.route('/estadisticas')
+@app.route('/admin/estadisticas')
 def estadisticasAdmin():
     data={
         'titulo':'Estadisitcas Reportes'
     }
     return render_template('admin/estadisticas.html',data=data)
 
-@app.route("/generar_preregistros")
+@app.route("/admin/generar_preregistros")
 def generarExcelPreregistro():
     # Traer datos de acuerdo a la pagina
     apiResponse = createApiResponse(preregistro_mock)
     return apiResponse
 
-@app.route("/generar_emision")
+@app.route("/admin/generar_emision")
 def generarExcelEmision():
+    # Traer datos de acuerdo a la pagina
     apiResponse = createApiResponse(registro_mock)
     return apiResponse
 
-@app.route("/generar_completados")
+@app.route("/admin/generar_completados")
 def generarExcelCompletados():
+    # Traer datos de acuerdo a la pagina
     apiResponse = createApiResponse(completados_mock)
     return apiResponse
 
-def createApiResponse(data):
-    bufferFile = writeBufferExcelFile(data)
-    mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    return send_file(bufferFile, mimetype=mimetype)
+@app.route("/admin/expediente/<boleta>")
+def expedienteAlumno(boleta=0):
+    data={
+        'titulo':'Expediente - ' + boleta
+    }
+    # Traer datos del usuario con la boleta asignada
+    expediente = {}
+    for item in registro_mock:
+        if item.get("boleta") == boleta:
+            expediente = item
+            break
 
-def writeBufferExcelFile(data):
-    buffer = BytesIO()
-    workbook = xlsxwriter.Workbook(buffer)
-    worksheet = workbook.add_worksheet()
-    worksheet.write('A1', '#')
-    worksheet.write('B1', 'REG NÚM')
-    worksheet.write('C1', 'N DE BOLETA')
-    worksheet.write('D1', 'APELLIDO PATERNO')
-    worksheet.write('E1', 'APELLIDO MATERNO')
-    worksheet.write('F1', 'NOMBRE (S)')
-    worksheet.write('G1', 'GENERO')
-    worksheet.write('H1', 'CLAVE CARRERA')
-    worksheet.write('I1', 'MODALIDAD')
-    index = 2
-    for item in data:
-        worksheet.write('A' + str(index), str(index - 2))
-        worksheet.write('B' + str(index), item['numero'])
-        worksheet.write('C' + str(index), item['boleta'])
-        worksheet.write('D' + str(index), item['nombre'])
-        worksheet.write('E' + str(index), item['nombre'])
-        worksheet.write('F' + str(index), item['nombre'])
-        worksheet.write('G' + str(index), item['genero'])
-        worksheet.write('H' + str(index), item['carrera'])
-        worksheet.write('I' + str(index), item['correo_electronico'])
-        index = index + 1
-    workbook.close()
-    buffer.seek(0)
-    return buffer
+    return render_template('admin/perfilAlumno.html',data=data, expediente=expediente, registros = preregistro_mock)
+
+@app.route("/reporte/<periodo>")
+def generarReporte(periodo):
+    if periodo == "semanal":
+        print("Semanal")
+    elif periodo == "mensual":
+        print("mensual")
+    elif periodo == "trimestral":
+        print("trimestral")
+    elif periodo == "semestral":
+        print("semestral")
+    return send_file() # Enviar archivo de reporte correspondiente
+
+
 
 #PRUEBAS PARA INICIO DE SESION SIN BASE DE DATOS#
 @app.route('/inicio', methods=['POST'])
