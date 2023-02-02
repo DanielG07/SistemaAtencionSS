@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     text-align: start;
-    margin: 10px auto 10px;
+    padding: 10px;
     width: 80%;
 }
 
@@ -25,6 +25,10 @@
 .row-container {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
+}
+
+.column-container {
     flex-direction: row;
 }
 
@@ -42,6 +46,16 @@
     background: rgba(104, 36, 68, 0.87);
 }
 
+.barra-lateral {
+    width: 25%;
+    padding: 10px;
+}
+
+.barra-central {
+    width: 75%;
+    margin: auto;
+}
+
 .center-content {
-    
+    margin: auto
 }
