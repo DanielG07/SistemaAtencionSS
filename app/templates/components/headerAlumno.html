@@ -1,0 +1,40 @@
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/estilosAdmin.css')}}">
+{% endblock %}
+
+<header class="header">
+    <div class="logo">
+      <img src="https://www.ipn.mx/assets/files/main/img/template/pleca-ipn.png" alt="img">
+    </div>
+
+    <div class="titulo">
+      <h1>INSTITUTO POLITÉCNICO NACIONAL</h1>
+      <h2> ESCUELA SUPERIOR DE COMERCIO Y ADMINISTRACIÓN</h2>
+      <h2> UNIDAD SANTO TOMÁS</h2>
+      
+    </div>
+
+    <div class="logo-esca">
+        <img src="https://www.escasto.ipn.mx/assets/files/main/img/logotipos-UR/ns/ESCA-STO.png" alt="img">
+    </div>
+
+</header>
+
+
+<div class="wrap-datos">
+    <div class="subs">
+        <h3>
+            SUBDIRECCIÓN DE APOYOS EDUCATIVOS E INTEGRACIÓN SOCIAL
+        </h3>
+        <h3>
+            DEPARTAMENTO DE EXTENSIÓN Y APOYOS EDUCATIVOS
+        </h3>
+    </div>
+</div>
+
+<nav class="barra-navegacion">
+    <a href="/estudiante/2019640295" class="barra-navegacion__enlace">Inicio</a>
+    <a href="/estudiante/expediente/2019640295" class="barra-navegacion__enlace">Expediente</a>
+    <a href="/estudiante/perfil/2019640295" class="barra-navegacion__enlace">Perfil</a>
+    <a href="/" class="barra-navegacion__enlace">Cerrar Sesión</a>
+</nav>

@@ -1,0 +1,390 @@
+{% extends './layout.html' %}
+
+{% block title %}{{ data.titulo }}{% endblock %}
+
+{% block header %}
+{% include 'components/headerAlumno.html' %}
+{% endblock %}
+
+{% block body %}
+
+<div class="main-page">
+    <div class="wrap-datos">
+        <form action="/registro" method="post">
+            <div class="datos-personales" id="idPersonales">
+                <h1>Perfil</h1>
+                <div>
+                    <h4>Revise sus datos recuperados por el archivo de carta compromiso emitido por el SISS</h4>
+                </div>
+
+
+                <div>
+                    <h4> DATOS DEL PRESTADOR</h4>
+                </div>
+
+                {% if error %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ error }}</p> 
+                </div>
+                                      
+                {% endif %}
+                <div class="dp-campo">
+                        <label class="label_confirmacion">Nombre(s)</label>
+                            <input class="Idp-campo" 
+                            name="Idp-nombre" 
+                            type="text" 
+                            readonly="readonly" 
+                            placeholder="Nombre(s)" 
+                            value='{{ expediente.nombre }}'/>
+                </div>
+
+                <div class=" dp-campo dp-apellidoM blue">
+                        <label class="label_confirmacion">Apellidos</label>  
+                        <div class="dos-columnas ">
+                            <input class="Idp-campo" 
+                            name="Idp-apellidoP" 
+                            type="text" readonly="readonly" 
+                            placeholder="Apellido Paterno" 
+                            value='{{expediente.paterno}}' />
+                            <input class="Idp-campo" 
+                            name="Idp-apellidoM" 
+                            type="text" 
+                            readonly="readonly" 
+                            placeholder="Apellido Materno" 
+                            value='{{expediente.materno}}'/>      
+                        </div>                   
+                </div>
+
+                <div class="dos-columnas">      
+                        <div class="dp-medio dp-campo green">
+                            <label class="label_confirmacion">Boleta</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-Boleta" type="text" readonly="readonly" placeholder="Boleta" value='{{expediente.boleta}}'/>
+                            </div>        
+                        </div>
+
+            
+                        <div class="dp-medio  dp-campo no-margin">
+                            <label class="label_confirmacion">CURP</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-CURP" 
+                                type="text" 
+                                readonly="readonly" 
+                                placeholder="CURP" 
+                                value='{{expediente.curp}}'/>
+                            </div>
+                        </div>
+                </div>
+                
+                <div class="dp-campo dp-Carrera ">
+                    <label class="label_confirmacion ">Carrera</label>
+                    <div class="Idp-campo">
+                        <select class="select-css" name ="Idp-carrera" type="text" placeholder="Carrera"  required >
+                            <option value="">Seleccione</option>
+                            <option value="ESCA.UST CONTADOR PÚBLICO" {% if expediente.id_carrera==1 %} selected="selected" {% endif %}>ESCA.UST CONTADOR PÚBLICO</option>
+                            <option value="ESCA.UST LICENCIADO EN RELACIONES COMERCIALES" {% if expediente.id_carrera==2 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN RELACIONES COMERCIALES</option>
+                            <option value="ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES" {% if expediente.id_carrera==3 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN NEGOCIOS INTERNACIONALES</option>
+                            <option value="ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL" {% if expediente.id_carrera==4 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN ADMINISTRACION Y DESARROLLO EMPRESARIAL</option>
+                            <option value="ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL." {% if expediente.id_carrera==5 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL.</option>
+                            <option value="ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)" {% if expediente.id_carrera==6 %} selected="selected" {% endif %}>ESCA.UST LICENCIADO EN COMERCIO INTERNACIONAL (SADE)</option>
+                            <option value="ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES" {% if expediente.id_carrera==7 %} selected="selected" {% endif %}>ESCA.U.TEP. LICENCIADO EN NEGOCIOS INTERNACIONALES</option>  
+                        </select>
+                        <div class="messages"></div>
+                    </div>
+                </div>
+
+                <div class="dp-campo dp-clave_carrera">
+                    <label class="label_confirmacion">Clave de la carrera</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-clave_carrera" type="text" readonly="readonly" placeholder="Clave_carrera" value='{{ expediente.clave_carrera }}'/>
+                        <div class="messages"></div>
+                    </div>   
+                </div>
+
+
+               <div class="dos-columnas">
+                <div class="dp-campo dp-medio">
+                    
+                    <div class="dp-Semestre">
+                        <label id="errorMessage" class="label_confirmacion" >Semestre</label>
+                        <div class="Idp-campo">
+                            <select id= "id_semestre"class="select-css"  {% if errorsemestre %} style="border-color: #8B0000; border: 1px double #8B0000;" {% endif %} name ="Idp-semestre" type="text" placeholder="Semestre" required >
+                                <option value="">Seleccione</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option> 
+                            </select>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dp-campo dp-medio">
+                    
+                    <div class="dp-Genero">
+                        <label class="label_confirmacion">Sexo</label>
+                        <div class="Idp-campo">
+                            <select class="select-css" name ="Idp-genero"type="text" placeholder="Genero"   required >
+                                <option value="">Seleccione</option>
+                                <option value="Masculino" {% if expediente.id_sexo==1 %} selected="selected" {% endif %}>Masculino</option>
+                                <option value="Femenino" {% if expediente.id_sexo==2 %} selected="selected" {% endif %}>Femenino</option>>Femenino</option>
+                            </select>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+               </div>
+
+               <div class="dos-columnas">
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-telefono">
+                            <label class="label_confirmacion">Teléfono</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-telefono" type="text" readonly="readonly" placeholder="Telefono" value='{{ expediente.tel_particular}}'/>
+                                <div class="messages"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-escolaridad">
+                            <label class="label_confirmacion">Escolaridad</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-escolaridad" type="text" readonly="readonly" placeholder="Escolaridad" value='{{ expediente.escolaridad}}'/>
+                                <div class="messages"></div>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+               </div>
+
+               <div class="dp-campo">  
+                    <div class="dp-email">
+                        <label class="label_confirmacion">Correo electrónico</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{expediente.correo}}"/>
+                        </div>
+                    
+                    </div>
+                </div>
+
+                <div class="dp-campo">  
+                    <div class="dp-direccion">
+                        <label class="label_confirmacion">Dirección</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-direccion" type="text" readonly="readonly" placeholder="Dirección" value="{{expediente.direccion}}"/>
+                        </div>
+                    
+                    </div>
+                </div>
+
+                <div class="dos-columnas">
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-CodPostal">
+                            <label class="label_confirmacion">Código Postal</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-codPostal" type="text" readonly="readonly" placeholder="CodPostal" value='{{ expediente.codigo_postal}}'/>
+                                <div class="messages"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo dp-medio">
+                        <div class="dp-alcaldia">
+                            <label class="label_confirmacion">Alcaldía y Estado</label>
+                            <div class="Idp-campo">
+                                <input name="Idp-alcaldia" type="text" readonly="readonly" placeholder="Alcaldía" value='{{ expediente.alcaldia}}'/>
+                                <div class="messages"></div>
+                            <div class="messages"></div>
+                        </div>
+                    </div>
+                </div>
+               </div>
+                
+
+
+
+                <div>
+                    <h4> DATOS DEL PRESTATARIO</h4>
+                </div>
+
+
+                <div class="dp-campo ">
+                        <label class="label_confirmacion lbl-confirm">Prestatario</label>     
+                            <input class="Idp-campo" name="Idp-prestatario" type="text" readonly="readonly" placeholder="Prestatario" value="{{expediente.prestatario}}" />
+                </div>
+                
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Código del prestatario</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-cod_prestatario" type="text" readonly="readonly" placeholder="Cod_prestatario" value='{{ expediente.codigo }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion lbl-confirm">Programa</label>     
+                        <input class="Idp-campo" name="Idp-programa" type="text" readonly="readonly" placeholder="Programa" value="{{expediente.programa}}" />
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Clave del Programa</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-clave_programa" type="text" readonly="readonly" placeholder="Clave_programa" value='{{ expediente.clave_programa }}'/>
+                    </div>   
+                </div>
+
+                <div class="dos-columnas">
+                    <div class="dp-campo dp-FInicio">
+                        <label class="label_confirmacion">Fecha inicio Servicio Social</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-FInicio" type="date" placeholder="Fecha Inicio" value="{{expediente.fecha_inicio}}"/>
+                        </div>     
+                    </div>
+
+              
+                    <div class="dp-campo dp-FTermino">
+                        <label class="label_confirmacion">Fecha término Servicio Social</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-FTermino" type="date" placeholder="Fecha Término" value="{{expediente.fecha_termino}}"/>
+                        </div>   
+                    </div>
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Responsable</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-responsable" type="text" readonly="readonly" placeholder="Responsable" value='{{ expediente.responsable }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Cargo</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-cargo" type="text" readonly="readonly" placeholder="Cargo" value='{{ expediente.cargo }}'/>
+                    </div>   
+                </div>
+
+                <div class="dos-columnas">
+                    <div class="dp-campo">
+                        <label class="label_confirmacion">Teléfono Responsable</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-responsable" type="text" placeholder="Teléfono Responsable" value="{{expediente.tel_responsable}}"/>
+                        </div>     
+                    </div>
+
+              
+                    <div class="dp-campo dp-FTermino">
+                        <label class="label_confirmacion">Correo Prestatario</label>
+                        <div class="Idp-campo">
+                            <input name="Idp-correo_prestatario" type="text" placeholder="Correo Responsable" value="{{expediente.correo_prestatario}}"/>
+                        </div>   
+                    </div>
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Calle y Número</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-Calleynum" type="text" readonly="readonly" placeholder="Calle y Número" value='{{ expediente.ubicacion_calleynum }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Colonia</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-Colonia" type="text" readonly="readonly" placeholder="Colonia" value='{{ expediente.ubicacion_colonia }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Alcaldía y Estado</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-Alcaldia_prestatario" type="text" readonly="readonly" placeholder="Alaldía" value='{{ expediente.ubicacion_alcaldia }}'/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Código Postal</label>
+                    <div class="Idp-campo">
+                        <input name="Idp-cpPrestatario" type="text" readonly="readonly" placeholder="Código Postal" value='{{ expediente.ubicacion_codpos }}'/>
+                    </div>   
+                </div>
+
+                <div>
+                    <h4> GENERACIÓN DE CONTRASEÑA </h4>
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Contraseña</label>
+                    <div class="Idp-campo">
+                        <input id="password" name="Idp-contraseña" type="password"  placeholder="Contraseña" required/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Confirmar Contraseña</label>
+                    <div class="Idp-campo">
+                        <input id="confirmPassword" name="Idp-Confirmar-contraseña" type="password"  placeholder="Confirmar Contraseña" required/>
+                    </div>   
+                </div>
+
+                {% if errorcontrasena %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorcontrasena }}</p> 
+                </div>
+                                      
+                {% endif %}
+
+                <div id="errorMessage"></div>
+
+
+            </div>
+
+            <div  class="dp-campo">
+                <input class="Idp-campo label_confirmacion" type="submit" id="boton" value="Guardar"> 
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("id_semestre").addEventListener("change", function() 
+    {
+        var selectedOption = this.value;
+        var errorMessage = document.getElementById("errorMessage");
+  
+        if (selectedOption === "") 
+        {
+            errorMessage.style.color = "red";
+        }     
+        else 
+        {
+            errorMessage.style.color = "#000000";
+        }
+    });
+  </script>
+
+
+<script>
+    function validatePassword() {
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirmPassword").value;
+      var errorMessage = document.getElementById("errorMessage");
+  
+      if (password != confirmPassword) {
+        errorMessage.innerHTML = "Las contraseñas no coinciden";
+      } else {
+        errorMessage.innerHTML = "";
+      }
+    }
+  </script>
+<script src="static/js/funciones.js"></script>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends './layout.html' %}
+
+{% block title %}{{ data.titulo }}{% endblock %}
+
+{% block header %}
+{% include 'components/headerAlumno.html' %}
+{% endblock %}
+
+{% block body %}
+
+<div class="main-page">
+    <div class="contenido center-content">
+        <p class="">Apartados:</p>
+        <ul>
+            <li>Expediente: Permite visualizar los archivos aceptados por el administrador, asi como subir o modificar.</li>
+            <li>Perfil: Permite visualizar los archivos aceptados por el administrador, asi como subir o modificar.</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
