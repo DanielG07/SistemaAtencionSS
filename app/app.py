@@ -2,6 +2,7 @@ import os
 from flask import Flask, redirect, render_template, request, url_for, send_file
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
+from utils.funcion_correo import enviar_correo
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 
@@ -166,6 +167,7 @@ def expedienteAlumno(boleta=0):
     data={
         'titulo':'Expediente - ' + boleta
     }
+    # enviar_correo("jorgecruzmen2000@gmail.com", "Expediente aceptado.", "carta término")
     # Traer datos del usuario con la boleta asignada
     expediente = {}
     for item in registro_mock:
@@ -186,6 +188,39 @@ def generarReporte(periodo):
     elif periodo == "semestral":
         print("semestral")
     return send_file() # Enviar archivo de reporte correspondiente
+
+@app.route('/estudiante/<boleta>', methods=['GET', 'POST'])
+def indexEstudiante(boleta):
+    data={
+        'titulo' : 'Alumno'
+    }
+    return render_template('estudiante/main.html', data=data)
+
+@app.route('/estudiante/expediente/<boleta>', methods=['GET'])
+def expedienteEstudiante(boleta):
+    data={
+        'titulo' : 'Alumno - Expediente'
+    }
+    # Buscar información del estudiante y mandarlo para pintar
+    expediente = {}
+    for item in registro_mock:
+        if item.get("boleta") == boleta:
+            expediente = item
+            break
+    return render_template('estudiante/expediente.html', data=data, expediente=expediente)
+
+@app.route('/estudiante/perfil/<boleta>', methods=['GET'])
+def perfilEstudiante(boleta):
+    data={
+        'titulo' : 'Alumno - Perfil'
+    }
+    # Buscar información del estudiante y mandarlo para pintar
+    expediente = {}
+    for item in registro_mock:
+        if item.get("boleta") == boleta:
+            expediente = item
+            break
+    return render_template('estudiante/perfil.html', data=data, expediente=expediente)
 
 
 

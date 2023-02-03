@@ -1,0 +1,92 @@
+{% extends './layout.html' %}
+
+{% block title %}{{ data.titulo }}{% endblock %}
+
+{% block header %}
+{% include 'components/headerAlumno.html' %}
+{% endblock %}
+
+{% block body %}
+
+<div class="main-page column-container">
+
+    <div class="barra-lateral">
+        <h4>{{expediente.nombre}} <br> {{expediente.numero}}</h4>
+        <p><strong>Boleta:</strong> {{expediente.boleta}}</p>
+        <p><strong>Carrera:</strong> {{expediente.carrera}}</p>
+        <p><strong>Prestatario:</strong> {{expediente.prestatario}}</p>
+        <p><strong>Fecha inicio:</strong> {{expediente.f_inicio}}</p>
+        <p><strong>Fecha termino:</strong> {{expediente.f_termino}}</p>
+        <p><strong>Correo electronico:</strong> {{expediente.correo_electronico}}</p>
+        <p><strong>Fecha envio expediente:</strong> {{expediente.f_envio}}</p>
+        
+    </div>
+    <div class="contenido barra-central">
+        <div class="row-container">
+            <div>
+                <h3>Expediente</h3>
+                <p></p>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Documento</th>
+                <th>Estado</th>
+                <th>Fecha de envio</th>
+                <th>Fecha de aceptado</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">1</td>
+                <td class="centrar-texto">Expediente</td>
+                <td class="centrar-texto">ACEPTADO</td>
+                <td class="centrar-texto">{{expediente.f_envio}}</td>
+                <td class="centrar-texto">{{expediente.f_envio}}</td>
+                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                   ACEPTADO
+                </td>
+            </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">2</td>
+                <td class="centrar-texto">Evaluación de desempeño</td>
+                <td class="centrar-texto">ESPERA APROBACIÓN</td>
+                <td class="centrar-texto">{{expediente.f_envio}}</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                    <button>Aceptar</button>
+                    <button>Rechazar</button>
+                </td>
+            </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">3</td>
+                <td class="centrar-texto">Carta Término</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                    <button>Aceptar</button>
+                    <button>Rechazar</button>
+                </td>
+            </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">4</td>
+                <td class="centrar-texto">Constancia de liberación</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">-</td>
+                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                    <button>Aceptar</button>
+                    <button id="btnAbrir">Rechazar</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
