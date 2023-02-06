@@ -27,6 +27,7 @@ def registroUsuario():
 def registro():
     if request.method == "POST":
         data = {
+            'titulo1': request.form['Idp-titulo'],
             'nombre': request.form['Idp-nombre'],
             'paterno': request.form['Idp-apellidoP'],
             'materno': request.form['Idp-apellidoM'],
@@ -105,8 +106,14 @@ def uploader():
         print(ruta)
         registro = lectura(ruta)
         data=registro
-        #print(data)
-        return render_template('confirmacion.html',data=data)  
+        errorcarta = "Debe seleccionar una carta compromiso válida"
+        print(data)
+        if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
+            return render_template('confirmacion.html',data=data)
+        else:
+            print(errorcarta)
+            return render_template('registro.html',data=data,errorcarta=errorcarta)
+          
 
 @app.route('/admin', methods=['GET', 'POST'])
 def indexAdmin():

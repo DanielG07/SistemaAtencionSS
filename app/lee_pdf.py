@@ -385,7 +385,7 @@ def pdf_to_dict(archivoPDF):
 		
 		]
 
-		putField(pdf, "fecha_elaboracion", bboxes, notFound='No disponible')
+		putField(pdf, "fecha_elaboracion", bboxes, notFound='01 01 2000')
 
 		# Lista de posiciones donde se encuentra la fecha de inicio
 		bboxes = [
@@ -393,7 +393,7 @@ def pdf_to_dict(archivoPDF):
 		
 		]
 
-		putField(pdf, "fecha_inicio", bboxes, notFound='No disponible')
+		putField(pdf, "fecha_inicio", bboxes, notFound='01 01 2000')
 
 		# Lista de posiciones donde se encuentra la fecha de termino
 		bboxes = [
@@ -401,7 +401,7 @@ def pdf_to_dict(archivoPDF):
 		
 		]
 
-		putField(pdf, "fecha_termino", bboxes, notFound='No disponible')
+		putField(pdf, "fecha_termino", bboxes, notFound='01 01 2000')
 
 		# Lista de posiciones donde se encuentra correo prestatario
 		bboxes = [

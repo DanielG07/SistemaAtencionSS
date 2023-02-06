@@ -17,12 +17,18 @@
 <div class="main-page">
     <div class="wrap-datos">
         <div id="idregistro">
-            <h1 class="titulo_Registro_sistema">Registro al sistema</h1>
+            <h1 class="titulo_Registro_sistema">REGISTRO AL SISTEMA</h1>
             <div>
                 <h4> Para poder realizar el registro al sistema, 
                     se requiere subir la Carta Compromiso emitida por el 
                     SISS</h4>
             </div>
+
+            {% if errorcarta %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorcarta }}</p> 
+                </div>               
+            {% endif %}
             
 
             <form action="/confirmacion_datos" method="post" enctype="multipart/form-data">
