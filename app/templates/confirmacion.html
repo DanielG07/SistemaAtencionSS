@@ -341,12 +341,10 @@
                     </div>   
                 </div>
 
-                {% if errorcontrasena %}
-                <div class=" banner_error red no-margin no-padding dp-campo">
-                    <p class="error-message" >{{ errorcontrasena }}</p> 
+                <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > Error</p> 
                 </div>
-                                      
-                {% endif %}
+
 
                 <div id="errorMessage"></div>
 
@@ -380,17 +378,25 @@
 
 
 <script>
-    function validatePassword() {
-      var password = document.getElementById("password").value;
-      var confirmPassword = document.getElementById("confirmPassword").value;
-      var errorMessage = document.getElementById("errorMessage");
-  
-      if (password != confirmPassword) {
-        errorMessage.innerHTML = "Las contraseñas no coinciden";
-      } else {
-        errorMessage.innerHTML = "";
-      }
-    }
+    
+    document.addEventListener("submit", (Event)=>{
+        console.log("Presionaste el boton guardar")
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        var errorMessage = document.getElementById("error-message");
+        console.log(password);
+        console.log(confirmPassword);
+        console.log(errorMessage);
+        if (password != confirmPassword) 
+        {
+            // errorMessage.innerHTML = "Las contraseñas no coinciden";
+            Event.preventDefault();
+            console.log("Contraseñas diferentes");
+            errorMessage.style.display="block";
+        }     
+
+
+    })
   </script>
 <script src="static/js/funciones.js"></script>
 
