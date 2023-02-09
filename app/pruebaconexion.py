@@ -9,7 +9,6 @@ try:
        'DRIVER={SQL Server};SERVER='+server+';DATABASE='+bd+';UID='+user+';PWD='+password
    )
     print('Conexion exitosa')
-    
     cursor = conexion.cursor()
 except:
     print('Error al intentar conectarse')

@@ -264,6 +264,13 @@
                     </div>
                 </div>
 
+                <div class="dp-campo dp-Actual">
+                    <label class="label_confirmacion">Fecha Actual </label>
+                    <div class="Idp-campo">
+                      <input id="fecha_actual"name="Idp-FActual" type="date" placeholder="Fecha Actual" />
+                    </div>   
+                </div>
+
                 <div class="dp-campo ">
                     <label class="label_confirmacion">Responsable</label>
                     <div class="Idp-campo">
@@ -282,7 +289,7 @@
                     <div class="dp-campo">
                         <label class="label_confirmacion">Teléfono Responsable</label>
                         <div class="Idp-campo">
-                            <input name="Idp-responsable" type="text" placeholder="Teléfono Responsable" value="{{data.tel_responsable}}"/>
+                            <input name="Idp-tel-responsable" type="text" placeholder="Teléfono Responsable" value="{{data.tel_responsable}}"/>
                         </div>     
                     </div>
 
@@ -376,6 +383,14 @@
     });
   </script>
 
+<script>
+    const hoy = new Date();
+    const zona_horaria = -300; // en minutos
+    const offset = hoy.getTimezoneOffset();
+    hoy.setMinutes(hoy.getMinutes() + offset + zona_horaria);
+    const fecha_formateada = hoy.toISOString().substr(0, 10);
+    document.getElementById("fecha_actual").value = fecha_formateada;
+  </script>
 
 <script>
     

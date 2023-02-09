@@ -1,13 +1,135 @@
 import os
+from datetime import datetime
+from sqlalchemy import Date
 from flask import Flask, redirect, render_template, request, url_for, send_file
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
+from flask_sqlalchemy import SQLAlchemy
 from utils.funcion_correo import enviar_correo
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 
+#server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
+server='LAPTOP-9T4B4IDA' #PARA J CRUZ
+bd='Sistema_Atencion_SS'
+user='SS_SISTEMAATENCION'
+password='Irvin19+'
+
 app = Flask(__name__)
 app.config['UPLOADER_FOLDER'] = "./app/pdfs"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
+
+# CONEXIÓN A LA BASE DE DATOS
+try:
+    db = SQLAlchemy(app)
+    print("Conexión a la base de datos exitosa")
+except Exception as e:
+    print("Error al conectarse a la base de datos: ", e)
+
+# MODELO PARA LA TABLA "DATA_USERS"
+
+class UserModel(db.Model):
+    __tablename__ = 'DATA_USERS'
+    id = db.Column(db.Integer, primary_key=True, name='Id_data_users')
+    nombre = db.Column(db.String(40), nullable=True, name='Nombre')
+    a_paterno = db.Column(db.String(40), nullable=True, name='A_Paterno')
+    a_materno = db.Column(db.String(40), nullable=True, name='A_Materno')
+    curp = db.Column(db.String(30), nullable=True, name='CURP')
+    boleta = db.Column(db.String(25), nullable=True, name='Boleta')
+    id_sexo = db.Column(db.Integer, name='Id_Sexo')
+    id_plantel = db.Column(db.Integer, name='Id_Plantel')
+    cp = db.Column(db.String(30), nullable=True, name='CP')
+    telefono = db.Column(db.String(30), nullable=True, name='Tel_particular')
+    direccion =  db.Column(db.String(max), nullable=True, name='Direccion')
+    alcaldia =  db.Column(db.String(75), nullable=True, name='Alcaldia')
+    escolaridad = db.Column(db.String(10), nullable=True, name='Escolaridad')
+    correo = db.Column(db.String(50), nullable=True, name='Correo')
+    id_carrera = db.Column(db.Integer, name='Id_carrera')
+    prestatario = db.Column(db.String(max), nullable=True, name='Prestatario')
+    codigo_prestatario = db.Column(db.String(30), nullable=True, name='Codigo_Prestatario')
+    responsable = db.Column(db.String(75), nullable=True, name='Responsable')
+    programa = db.Column(db.String(max), nullable=True, name='Programa')
+    clave_programa = db.Column(db.String(30), nullable=True, name='Clave_programa')
+    cargo = db.Column(db.String(75), nullable=True, name='Cargo')
+    tel_responsable = db.Column(db.String(40), nullable=True, name='Tel_responsable')
+    fecha_registro = db.Column(db.Date, name='Fecha_registro')
+    fecha_inicio = db.Column(db.Date, name='Fecha_inicio')
+    fecha_termino = db.Column(db.Date, name='Fecha_termino')
+    correo_prestatario = db.Column(db.String(50), nullable=True, name='Correo_prestatario')
+    ubicacion_calleynum = db.Column(db.String(75), nullable=True, name='Ubicacion_calleynum')
+    ubicacion_colonia = db.Column(db.String(75), nullable=True, name='Ubicacion_colonia')
+    ubicacion_alcaldia = db.Column(db.String(75), nullable=True, name='Ubicacion_alcaldia')
+    ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
+
+# INSERCION DE DATOS DEL ALUMNO
+
+def insertar_registro(data):
+    
+    print(data)
+    i_platel=int(data['plantel'])
+    data['plantel'] = i_platel
+
+    aux=data['fecha_registro']
+    aux2=data['fecha_inicio']
+    aux3=data['fecha_termino']
+
+    print(aux)
+    print(aux2)
+    print(aux3)
+
+    f_registro = datetime.strptime(aux, "%Y-%m-%d")
+    f_inicio = datetime.strptime(aux2, "%Y-%m-%d")
+    f_termino = datetime.strptime(aux3, "%Y-%m-%d")
+
+    data['fecha_registro'] = f_registro
+    data['fecha_inicio'] = f_inicio
+    data['fecha_termino'] = f_termino
+
+
+    print(type(data['fecha_registro']))
+    print(type(data['fecha_inicio']))
+    print(type(data['fecha_termino']))
+
+    try:
+        new_user = UserModel(
+            nombre=data['nombre'],
+            a_paterno=data['paterno'],
+            a_materno=data['materno'],
+            curp=data['curp'],
+            boleta=data['boleta'],
+            id_sexo=data['id_sexo'],
+            id_plantel=data['plantel'],
+            cp=data['codigo_postal'],
+            telefono=data['tel_particular'],
+            direccion=data['direccion'],
+            alcaldia=data['alcaldia'],
+            escolaridad=data['escolaridad'],
+            correo=data['correo'],
+            id_carrera=data['id_carrera'],
+            prestatario=data['prestatario'],
+            codigo_prestatario=data['codigo'],
+            responsable=data['responsable'],
+            programa=data['programa'],
+            clave_programa=data['clave_programa'],
+            cargo=data['cargo'],
+            tel_responsable=data['tel_responsable'],
+            fecha_registro=data['fecha_registro'],
+            fecha_inicio=data['fecha_inicio'],
+            fecha_termino=data['fecha_termino'],
+            correo_prestatario=data['correo_prestatario'],
+            ubicacion_calleynum=data['ubicacion_calleynum'],
+            ubicacion_colonia=data['ubicacion_colonia'],
+            ubicacion_alcaldia=data['ubicacion_alcaldia'],
+            ubicacion_codpos=data['ubicacion_codpos'],
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        print("Registro insertado exitosamente")
+    except Exception as e:
+        print("Error al insertar el registro: ", e)
+        db.session.rollback()
+
+
 
 @app.route('/')
 def index():
@@ -49,16 +171,20 @@ def registro():
             'codigo': request.form['Idp-cod_prestatario'],
             'programa': request.form['Idp-programa'],
             'clave_programa':request.form['Idp-clave_programa'],
+            'fecha_registro':request.form['Idp-FActual'],
             'fecha_inicio': request.form['Idp-FInicio'],
             'fecha_termino': request.form['Idp-FTermino'],
             'responsable':request.form['Idp-responsable'],
             'cargo':request.form['Idp-cargo'],
+            'tel_responsable':request.form['Idp-tel-responsable'],
+            'correo_prestatario':request.form['Idp-correo_prestatario'],
             'ubicacion_calleynum':request.form['Idp-Calleynum'],
             'ubicacion_colonia':request.form['Idp-Colonia'],
             'ubicacion_alcaldia':request.form['Idp-Alcaldia_prestatario'],
             'ubicacion_codpos':request.form['Idp-cpPrestatario'],
             'contrasena':request.form['Idp-contraseña'],
             'confirmarcontrasena':request.form['Idp-Confirmar-contraseña'],
+            'plantel':'140',
             
         }
         ## CARRERA
@@ -88,6 +214,7 @@ def registro():
             errorcontrasena=True
 
         if  errorcontrasena==False:
+            insertar_registro(data)
             return "Registro Exitoso"
         else:
             errorcontrasena = "Las contraseñas deben ser iguales"
