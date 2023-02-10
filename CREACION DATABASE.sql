@@ -7,7 +7,7 @@ GO
 CREATE TABLE USERS 
 (
 Id_user INT PRIMARY KEY NOT NULL IDENTITY,
-boleta VARCHAR NOT NULL,
+boleta VARCHAR(25) NOT NULL,
 passw VARBINARY(max) NOT NULL,
 Tipo_user INT, 
 Id_Estatus_user INT,

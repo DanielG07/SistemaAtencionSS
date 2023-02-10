@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from utils.funcion_correo import enviar_correo
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
+import hashlib
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
 server='LAPTOP-9T4B4IDA' #PARA J CRUZ
@@ -26,56 +27,79 @@ try:
 except Exception as e:
     print("Error al conectarse a la base de datos: ", e)
 
-# MODELO PARA LA TABLA "DATA_USERS"
+class Users(db.Model):
+    __tablename__ = 'USERS'
+    id = db.Column(db.Integer, primary_key=True, name='Id_user')
+    boleta = db.Column(db.String(25), nullable=True, name='boleta')
+    passw = db.Column(db.LargeBinary(), nullable=False,name = 'passw')
+    Tipo_user = db.Column(db.Integer, nullable=False,name='Tipo_user')
+    Id_Estatus_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')  
 
-class UserModel(db.Model):
+# MODELO PARA LA TABLA "DATA_USERS"
+class DataUsers(db.Model):
     __tablename__ = 'DATA_USERS'
     id = db.Column(db.Integer, primary_key=True, name='Id_data_users')
+    user_id = db.Column(db.Integer, name='user_id')
     nombre = db.Column(db.String(40), nullable=True, name='Nombre')
     a_paterno = db.Column(db.String(40), nullable=True, name='A_Paterno')
     a_materno = db.Column(db.String(40), nullable=True, name='A_Materno')
     curp = db.Column(db.String(30), nullable=True, name='CURP')
     boleta = db.Column(db.String(25), nullable=True, name='Boleta')
-    id_sexo = db.Column(db.Integer, name='Id_Sexo')
-    id_plantel = db.Column(db.Integer, name='Id_Plantel')
+    id_sexo = db.Column(db.Integer,nullable=True,name='Id_Sexo')
+    id_plantel = db.Column(db.Integer,nullable=True,name='Id_Plantel')
     cp = db.Column(db.String(30), nullable=True, name='CP')
     telefono = db.Column(db.String(30), nullable=True, name='Tel_particular')
-    direccion =  db.Column(db.String(max), nullable=True, name='Direccion')
+    direccion =  db.Column(db.String(500), nullable=True, name='Direccion')
     alcaldia =  db.Column(db.String(75), nullable=True, name='Alcaldia')
     escolaridad = db.Column(db.String(10), nullable=True, name='Escolaridad')
     correo = db.Column(db.String(50), nullable=True, name='Correo')
-    id_carrera = db.Column(db.Integer, name='Id_carrera')
-    prestatario = db.Column(db.String(max), nullable=True, name='Prestatario')
+    id_carrera = db.Column(db.Integer, nullable=True,name='Id_carrera')
+    prestatario = db.Column(db.String(500), nullable=True, name='Prestatario')
     codigo_prestatario = db.Column(db.String(30), nullable=True, name='Codigo_Prestatario')
     responsable = db.Column(db.String(75), nullable=True, name='Responsable')
-    programa = db.Column(db.String(max), nullable=True, name='Programa')
+    programa = db.Column(db.String(500), nullable=True, name='Programa')
     clave_programa = db.Column(db.String(30), nullable=True, name='Clave_programa')
     cargo = db.Column(db.String(75), nullable=True, name='Cargo')
     tel_responsable = db.Column(db.String(40), nullable=True, name='Tel_responsable')
-    fecha_registro = db.Column(db.Date, name='Fecha_registro')
-    fecha_inicio = db.Column(db.Date, name='Fecha_inicio')
-    fecha_termino = db.Column(db.Date, name='Fecha_termino')
+    fecha_registro = db.Column(db.Date, nullable=True, name='Fecha_registro')
+    fecha_inicio = db.Column(db.Date, nullable=True, name='Fecha_inicio')
+    fecha_termino = db.Column(db.Date, nullable=True, name='Fecha_termino')
     correo_prestatario = db.Column(db.String(50), nullable=True, name='Correo_prestatario')
     ubicacion_calleynum = db.Column(db.String(75), nullable=True, name='Ubicacion_calleynum')
     ubicacion_colonia = db.Column(db.String(75), nullable=True, name='Ubicacion_colonia')
     ubicacion_alcaldia = db.Column(db.String(75), nullable=True, name='Ubicacion_alcaldia')
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
 
-# INSERCION DE DATOS DEL ALUMNO
+def insertar_user(data):
+    print(data)
+    password = data.get('contrasena')
+    passwo = hashlib.md5(password.encode('utf-8')).hexdigest().encode('utf-8')
+    print(password)
+    print(passwo)
+    try:
+        new_user = Users(
+            boleta = data.get('boleta'),
+            passw = passwo,
+            Tipo_user = 1,
+            Id_Estatus_user=1
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        print("Se insertó el registro en la tabla USERS")
+    except Exception as e:
+        print("Error al insertar el registro: ", e)
+        db.session.rollback()
 
-def insertar_registro(data):
+
+# INSERCION DE DATOS DEL ALUMNO
+def insertar_data_user(data,id_user):
     
     print(data)
     i_platel=int(data['plantel'])
     data['plantel'] = i_platel
-
     aux=data['fecha_registro']
     aux2=data['fecha_inicio']
     aux3=data['fecha_termino']
-
-    print(aux)
-    print(aux2)
-    print(aux3)
 
     f_registro = datetime.strptime(aux, "%Y-%m-%d")
     f_inicio = datetime.strptime(aux2, "%Y-%m-%d")
@@ -85,50 +109,46 @@ def insertar_registro(data):
     data['fecha_inicio'] = f_inicio
     data['fecha_termino'] = f_termino
 
-
-    print(type(data['fecha_registro']))
-    print(type(data['fecha_inicio']))
-    print(type(data['fecha_termino']))
-
     try:
-        new_user = UserModel(
-            nombre=data['nombre'],
-            a_paterno=data['paterno'],
-            a_materno=data['materno'],
-            curp=data['curp'],
-            boleta=data['boleta'],
-            id_sexo=data['id_sexo'],
-            id_plantel=data['plantel'],
-            cp=data['codigo_postal'],
-            telefono=data['tel_particular'],
-            direccion=data['direccion'],
-            alcaldia=data['alcaldia'],
-            escolaridad=data['escolaridad'],
-            correo=data['correo'],
-            id_carrera=data['id_carrera'],
-            prestatario=data['prestatario'],
-            codigo_prestatario=data['codigo'],
-            responsable=data['responsable'],
-            programa=data['programa'],
-            clave_programa=data['clave_programa'],
-            cargo=data['cargo'],
-            tel_responsable=data['tel_responsable'],
-            fecha_registro=data['fecha_registro'],
-            fecha_inicio=data['fecha_inicio'],
-            fecha_termino=data['fecha_termino'],
-            correo_prestatario=data['correo_prestatario'],
-            ubicacion_calleynum=data['ubicacion_calleynum'],
-            ubicacion_colonia=data['ubicacion_colonia'],
-            ubicacion_alcaldia=data['ubicacion_alcaldia'],
-            ubicacion_codpos=data['ubicacion_codpos'],
+        new_user = DataUsers(
+            user_id = id_user,
+            nombre=data.get('nombre'),
+            a_paterno=data.get('paterno'),
+            a_materno=data.get('materno'),
+            curp=data.get('curp'),
+            boleta=data.get('boleta'),
+            id_sexo=data.get('id_sexo'),
+            id_plantel=data.get('plantel'),
+            cp=data.get('codigo_postal'),
+            telefono=data.get('tel_particular'),
+            direccion=data.get('direccion'),
+            alcaldia=data.get('alcaldia'),
+            escolaridad=data.get('escolaridad'),
+            correo=data.get('correo'),
+            id_carrera=data.get('id_carrera'),
+            prestatario=data.get('prestatario'),
+            codigo_prestatario=data.get('codigo'),
+            responsable=data.get('responsable'),
+            programa=data.get('programa'),
+            clave_programa=data.get('clave_programa'),
+            cargo=data.get('cargo'),
+            tel_responsable=data.get('tel_responsable'),
+            fecha_registro=data.get('fecha_registro'),
+            fecha_inicio=data.get('fecha_inicio'),
+            fecha_termino=data.get('fecha_termino'),
+            correo_prestatario=data.get('correo_prestatario'),
+            ubicacion_calleynum=data.get('ubicacion_calleynum'),
+            ubicacion_colonia=data.get('ubicacion_colonia'),
+            ubicacion_alcaldia=data.get('ubicacion_alcaldia'),
+            ubicacion_codpos=data.get('ubicacion_codpos'),
         )
+        print(new_user)
         db.session.add(new_user)
         db.session.commit()
         print("Registro insertado exitosamente")
     except Exception as e:
         print("Error al insertar el registro: ", e)
         db.session.rollback()
-
 
 
 @app.route('/')
@@ -185,7 +205,6 @@ def registro():
             'contrasena':request.form['Idp-contraseña'],
             'confirmarcontrasena':request.form['Idp-Confirmar-contraseña'],
             'plantel':'140',
-            
         }
         ## CARRERA
         if data['carrera']=='ESCA.UST CONTADOR PÚBLICO':
@@ -207,20 +226,20 @@ def registro():
             data['id_sexo']=1
         if data['sexo']=='Femenino':
             data['id_sexo']=2
-
-        print(data)
-        errorcontrasena = False
-        if data['contrasena']!=data['confirmarcontrasena']:
-            errorcontrasena=True
-
-        if  errorcontrasena==False:
-            insertar_registro(data)
+        insertar_user(data)
+        user = Users.query.filter_by(boleta=data.get('boleta')).first()
+        if user:
+            id_user = user.id
+            print("La consulta dio resultado, el ID del alumno en la tabla USERS es:")
+            print(id_user)
+            print(type(id_user))
+            insertar_data_user(data,id_user)
             return "Registro Exitoso"
         else:
-            errorcontrasena = "Las contraseñas deben ser iguales"
-            return render_template("confirmacion.html", data=data, errorcontrasena=errorcontrasena)
-    
-    return render_template("confirmacion.html",data=data ,errorcontrasena=errorcontrasena)
+            id_user = None
+            print("No existe el usuario")        
+    return render_template("confirmacion.html")
+        
 
 @app.route("/confirmacion_datos", methods=['POST'])
 def uploader():
