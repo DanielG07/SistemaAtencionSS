@@ -90,7 +90,21 @@ def insertar_user(data):
         print("Error al insertar el registro: ", e)
         db.session.rollback()
 
+def inicio_session(data):
+    user = Users.query.filter_by(boleta=data.get('boleta')).first()
+    if user:
+            contra=user.passw
+            password = data.get('contrasena')
+            passwo = hashlib.md5(password.encode('utf-8')).hexdigest().encode('utf-8')    
+            if contra==passwo:
+                print("Se realizo la consulta exitosa:")
 
+            else:
+                print("Contraseña incorrecta")
+    else:
+            id_user = None
+            print("No existe el usuario")
+    db.session.rollback()
 # INSERCION DE DATOS DEL ALUMNO
 def insertar_data_user(data,id_user):
     
@@ -385,7 +399,7 @@ def inicio():
         'contrasena': request.form['contrasena']
     }
     print(data)
-
+    inicio_session(data)
     return render_template('inicio.html',data=data)
 
 if __name__== '__main__':
