@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
 from sqlalchemy import Date
-from flask import Flask, redirect, render_template, request, url_for, send_file
+from flask import Flask, redirect, render_template, request, url_for, send_file, session
+from flask_session import Session
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +20,9 @@ password='Irvin19+'
 app = Flask(__name__)
 app.config['UPLOADER_FOLDER'] = "./app/pdfs"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.secret_key = 'mysecretkey'
+Session(app)
 
 # CONEXIÓN A LA BASE DE DATOS
 try:
@@ -91,6 +95,7 @@ def insertar_user(data):
         db.session.rollback()
 
 def inicio_session(data):
+    exito = True
     user = Users.query.filter_by(boleta=data.get('boleta')).first()
     if user:
             contra=user.passw
@@ -98,13 +103,15 @@ def inicio_session(data):
             passwo = hashlib.md5(password.encode('utf-8')).hexdigest().encode('utf-8')    
             if contra==passwo:
                 print("Se realizo la consulta exitosa:")
-
             else:
                 print("Contraseña incorrecta")
+                exito=False
     else:
             id_user = None
             print("No existe el usuario")
-    db.session.rollback()
+            exito=False
+            db.session.rollback()
+    return exito
 # INSERCION DE DATOS DEL ALUMNO
 def insertar_data_user(data,id_user):
     
@@ -172,7 +179,9 @@ def index():
     data={
         'titulo':'Sistema Servicio Social'
     }
-    return render_template('index.html',data=data)
+    error = session.get('error', None)
+    session.pop('error', None)
+    return render_template('index.html', error=error,data=data)
 
 @app.route('/registro')
 def registroUsuario():
@@ -403,8 +412,13 @@ def inicio():
         'contrasena': request.form['contrasena']
     }
     print(data)
-    inicio_session(data)
-    return render_template('inicio.html',data=data)
+    resultado = inicio_session(data)
+    if resultado == True:
+        return render_template('inicio.html',data=data)
+    else:
+        error = "Boleta o contraseña inválidos"
+        session['error'] = error
+        return redirect('/')
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)

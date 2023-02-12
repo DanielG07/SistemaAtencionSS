@@ -42,6 +42,12 @@
                     </div>
                 </div>
 
+                {% if error %}
+                <div id="error-message" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{error}} </p> 
+                </div>
+                {% endif %}
+
                 <div class="dp-campo">
                     <div class="center-content">
                         <div class="Idp-submit">
