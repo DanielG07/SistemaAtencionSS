@@ -21,6 +21,13 @@
         <div class="inicio-sesion-form" id="idregistro">
             
             <form action="/inicio" method="POST" enctype="multipart/form-data">
+
+                {% if exitoso %}
+                <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{exitoso}} </p> 
+                </div>
+                {% endif %}
+
                 <div class="form-item">
                     <label class="form-label">Boleta: </label>
                     <div class="form-campo">

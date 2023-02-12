@@ -10,8 +10,8 @@ from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 import hashlib
 
-server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA J CRUZ
+#server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
+server='LAPTOP-9T4B4IDA' #PARA J CRUZ
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + passwor
 # CONEXIÓN A LA BASE DE DATOS
 try:
     db = SQLAlchemy(app)
-    print("Conexión a la base de datos exitosa")
+    print(" * Conexión a la base de datos exitosa")
 except Exception as e:
     print("Error al conectarse a la base de datos: ", e)
 
@@ -165,6 +165,8 @@ def insertar_data_user(data,id_user):
         db.session.rollback()
 
 
+## RUTAS DE LA APLICACION
+
 @app.route('/')
 def index():
     data={
@@ -248,7 +250,8 @@ def registro():
             print(id_user)
             print(type(id_user))
             insertar_data_user(data,id_user)
-            return "Registro Exitoso"
+            exitoso="Tu registro fue exitoso"
+            return render_template("index.html",data=data,exitoso=exitoso)
         else:
             id_user = None
             print("No existe el usuario")        
@@ -395,6 +398,7 @@ def perfilEstudiante(boleta):
 @app.route('/inicio', methods=['POST'])
 def inicio():
     data = {
+        'titulo':"INSTITUTO POLITÉCNICO NACIONAL",
         'boleta': request.form['boleta'],
         'contrasena': request.form['contrasena']
     }
