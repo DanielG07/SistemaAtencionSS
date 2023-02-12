@@ -181,6 +181,7 @@ def index():
     }
     error = session.get('error', None)
     session.pop('error', None)
+    session.clear()
     return render_template('index.html', error=error,data=data)
 
 @app.route('/registro')
