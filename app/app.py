@@ -180,16 +180,21 @@ def index():
         'titulo':'Sistema Servicio Social'
     }
     error = session.get('error', None)
+    exitoso = session.get('exitoso', None)
     session.pop('error', None)
+    session.pop('exitoso', None)
     session.clear()
-    return render_template('index.html', error=error,data=data)
+    return render_template('index.html', error=error,data=data,exitoso=exitoso)
 
 @app.route('/registro')
 def registroUsuario():
     data={
         'titulo':'Registro'
     }
-    return render_template('registro.html',data=data)
+    errorcarta = session.get('errorcarta', None)
+    session.pop('errorcarta', None)
+    #session.clear()
+    return render_template('registro.html',data=data,errorcarta=errorcarta)
 
 @app.route('/registro', methods=['POST'])
 def registro():
@@ -261,7 +266,8 @@ def registro():
             print(type(id_user))
             insertar_data_user(data,id_user)
             exitoso="Tu registro fue exitoso"
-            return render_template("index.html",data=data,exitoso=exitoso)
+            session['exitoso'] = exitoso
+            return redirect('/')
         else:
             id_user = None
             print("No existe el usuario")        
@@ -279,13 +285,14 @@ def uploader():
         print(ruta)
         registro = lectura(ruta)
         data=registro
-        errorcarta = "Debe seleccionar una carta compromiso válida"
         print(data)
         if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
             return render_template('confirmacion.html',data=data)
         else:
+            errorcarta = "Debe seleccionar una carta compromiso válida"
+            session['errorcarta'] = errorcarta
             print(errorcarta)
-            return render_template('registro.html',data=data,errorcarta=errorcarta)
+            return redirect('/registro')
           
 
 @app.route('/admin', methods=['GET', 'POST'])
