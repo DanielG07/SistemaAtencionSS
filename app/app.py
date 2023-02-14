@@ -422,7 +422,7 @@ def inicio():
     print(data)
     resultado = inicio_session(data)
     if resultado == True:
-        return render_template('inicio.html',data=data)
+        return render_template('estudiante/main.html',data=data)
     else:
         error = "Boleta o contraseña inválidos"
         session['error'] = error

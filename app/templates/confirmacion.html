@@ -265,9 +265,9 @@
                 </div>
 
                 <div class="dp-campo dp-Actual">
-                    <label class="label_confirmacion">Fecha Actual </label>
+                    <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
                     <div class="Idp-campo">
-                      <input id="fecha_actual"name="Idp-FActual" type="date" placeholder="Fecha Actual" />
+                      <input style="display: none;" id="fecha_actual"name="Idp-FActual" type="date" placeholder="Fecha Actual" />
                     </div>   
                 </div>
 
@@ -332,6 +332,12 @@
 
                 <div>
                     <h4> GENERACIÓN DE CONTRASEÑA </h4>
+                    <h4>
+                        Esta contraseña será su acceso al sistema instrainstitucional del servcio Social 
+                    </h4>
+                    <h4>
+                        Debe guardarla en un lugar seguro 
+                    </h4>
                 </div>
 
                 <div class="dp-campo ">
@@ -352,9 +358,9 @@
                     <p class="error-message"  > Las contraseñas deben ser iguales </p> 
                 </div>
 
-
-                <div id="errorMessage"></div>
-
+                <div id="error-message-2" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > La contraseña debe tener al menos 8 caracteres, una mayúscula y un número </p> 
+                </div>
 
             </div>
 
@@ -399,6 +405,15 @@
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
         var errorMessage = document.getElementById("error-message");
+        var errorMessage2 = document.getElementById("error-message-2");
+        var regex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/;
+        if (!regex.test(password)) 
+        {
+            //errorMessage2.innerHTML = "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número";
+            Event.preventDefault();
+            console.log("Contraseña no cumple con los requisitos");
+            errorMessage2.style.display="block";
+        }
         console.log(password);
         console.log(confirmPassword);
         console.log(errorMessage);
