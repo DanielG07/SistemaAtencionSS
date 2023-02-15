@@ -257,6 +257,12 @@ def registro():
             data['id_sexo']=1
         if data['sexo']=='Femenino':
             data['id_sexo']=2
+        usuario = Users.query.filter_by(boleta=data.get('boleta')).first()
+        if usuario:
+            errorboleta = "Ya existe un usuario registrado con esa boleta"
+            print(errorboleta)
+            return render_template ("confirmacion.html",data=data,errorboleta=errorboleta)
+            
         insertar_user(data)
         user = Users.query.filter_by(boleta=data.get('boleta')).first()
         if user:
@@ -287,7 +293,9 @@ def uploader():
         data=registro
         print(data)
         if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
-            return render_template('confirmacion.html',data=data)
+            errorboleta = session.get('errorboleta', None)
+            session.pop('errorboleta', None)
+            return render_template('confirmacion.html',data=data,errorboleta=errorboleta)
         else:
             errorcarta = "Debe seleccionar una carta compromiso válida"
             session['errorcarta'] = errorcarta
