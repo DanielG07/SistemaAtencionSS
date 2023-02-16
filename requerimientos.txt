@@ -7,3 +7,4 @@ pyodbc==4.0.35
 SQLAlchemy==2.0.2
 Flask-SQLAlchemy==3.0.3
 Flask-Session==0.4.0
+Flask-Mail==0.9.1

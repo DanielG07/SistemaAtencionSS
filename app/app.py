@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import Date
 from flask import Flask, redirect, render_template, request, url_for, send_file, session
 from flask_session import Session
+from flask_mail import Message
+from flask_mail import Mail
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
@@ -10,6 +12,7 @@ from utils.funcion_correo import enviar_correo
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 import hashlib
+import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
 server='LAPTOP-9T4B4IDA' #PARA J CRUZ
@@ -23,6 +26,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + passwor
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'mysecretkey'
 Session(app)
+
+## CONFIGURACION DEL ENVIO DE CORREO PARA RECUPERACION DE CONTRASEÑA
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'enda0507@gmail.com@gmail.com'
+app.config['MAIL_PASSWORD'] = 'nkjvhfykxxtbuykb'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_DEFAULT_SENDER'] = 'enda0507@gmail.com@gmail.com'
+mail = Mail(app)
+
 
 # CONEXIÓN A LA BASE DE DATOS
 try:
@@ -73,6 +87,7 @@ class DataUsers(db.Model):
     ubicacion_colonia = db.Column(db.String(75), nullable=True, name='Ubicacion_colonia')
     ubicacion_alcaldia = db.Column(db.String(75), nullable=True, name='Ubicacion_alcaldia')
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
+    token = db.Column(db.String(32), nullable=True,unique=True,name='Token')
 
 def insertar_user(data):
     print(data)
@@ -179,12 +194,16 @@ def index():
     data={
         'titulo':'Sistema Servicio Social'
     }
+    nueva = session.get('nueva',None)
     error = session.get('error', None)
     exitoso = session.get('exitoso', None)
+    instrucciones = session.get('instrucciones', None)
     session.pop('error', None)
     session.pop('exitoso', None)
+    session.pop('nueva', None)
+    session.pop('instrucciones', None)
     session.clear()
-    return render_template('index.html', error=error,data=data,exitoso=exitoso)
+    return render_template('index.html', error=error,data=data,exitoso=exitoso,nueva=nueva,instrucciones=instrucciones)
 
 @app.route('/registro')
 def registroUsuario():
@@ -417,8 +436,77 @@ def perfilEstudiante(boleta):
             break
     return render_template('estudiante/perfil.html', data=data, expediente=expediente)
 
+## RESTABLECIMIENTO DE CONTRASEÑA DEL ALUMNO
+
+@app.route('/restablecer_contrasena')
+def restablecer_contrasena():
+    data={
+        'titulo':'Cambiar contraseña'
+    }
+    return render_template('restablecer_contrasena.html',data=data)
+
+@app.route('/restablecer_contrasena',methods=['POST'])
+def restablecer_contrasena_usuario():
+    if request.method == 'POST':
+        boleta = request.form['Idp-Boleta']
+        correo = request.form['Idp-email']
+        # Verificar si el correo está registrado en la base de datos
+        usuario = DataUsers.query.filter_by(boleta=boleta).first()
+        if usuario:
+            correobase = usuario.correo
+            if correobase == correo:
+                # Generar un token único para el usuario
+                token = secrets.token_urlsafe(16)
+                # Guardar el token en la base de datos
+                usuario.token = token
+                db.session.commit()
+                # Crear el enlace de restablecimiento de contraseña
+                enlace = url_for('restablecer_contrasena_confirmacion', token=token, _external=True)
+                # Crear el mensaje de correo electrónico
+                asunto = 'Restablecimiento de contraseña'
+                print(asunto)
+                mensaje = render_template('email/restablecer_contrasena.html', enlace=enlace)
+                print(mensaje)
+                enviar_correo(correo, asunto, mensaje)
+                print("Se envio")
+                # Redirigir al usuario a la página de inicio con un mensaje de confirmación
+                instrucciones = "Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña."
+                print(instrucciones)
+                session['instrucciones'] = instrucciones
+                return redirect(url_for('index'))
+            else:
+                print('El correo electrónico no coincide con el registrado en la base de datos.')
+                return redirect(url_for('restablecer_contrasena'))
+        else:
+            print('No existe la boleta en el sistema.')
+            return redirect(url_for('restablecer_contrasena'))
 
 
+@app.route('/restablecer-contrasena-confirmacion/<token>', methods=['GET', 'POST'])
+def restablecer_contrasena_confirmacion(token):
+    usuario = DataUsers.query.filter_by(token=token).first()
+    if not usuario:
+        print('El enlace de restablecimiento de contraseña no es válido o ha expirado.')
+        return redirect(url_for('restablecer_contrasena'))
+    if request.method == 'POST':
+        if usuario:
+            print("Existe el usuario, el enlace está activo")
+            id = usuario.user_id
+            user = Users.query.filter_by(id=id).first()
+            if user:
+                print("Encontré el id")
+            # Verificar que la contraseña sea segura
+            contrasena = request.form['Idp-contraseña']
+            # Actualizar la contraseña del usuario
+            passwo = hashlib.md5(contrasena.encode('utf-8')).hexdigest().encode('utf-8')
+            user.passw = passwo
+            usuario.token = None
+            db.session.commit()
+            print('Tu contraseña ha sido actualizada.')
+            nueva="Se ha actualizado tu contraseña"
+            session['nueva'] = nueva
+            return redirect(url_for('index'))
+    return render_template('restablecer_contrasena_confirmacion.html')
 #PRUEBAS PARA INICIO DE SESION SIN BASE DE DATOS#
 @app.route('/inicio', methods=['POST'])
 def inicio():

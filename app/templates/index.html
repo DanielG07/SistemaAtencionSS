@@ -28,6 +28,18 @@
                 </div>
                 {% endif %}
 
+                {% if nueva %}
+                <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{nueva}} </p> 
+                </div>
+                {% endif %}
+
+                {% if instrucciones %}
+                <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{instrucciones}} </p> 
+                </div>
+                {% endif %}
+
                 <div class="form-item">
                     <label class="form-label">Boleta: </label>
                     <div class="form-campo">
@@ -58,6 +70,7 @@
             </form>
 
             <p class="Registrate no-margin">¿Aún no tienes una cuenta? <a href="/registro">Registrate</a></p>
+            <p class="Registrate no-margin">¿Olvidaste tu <a href="/restablecer_contrasena">contraseña</a>?</p>
 
         </div>
 
