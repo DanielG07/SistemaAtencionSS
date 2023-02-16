@@ -405,13 +405,17 @@ def generarReporte(periodo):
 
 @app.route('/estudiante/<boleta>', methods=['GET', 'POST'])
 def indexEstudiante(boleta):
-    data={
-        'titulo' : 'Alumno'
+    if 'boleta' not in session or session['boleta'] != boleta:
+        return redirect('/')
+    data = {
+        'titulo': 'Alumno'
     }
     return render_template('estudiante/main.html', data=data)
 
 @app.route('/estudiante/expediente/<boleta>', methods=['GET'])
 def expedienteEstudiante(boleta):
+    if 'boleta' not in session or session['boleta'] != boleta:
+        return redirect('/')
     data={
         'titulo' : 'Alumno - Expediente'
     }
@@ -425,6 +429,8 @@ def expedienteEstudiante(boleta):
 
 @app.route('/estudiante/perfil/<boleta>', methods=['GET'])
 def perfilEstudiante(boleta):
+    if 'boleta' not in session or session['boleta'] != boleta:
+        return redirect('/')
     data={
         'titulo' : 'Alumno - Perfil'
     }
@@ -435,6 +441,7 @@ def perfilEstudiante(boleta):
             expediente = item
             break
     return render_template('estudiante/perfil.html', data=data, expediente=expediente)
+
 
 ## RESTABLECIMIENTO DE CONTRASEÑA DEL ALUMNO
 
@@ -519,6 +526,8 @@ def restablecer_contrasena_confirmacion(token):
             session['nueva'] = nueva
             return redirect(url_for('index'))
     return render_template('restablecer_contrasena_confirmacion.html')
+
+
 #PRUEBAS PARA INICIO DE SESION SIN BASE DE DATOS#
 @app.route('/inicio', methods=['POST'])
 def inicio():
@@ -530,7 +539,9 @@ def inicio():
     print(data)
     resultado = inicio_session(data)
     if resultado == True:
-        return render_template('estudiante/main.html',data=data)
+        user = Users.query.filter_by(boleta=data.get('boleta')).first()
+        session['boleta'] = user.boleta
+        return redirect(f'/estudiante/{user.boleta}')
     else:
         error = "Boleta o contraseña inválidos"
         session['error'] = error
