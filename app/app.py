@@ -8,7 +8,7 @@ from flask_mail import Mail
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
-from utils.funcion_correo import enviar_correo
+from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 import hashlib
@@ -474,7 +474,7 @@ def restablecer_contrasena_usuario():
                 print(asunto)
                 mensaje = render_template('email/restablecer_contrasena.html', enlace=enlace)
                 print(mensaje)
-                enviar_correo(correo, asunto, mensaje)
+                enviar_correo_contrasena(correo, asunto, mensaje)
                 print("Se envio")
                 # Redirigir al usuario a la página de inicio con un mensaje de confirmación
                 instrucciones = "Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña."
