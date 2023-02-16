@@ -11,7 +11,8 @@
     <!-- <link rel="stylesheet" href="static/css/estilosAlumnos.css"> -->
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
    {% block styles %}{% endblock %}
-
+    <!-- <link rel="icon" href="https://www.ipn.mx/assets/files/main/img/template/pleca-ipn.png" type="image/png">-->
+    <link rel="icon" sizes="192x192" href="{{url_for('static', filename='icon/ipn192.png')}}">  
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>

@@ -443,7 +443,12 @@ def restablecer_contrasena():
     data={
         'titulo':'Cambiar contraseña'
     }
-    return render_template('restablecer_contrasena.html',data=data)
+    errorboleta = session.get('errorboleta',None)
+    errorcorreo = session.get('errorcorreo',None)
+    session.pop('errorboleta', None)
+    session.pop('errorcorreo', None)
+    session.clear()
+    return render_template('restablecer_contrasena.html',data=data,errorboleta=errorboleta,errorcorreo=errorcorreo)
 
 @app.route('/restablecer_contrasena',methods=['POST'])
 def restablecer_contrasena_usuario():
@@ -475,10 +480,13 @@ def restablecer_contrasena_usuario():
                 session['instrucciones'] = instrucciones
                 return redirect(url_for('index'))
             else:
-                print('El correo electrónico no coincide con el registrado en la base de datos.')
+                errorcorreo = "El correo ingresado no está registrado en el sistema"
+                session['errorcorreo'] = errorcorreo
                 return redirect(url_for('restablecer_contrasena'))
         else:
-            print('No existe la boleta en el sistema.')
+            errorboleta = "No existe un usuario con esa boleta, registrese o ingrese una boleta correcta"
+            session['errorboleta'] = errorboleta
+            print(errorboleta)
             return redirect(url_for('restablecer_contrasena'))
 
 

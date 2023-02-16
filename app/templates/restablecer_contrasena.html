@@ -19,12 +19,18 @@
         <div id="idregistro">
             <h1 class="titulo_Registro_sistema">RESTABLECER CONTRASEÑA </h1>
             <div>
-                <h4> Para poder restablecer su contraseña, se requeire su boleta y su correo electrónico que ingresó el Sistema</h4>
+                <h4> Para restablecer su contraseña, se requiere su boleta y su correo electrónico que ingresó el Sistema</h4>
             </div>
 
-            {% if errorcarta %}
+            {% if errorboleta %}
                 <div class=" banner_error red no-margin no-padding dp-campo">
-                    <p class="error-message" >{{ errorcarta }}</p> 
+                    <p class="error-message" >{{ errorboleta }}</p> 
+                </div>               
+            {% endif %}
+
+            {% if errorcorreo %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorcorreo }}</p> 
                 </div>               
             {% endif %}
             
