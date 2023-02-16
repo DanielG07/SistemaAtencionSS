@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>¿Olvidó su contraseña?</title>
     <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" sizes="192x192" href="{{url_for('static', filename='icon/ipn192.png')}}">
     <!-- <link rel="stylesheet" href="static/css/estilosAlumnos.css"> -->
 </head>
 
@@ -31,6 +32,12 @@
             {% if errorcorreo %}
                 <div class=" banner_error red no-margin no-padding dp-campo">
                     <p class="error-message" >{{ errorcorreo }}</p> 
+                </div>               
+            {% endif %}
+
+            {% if errortoken %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errortoken }}</p> 
                 </div>               
             {% endif %}
             

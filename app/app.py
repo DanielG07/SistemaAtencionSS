@@ -443,12 +443,14 @@ def restablecer_contrasena():
     data={
         'titulo':'Cambiar contraseña'
     }
+    errortoken = session.get('errortoken',None)
     errorboleta = session.get('errorboleta',None)
     errorcorreo = session.get('errorcorreo',None)
     session.pop('errorboleta', None)
     session.pop('errorcorreo', None)
+    session.pop('errortoken', None)
     session.clear()
-    return render_template('restablecer_contrasena.html',data=data,errorboleta=errorboleta,errorcorreo=errorcorreo)
+    return render_template('restablecer_contrasena.html',data=data,errorboleta=errorboleta,errorcorreo=errorcorreo,errortoken=errortoken)
 
 @app.route('/restablecer_contrasena',methods=['POST'])
 def restablecer_contrasena_usuario():
@@ -494,7 +496,9 @@ def restablecer_contrasena_usuario():
 def restablecer_contrasena_confirmacion(token):
     usuario = DataUsers.query.filter_by(token=token).first()
     if not usuario:
-        print('El enlace de restablecimiento de contraseña no es válido o ha expirado.')
+        errortoken="El enlace de restablecimiento de contraseña no es válido o ha expirado."
+        session['errortoken'] = errortoken
+        print(errortoken)
         return redirect(url_for('restablecer_contrasena'))
     if request.method == 'POST':
         if usuario:
