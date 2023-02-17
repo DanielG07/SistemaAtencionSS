@@ -1,6 +1,7 @@
 import pyodbc
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA J CRUZ
+#server='LAPTOP-9T4B4IDA' #PARA J CRUZ
+server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
