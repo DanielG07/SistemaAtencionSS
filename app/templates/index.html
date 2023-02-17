@@ -21,19 +21,44 @@
         <div class="inicio-sesion-form" id="idregistro">
             
             <form action="/inicio" method="POST" enctype="multipart/form-data">
+
+                {% if exitoso %}
+                <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{exitoso}} </p> 
+                </div>
+                {% endif %}
+
+                {% if nueva %}
+                <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{nueva}} </p> 
+                </div>
+                {% endif %}
+
+                {% if instrucciones %}
+                <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{instrucciones}} </p> 
+                </div>
+                {% endif %}
+
                 <div class="form-item">
                     <label class="form-label">Boleta: </label>
                     <div class="form-campo">
-                        <input name="boleta">
+                        <input name="boleta" required>
                     </div>
                 </div>
 
                 <div class="form-item">
                     <label class="form-label">Contraseña: </label>
                     <div class="form-campo">
-                        <input type="password" name="contrasena">
+                        <input type="password" name="contrasena" required>
                     </div>
                 </div>
+
+                {% if error %}
+                <div id="error-message" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > {{error}} </p> 
+                </div>
+                {% endif %}
 
                 <div class="dp-campo">
                     <div class="center-content">
@@ -45,6 +70,7 @@
             </form>
 
             <p class="Registrate no-margin">¿Aún no tienes una cuenta? <a href="/registro">Registrate</a></p>
+            <p class="Registrate no-margin">¿Olvidaste tu <a href="/restablecer_contrasena">contraseña</a>?</p>
 
         </div>
 

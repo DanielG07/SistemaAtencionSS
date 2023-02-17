@@ -22,9 +22,9 @@
                     <h4> DATOS DEL PRESTADOR</h4>
                 </div>
 
-                {% if error %}
+                {% if errorboleta %}
                 <div class=" banner_error red no-margin no-padding dp-campo">
-                    <p class="error-message" >{{ error }}</p> 
+                    <p class="error-message" >{{ errorboleta }}</p> 
                 </div>
                                       
                 {% endif %}
@@ -176,10 +176,14 @@
                     <div class="dp-email">
                         <label class="label_confirmacion">Correo electrónico</label>
                         <div class="Idp-campo">
-                            <input name="Idp-email" type="text" readonly="readonly" placeholder="Correo Electronico" value="{{data.correo}}"/>
+                            <input id="email" name="Idp-email" type="text" placeholder="Correo Electronico" value="{{data.correo}}"/>
                         </div>
                     
                     </div>
+                </div>
+
+                <div id="error-message-eamil" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > Debe ingresar un correo electrónico válido </p> 
                 </div>
 
                 <div class="dp-campo">  
@@ -265,9 +269,9 @@
                 </div>
 
                 <div class="dp-campo dp-Actual">
-                    <label class="label_confirmacion">Fecha Actual </label>
+                    <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
                     <div class="Idp-campo">
-                      <input id="fecha_actual"name="Idp-FActual" type="date" placeholder="Fecha Actual" />
+                      <input style="display: none;" id="fecha_actual"name="Idp-FActual" type="date" placeholder="Fecha Actual" />
                     </div>   
                 </div>
 
@@ -332,6 +336,12 @@
 
                 <div>
                     <h4> GENERACIÓN DE CONTRASEÑA </h4>
+                    <h4>
+                        Esta contraseña será su acceso al Sistema Intrainstitucional de Servcio Social 
+                    </h4>
+                    <h4>
+                        Debe guardarla en un lugar seguro 
+                    </h4>
                 </div>
 
                 <div class="dp-campo ">
@@ -349,17 +359,17 @@
                 </div>
 
                 <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
-                    <p class="error-message"  > Error</p> 
+                    <p class="error-message"  > Las contraseñas deben ser iguales </p> 
                 </div>
 
-
-                <div id="errorMessage"></div>
-
+                <div id="error-message-2" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > La contraseña debe tener al menos 8 caracteres, una mayúscula y un número </p> 
+                </div>
 
             </div>
 
             <div  class="dp-campo">
-                <input class="Idp-campo label_confirmacion" type="submit" id="boton" value="Guardar"> 
+                <input class="Idp-campo label_confirmacion" type="submit" id="boton" value="Registrarse"> 
             </div>
             
         </form>
@@ -399,6 +409,31 @@
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
         var errorMessage = document.getElementById("error-message");
+        var errorMessage2 = document.getElementById("error-message-2");
+        var regex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/;
+        var email = document.getElementById("email").value;
+        var emailError = document.getElementById("error-message-eamil");
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        emailError.style.display="none";
+        errorMessage.style.display="none";
+        errorMessage2.style.display="none";
+        
+
+        if (!emailRegex.test(email)) 
+        {
+            //emailError.innerHTML = "El correo electrónico ingresado no es válido";
+            Event.preventDefault();
+            console.log("Correo electrónico no válido");
+            emailError.style.display="block";
+        }  
+        if (!regex.test(password)) 
+        {
+            //errorMessage2.innerHTML = "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número";
+            Event.preventDefault();
+            console.log("Contraseña no cumple con los requisitos");
+            errorMessage2.style.display="block";
+        }
         console.log(password);
         console.log(confirmPassword);
         console.log(errorMessage);
@@ -408,7 +443,8 @@
             Event.preventDefault();
             console.log("Contraseñas diferentes");
             errorMessage.style.display="block";
-        }     
+        }
+           
 
 
     })

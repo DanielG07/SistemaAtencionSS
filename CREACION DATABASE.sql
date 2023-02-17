@@ -89,6 +89,7 @@ Ubicacion_calleynum VARCHAR(75),
 Ubicacion_colonia VARCHAR(75),
 Ubicacion_alcaldia VARCHAR(75),
 Ubicacion_codpos VARCHAR(30),
+Token VARCHAR(32),
 FOREIGN KEY (Id_carrera) REFERENCES TABLE_CARRERA (id_carrera),
 FOREIGN KEY (Id_Sexo) REFERENCES TABLE_SEXO (Id_Sexo),
 FOREIGN KEY (user_id) REFERENCES USERS (Id_user)

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Olvidó su contraseña?</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" sizes="192x192" href="{{url_for('static', filename='icon/ipn192.png')}}">
+    <!-- <link rel="stylesheet" href="static/css/estilosAlumnos.css"> -->
+</head>
+
+{% block header %}
+{% include 'components/header.html' %}
+{% endblock %}
+
+{% block body %}
+    
+<div class="main-page">
+    <div class="wrap-datos">
+        <div id="idregistro">
+            <h1 class="titulo_Registro_sistema">RESTABLECER CONTRASEÑA </h1>
+            <div>
+                <h4> Para restablecer su contraseña, se requiere su boleta y su correo electrónico que ingresó el Sistema</h4>
+            </div>
+
+            {% if errorboleta %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorboleta }}</p> 
+                </div>               
+            {% endif %}
+
+            {% if errorcorreo %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorcorreo }}</p> 
+                </div>               
+            {% endif %}
+
+            {% if errortoken %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errortoken }}</p> 
+                </div>               
+            {% endif %}
+            
+
+            <form action="" method="post" enctype="multipart/form-data">
+
+                <div class="dp-campo">
+                    <div class="dp-boleta">
+                        <label class="label_confirmacion">Boleta</label>
+                        <div class="Idp-campo">
+                            <input id="boleta" name="Idp-Boleta" type="text" placeholder="Boleta" required />
+                        </div>  
+                    </div>
+                </div>
+
+                <div class="dp-campo">  
+                    <div class="dp-email">
+                        <label class="label_confirmacion">Correo electrónico</label>
+                        <div class="Idp-campo">
+                            <input id="email" name="Idp-email" type="text" placeholder="Correo Electronico" required/>
+                        </div> 
+                    </div>
+                </div>
+
+                <div  class="dp-campo">
+                    <input class="Idp-campo label_confirmacion" type="submit" id="boton" value="Restablecer contraseña"> 
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    
+
+</div>
+
+    
+{% endblock %}
