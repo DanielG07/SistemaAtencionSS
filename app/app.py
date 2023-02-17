@@ -528,7 +528,7 @@ def restablecer_contrasena_confirmacion(token):
     return render_template('restablecer_contrasena_confirmacion.html')
 
 
-#PRUEBAS PARA INICIO DE SESION SIN BASE DE DATOS#
+#PRUEBAS PARA INICIO DE SESION
 @app.route('/inicio', methods=['POST'])
 def inicio():
     data = {
@@ -546,6 +546,12 @@ def inicio():
         error = "Boleta o contraseña inválidos"
         session['error'] = error
         return redirect('/')
+
+@app.route('/cerrar_sesion', methods=['GET'])
+def cerrar_sesion():
+    session.pop('boleta', None)
+    session.clear()
+    return redirect('/')
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)
