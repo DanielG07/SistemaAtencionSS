@@ -29,7 +29,7 @@ GO
 
 CREATE TABLE TABLE_CARRERA
 (
-id_carrera INT PRIMARY KEY NOT NULL,
+Id_Carrera INT PRIMARY KEY NOT NULL,
 DESCRIPCION_CARRERA VARCHAR(15)
 );
 GO
@@ -66,7 +66,8 @@ A_Materno VARCHAR(40),
 CURP VARCHAR(30),
 Boleta VARCHAR(25),
 Id_Sexo INT,
-Id_Plantel int, 
+Id_Plantel int,
+Semestre int, 
 CP VARCHAR(30),
 Tel_particular VARCHAR(30),
 Direccion VARCHAR(max),
@@ -74,6 +75,7 @@ Alcaldia VARCHAR(75),
 Escolaridad VARCHAR(10),
 Correo  VARCHAR(50),
 Id_carrera INT,
+Clave_carrera VARCHAR (10),
 Prestatario VARCHAR(max),
 Codigo_Prestatario VARCHAR(30),
 Responsable VARCHAR(75),
@@ -90,7 +92,7 @@ Ubicacion_colonia VARCHAR(75),
 Ubicacion_alcaldia VARCHAR(75),
 Ubicacion_codpos VARCHAR(30),
 Token VARCHAR(32),
-FOREIGN KEY (Id_carrera) REFERENCES TABLE_CARRERA (id_carrera),
+FOREIGN KEY (Id_carrera) REFERENCES TABLE_CARRERA (Id_Carrera),
 FOREIGN KEY (Id_Sexo) REFERENCES TABLE_SEXO (Id_Sexo),
 FOREIGN KEY (user_id) REFERENCES USERS (Id_user)
 );

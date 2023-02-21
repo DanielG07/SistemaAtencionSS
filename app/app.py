@@ -15,8 +15,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA J CRUZ
-server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='LAPTOP-9T4B4IDA' #PARA J CRUZ
+#server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -66,6 +66,7 @@ class DataUsers(db.Model):
     boleta = db.Column(db.String(25), nullable=True, name='Boleta')
     id_sexo = db.Column(db.Integer,nullable=True,name='Id_Sexo')
     id_plantel = db.Column(db.Integer,nullable=True,name='Id_Plantel')
+    semestre = db.Column(db.Integer,nullable=True,name='Semestre')
     cp = db.Column(db.String(30), nullable=True, name='CP')
     telefono = db.Column(db.String(30), nullable=True, name='Tel_particular')
     direccion =  db.Column(db.String(500), nullable=True, name='Direccion')
@@ -73,6 +74,7 @@ class DataUsers(db.Model):
     escolaridad = db.Column(db.String(10), nullable=True, name='Escolaridad')
     correo = db.Column(db.String(50), nullable=True, name='Correo')
     id_carrera = db.Column(db.Integer, nullable=True,name='Id_carrera')
+    clave_carrera = db.Column(db.String(50), nullable=True, name='Clave_carrera')
     prestatario = db.Column(db.String(500), nullable=True, name='Prestatario')
     codigo_prestatario = db.Column(db.String(30), nullable=True, name='Codigo_Prestatario')
     responsable = db.Column(db.String(75), nullable=True, name='Responsable')
@@ -89,6 +91,13 @@ class DataUsers(db.Model):
     ubicacion_alcaldia = db.Column(db.String(75), nullable=True, name='Ubicacion_alcaldia')
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
     token = db.Column(db.String(32), nullable=True,unique=True,name='Token')
+
+# MODELO PARA EL CATALOGO DE CARRERAS
+class Carreras(db.Model):
+    __tablename__ = 'TABLE_CARRERA'
+    id = db.Column(db.Integer, primary_key=True, name='Id_Carrera')
+    carrera = db.Column(db.String(200), nullable=True, name='DESCRIPCION_CARRERA')
+
 
 def insertar_user(data):
     print(data)
@@ -156,6 +165,7 @@ def insertar_data_user(data,id_user):
             boleta=data.get('boleta'),
             id_sexo=data.get('id_sexo'),
             id_plantel=data.get('plantel'),
+            semestre = data.get('semestre'),
             cp=data.get('codigo_postal'),
             telefono=data.get('tel_particular'),
             direccion=data.get('direccion'),
@@ -163,6 +173,7 @@ def insertar_data_user(data,id_user):
             escolaridad=data.get('escolaridad'),
             correo=data.get('correo'),
             id_carrera=data.get('id_carrera'),
+            clave_carrera = data.get('clave_carrera'),
             prestatario=data.get('prestatario'),
             codigo_prestatario=data.get('codigo'),
             responsable=data.get('responsable'),
@@ -420,12 +431,52 @@ def expedienteEstudiante(boleta):
     data={
         'titulo' : 'Alumno - Expediente'
     }
+    user = DataUsers.query.filter_by(boleta=boleta).first()
+    if user:
+        id = user.id_carrera
+        carreras = Carreras.query.filter_by(id=id).first()
+        expediente = {
+            'nombre': user.nombre,
+            'paterno': user.a_paterno,
+            'materno': user.a_materno,
+            'curp': user.curp,
+            'boleta': user.boleta,
+            'id_sexo': user.id_sexo,
+            'plantel':user.id_plantel,
+            'clave_carrera': user.clave_carrera,
+            'id_carrera': user.id_carrera,
+            'carrera':carreras.carrera,
+            'semestre': user.semestre,
+            'correo': user.correo,
+            'tel_particular':user.telefono,
+            'escolaridad':user.escolaridad,
+            'direccion':user.direccion,
+            'codigo_postal':user.cp,
+            'alcaldia':user.alcaldia,
+            'prestatario': user.prestatario,
+            'codigo': user.codigo_prestatario,
+            'programa': user.programa,
+            'clave_programa':user.clave_programa,
+            'fecha_registro': user.fecha_registro,
+            'fecha_inicio': user.fecha_inicio,
+            'fecha_termino': user.fecha_termino,
+            'responsable':user.responsable,
+            'cargo':user.cargo,
+            'tel_responsable':user.tel_responsable,
+            'correo_prestatario':user.correo_prestatario,
+            'ubicacion_calleynum':user.ubicacion_calleynum,
+            'ubicacion_colonia':user.ubicacion_colonia,
+            'ubicacion_alcaldia':user.ubicacion_alcaldia,
+            'ubicacion_codpos':user.ubicacion_codpos,
+        }
+        print(expediente)
+        
     # Buscar información del estudiante y mandarlo para pintar
-    expediente = {}
-    for item in registro_mock:
-        if item.get("boleta") == boleta:
-            expediente = item
-            break
+        
+    #for item in registro_mock:
+        #if item.get("boleta") == boleta:
+            #expediente = item
+            #break
     return render_template('estudiante/expediente.html', data=data, expediente=expediente)
 
 @app.route('/estudiante/perfil/<boleta>', methods=['GET'])
