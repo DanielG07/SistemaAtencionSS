@@ -91,6 +91,7 @@ class DataUsers(db.Model):
     ubicacion_alcaldia = db.Column(db.String(75), nullable=True, name='Ubicacion_alcaldia')
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
     token = db.Column(db.String(32), nullable=True,unique=True,name='Token')
+    No_registro = db.Column(db.String(20), nullable=True, name='No_Registro')
 
 # MODELO PARA EL CATALOGO DE CARRERAS
 class Carreras(db.Model):
@@ -189,6 +190,7 @@ def insertar_data_user(data,id_user):
             ubicacion_colonia=data.get('ubicacion_colonia'),
             ubicacion_alcaldia=data.get('ubicacion_alcaldia'),
             ubicacion_codpos=data.get('ubicacion_codpos'),
+            #No_registro = "SIN ASIGNAR",
         )
         print(new_user)
         db.session.add(new_user)
