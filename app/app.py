@@ -189,7 +189,7 @@ def insertar_data_user(data,id_user):
             ubicacion_colonia=data.get('ubicacion_colonia'),
             ubicacion_alcaldia=data.get('ubicacion_alcaldia'),
             ubicacion_codpos=data.get('ubicacion_codpos'),
-            #No_registro = "SIN ASIGNAR",
+            No_registro = "SIN ASIGNAR",
         )
         print(new_user)
         db.session.add(new_user)
@@ -469,6 +469,7 @@ def expedienteEstudiante(boleta):
             'ubicacion_colonia':user.ubicacion_colonia,
             'ubicacion_alcaldia':user.ubicacion_alcaldia,
             'ubicacion_codpos':user.ubicacion_codpos,
+            'numero':user.No_registro,
         }
         print(expediente)
         
