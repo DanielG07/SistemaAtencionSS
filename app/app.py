@@ -99,7 +99,6 @@ class Carreras(db.Model):
     id = db.Column(db.Integer, primary_key=True, name='Id_Carrera')
     carrera = db.Column(db.String(200), nullable=True, name='DESCRIPCION_CARRERA')
 
-
 def insertar_user(data):
     print(data)
     password = data.get('contrasena')

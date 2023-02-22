@@ -30,18 +30,28 @@ GO
 CREATE TABLE TABLE_CARRERA
 (
 Id_Carrera INT PRIMARY KEY NOT NULL,
-Descripcion_Carrera VARCHAR(15)
+Descripcion_Carrera VARCHAR(200)
 );
 GO
-ALTER TABLE TABLE_CARRERA
-ALTER COLUMN Descripcion_Carrera VARCHAR(200)
-GO
+
 
 CREATE TABLE STATUS_USER
 (
 Id_Estatus_user INT PRIMARY KEY NOT NULL,
 Descripcion_Status VARCHAR(10)
 );
+GO
+
+CREATE TABLE STATUS_DOCUMENTO(
+Id_Status_Documento INT PRIMARY KEY NOT NULL,
+Status_Documento VARCHAR(20)
+)
+GO
+
+CREATE TABLE TIPO_DOCUMENTO(
+Id_Tipo_Documento INT PRIMARY KEY NOT NULL,
+Tipo_Documento VARCHAR(40)
+)
 GO
 
 CREATE TABLE USERS 
@@ -92,39 +102,23 @@ Ubicacion_colonia VARCHAR(75),
 Ubicacion_alcaldia VARCHAR(75),
 Ubicacion_codpos VARCHAR(30),
 Token VARCHAR(32),
+No_Registro VARCHAR(20),
 FOREIGN KEY (Id_carrera) REFERENCES TABLE_CARRERA (Id_Carrera),
 FOREIGN KEY (Id_Sexo) REFERENCES TABLE_SEXO (Id_Sexo),
-FOREIGN KEY (user_id) REFERENCES USERS (Id_user)
+FOREIGN KEY (user_id) REFERENCES USERS (Id_user),
 );
-GO
-CREATE TABLE STATUS_DOCUMENTO(
-Id_Status_Documento INT PRIMARY KEY NOT NULL,
-Status_Documento VARCHAR(20)
-)
-GO
-CREATE TABLE TIPO_DOCUMENTO(
-Id_Tipo_Documento INT PRIMARY KEY NOT NULL,
-Tipo_Documento VARCHAR(40)
-)
 GO
 
 CREATE TABLE DOCUMENTOS(
-No_Registro VARCHAR(20) PRIMARY KEY,
+Id_documento INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+Id_alumno INT,
 Id_Tipo_Documento INT,
 Id_Status_Documento INT,
 Fecha_Envio DATE,
 Fecha_aceptado DATE,
 Ubicacion_Archivo VARCHAR(80)
 FOREIGN KEY (Id_Tipo_Documento) REFERENCES TIPO_DOCUMENTO(Id_Tipo_Documento),
-FOREIGN KEY (Id_Status_Documento) REFERENCES STATUS_DOCUMENTO(Id_Status_Documento)
+FOREIGN KEY (Id_Status_Documento) REFERENCES STATUS_DOCUMENTO(Id_Status_Documento),
+FOREIGN KEY (Id_alumno) REFERENCES DATA_USERS(Id_data_users)
 )
 GO
-Alter Table DATA_USERS
-ADD No_Registro VARCHAR(20)
-GO
-Alter Table DATA_USERS
-ADD FOREIGN KEY (No_Registro) REFERENCES DOCUMENTOS(No_Registro)
-GO
-
-
-
