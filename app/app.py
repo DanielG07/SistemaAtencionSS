@@ -210,6 +210,51 @@ def insertar_data_user(data,id_user):
         print("Error al insertar el registro: ", e)
         db.session.rollback()
 
+# CREACION DE LOS DOCUMENTOS DEL ALUMNO (EN EL REGISTRO)
+def crear_documentos(Id_alumno):
+    print(Id_alumno)
+    try:
+        documento1 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 1,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        documento2 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 2,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        documento3 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 3,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        documento4 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 4,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        db.session.add(documento1)
+        db.session.add(documento2)
+        db.session.add(documento3)
+        db.session.add(documento4)
+        db.session.commit()
+        print("Documento creado en la base de datos")
+    except Exception as e:
+        print("Error al crear el documento", e)
+        db.session.rollback()
 
 ## RUTAS DE LA APLICACION
 
@@ -313,12 +358,16 @@ def registro():
             ##INSERCION DE DATOS DEL ALUMNO
             insertar_data_user(data,id_user)
             ##CREACION DE LOS DOCUMENTOS DEL ALUMNO
+            alumno = DataUsers.query.filter_by(boleta=data.get('boleta')).first()
+            if alumno:
+                id_alumno = alumno.id
+                crear_documentos(id_alumno)
             exitoso="Tu registro fue exitoso"
             session['exitoso'] = exitoso
             return redirect('/')
         else:
             id_user = None
-            print("No existe el usuario")        
+            print("No existe el usuario")
     return render_template("confirmacion.html")
         
 
