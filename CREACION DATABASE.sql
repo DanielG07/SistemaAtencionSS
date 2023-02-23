@@ -115,8 +115,8 @@ Id_alumno INT,
 Id_Tipo_Documento INT,
 Id_Status_Documento INT,
 Fecha_Envio DATE,
-Fecha_aceptado DATE,
-Ubicacion_Archivo VARCHAR(80)
+Fecha_Aceptado DATE,
+Ubicacion_Archivo VARCHAR(256)
 FOREIGN KEY (Id_Tipo_Documento) REFERENCES TIPO_DOCUMENTO(Id_Tipo_Documento),
 FOREIGN KEY (Id_Status_Documento) REFERENCES STATUS_DOCUMENTO(Id_Status_Documento),
 FOREIGN KEY (Id_alumno) REFERENCES DATA_USERS(Id_data_users)

@@ -99,6 +99,17 @@ class Carreras(db.Model):
     id = db.Column(db.Integer, primary_key=True, name='Id_Carrera')
     carrera = db.Column(db.String(200), nullable=True, name='DESCRIPCION_CARRERA')
 
+# MODELO PARA LA TABLA "DOCUMENTOS"
+class Documentos(db.Model):
+    __tablename__ = 'DOCUMENTOS'
+    id = db.Column(db.Integer, primary_key=True, name='Id_documento')
+    id_alumno = db.Column(db.Integer, name='Id_alumno')
+    id_tipo = db.Column(db.Integer, name='Id_Tipo_Documento')
+    id_status = db.Column(db.Integer, name='Id_Status_Documento')
+    fecha_envio = db.Column(db.Date, nullable=True, name='Fecha_Envio')
+    fecha_aceptado = db.Column(db.Date, nullable=True, name='Fecha_Aceptado')
+    ubicacion = db.Column(db.String(256), nullable=True, name='Ubicacion_Archivo')
+
 def insertar_user(data):
     print(data)
     password = data.get('contrasena')
@@ -299,10 +310,9 @@ def registro():
         user = Users.query.filter_by(boleta=data.get('boleta')).first()
         if user:
             id_user = user.id
-            print("La consulta dio resultado, el ID del alumno en la tabla USERS es:")
-            print(id_user)
-            print(type(id_user))
+            ##INSERCION DE DATOS DEL ALUMNO
             insertar_data_user(data,id_user)
+            ##CREACION DE LOS DOCUMENTOS DEL ALUMNO
             exitoso="Tu registro fue exitoso"
             session['exitoso'] = exitoso
             return redirect('/')
