@@ -379,9 +379,7 @@ def uploader():
         f.save(os.path.join(app.config['UPLOADER_FOLDER'],filename))
         print(filename)
         ruta = './app/pdfs/'+ filename
-        print(ruta)
-        registro = lectura(ruta)
-        data=registro
+        data = lectura(ruta)
         print(data)
         if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
             errorboleta = session.get('errorboleta', None)

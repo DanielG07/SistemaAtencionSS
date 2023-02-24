@@ -35,7 +35,7 @@ def putField(pdf, campo, bboxes, notFound='No disponible'):
 def pdf_to_dict(archivoPDF):	
 		pdf = pdfquery.PDFQuery(archivoPDF)
 		pdf.load(0)
-		pdf.tree.write(archivoPDF+'.xml', pretty_print = True, encoding="utf-8")
+		#pdf.tree.write(archivoPDF+'.xml', pretty_print = True, encoding="utf-8")
 
 		datos_comprobante["archivo"]=archivoPDF	
 
@@ -510,6 +510,8 @@ def pdf_to_dict(archivoPDF):
 		if(datos_comprobante['sexo']=='Femenino'):
 			datos_comprobante['id_sexo']=2	
 
+		pdf.file.close()
+		os.remove(archivoPDF)
 		return datos_comprobante
 
 
