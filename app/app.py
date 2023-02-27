@@ -110,6 +110,17 @@ class Documentos(db.Model):
     fecha_aceptado = db.Column(db.Date, nullable=True, name='Fecha_Aceptado')
     ubicacion = db.Column(db.String(256), nullable=True, name='Ubicacion_Archivo')
 
+class StatusDocumento (db.Model):
+    __tablename__ = 'STATUS_DOCUMENTO'
+    id_Status = db.Column(db.Integer, primary_key=True, name='Id_Status_Documento')
+    Status_Documento = db.Column(db.String(20), nullable=True,  name='Status_Documento')
+
+
+class TipoDocumento (db.Model):
+    __tablename__ = 'TIPO_DOCUMENTO'
+    id_Tipo_Documento = db.Column(db.Interger, primary_key=True, name='Id_Tipo_Documento')
+    Tipo_Documento = db.Column(db.String(40), nullable=True, name='Tipo_Documento' )
+
 def insertar_user(data):
     print(data)
     password = data.get('contrasena')
@@ -666,6 +677,3 @@ def cerrar_sesion():
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)
-
-
-
