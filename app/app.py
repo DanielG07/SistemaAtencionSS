@@ -15,8 +15,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA J CRUZ
-server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+#server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -54,7 +54,6 @@ class Users(db.Model):
     Tipo_user = db.Column(db.Integer, nullable=False,name='Tipo_user')
     Id_Estatus_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')  
 
-
 # MODELO PARA LA TABLA "DATA_USERS"
 class DataUsers(db.Model):
     __tablename__ = 'DATA_USERS'
@@ -67,6 +66,7 @@ class DataUsers(db.Model):
     boleta = db.Column(db.String(25), nullable=True, name='Boleta')
     id_sexo = db.Column(db.Integer,nullable=True,name='Id_Sexo')
     id_plantel = db.Column(db.Integer,nullable=True,name='Id_Plantel')
+    semestre = db.Column(db.Integer,nullable=True,name='Semestre')
     cp = db.Column(db.String(30), nullable=True, name='CP')
     telefono = db.Column(db.String(30), nullable=True, name='Tel_particular')
     direccion =  db.Column(db.String(500), nullable=True, name='Direccion')
@@ -74,6 +74,7 @@ class DataUsers(db.Model):
     escolaridad = db.Column(db.String(10), nullable=True, name='Escolaridad')
     correo = db.Column(db.String(50), nullable=True, name='Correo')
     id_carrera = db.Column(db.Integer, nullable=True,name='Id_carrera')
+    clave_carrera = db.Column(db.String(50), nullable=True, name='Clave_carrera')
     prestatario = db.Column(db.String(500), nullable=True, name='Prestatario')
     codigo_prestatario = db.Column(db.String(30), nullable=True, name='Codigo_Prestatario')
     responsable = db.Column(db.String(75), nullable=True, name='Responsable')
@@ -90,7 +91,25 @@ class DataUsers(db.Model):
     ubicacion_alcaldia = db.Column(db.String(75), nullable=True, name='Ubicacion_alcaldia')
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
     token = db.Column(db.String(32), nullable=True,unique=True,name='Token')
-    
+    No_registro = db.Column(db.String(20), nullable=True, name='No_Registro')
+
+# MODELO PARA EL CATALOGO DE CARRERAS
+class Carreras(db.Model):
+    __tablename__ = 'TABLE_CARRERA'
+    id = db.Column(db.Integer, primary_key=True, name='Id_Carrera')
+    carrera = db.Column(db.String(200), nullable=True, name='DESCRIPCION_CARRERA')
+
+# MODELO PARA LA TABLA "DOCUMENTOS"
+class Documentos(db.Model):
+    __tablename__ = 'DOCUMENTOS'
+    id = db.Column(db.Integer, primary_key=True, name='Id_documento')
+    id_alumno = db.Column(db.Integer, name='Id_alumno')
+    id_tipo = db.Column(db.Integer, name='Id_Tipo_Documento')
+    id_status = db.Column(db.Integer, name='Id_Status_Documento')
+    fecha_envio = db.Column(db.Date, nullable=True, name='Fecha_Envio')
+    fecha_aceptado = db.Column(db.Date, nullable=True, name='Fecha_Aceptado')
+    ubicacion = db.Column(db.String(256), nullable=True, name='Ubicacion_Archivo')
+
 class StatusDocumento (db.Model):
     __tablename__ = 'STATUS_DOCUMENTO'
     id_Status = db.Column(db.Integer, primary_key=True, name='Id_Status_Documento')
@@ -101,7 +120,6 @@ class TipoDocumento (db.Model):
     __tablename__ = 'TIPO_DOCUMENTO'
     id_Tipo_Documento = db.Column(db.Interger, primary_key=True, name='Id_Tipo_Documento')
     Tipo_Documento = db.Column(db.String(40), nullable=True, name='Tipo_Documento' )
-
 
 def insertar_user(data):
     print(data)
@@ -169,6 +187,7 @@ def insertar_data_user(data,id_user):
             boleta=data.get('boleta'),
             id_sexo=data.get('id_sexo'),
             id_plantel=data.get('plantel'),
+            semestre = data.get('semestre'),
             cp=data.get('codigo_postal'),
             telefono=data.get('tel_particular'),
             direccion=data.get('direccion'),
@@ -176,6 +195,7 @@ def insertar_data_user(data,id_user):
             escolaridad=data.get('escolaridad'),
             correo=data.get('correo'),
             id_carrera=data.get('id_carrera'),
+            clave_carrera = data.get('clave_carrera'),
             prestatario=data.get('prestatario'),
             codigo_prestatario=data.get('codigo'),
             responsable=data.get('responsable'),
@@ -191,6 +211,7 @@ def insertar_data_user(data,id_user):
             ubicacion_colonia=data.get('ubicacion_colonia'),
             ubicacion_alcaldia=data.get('ubicacion_alcaldia'),
             ubicacion_codpos=data.get('ubicacion_codpos'),
+            No_registro = "SIN ASIGNAR",
         )
         print(new_user)
         db.session.add(new_user)
@@ -200,6 +221,51 @@ def insertar_data_user(data,id_user):
         print("Error al insertar el registro: ", e)
         db.session.rollback()
 
+# CREACION DE LOS DOCUMENTOS DEL ALUMNO (EN EL REGISTRO)
+def crear_documentos(Id_alumno):
+    print(Id_alumno)
+    try:
+        documento1 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 1,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        documento2 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 2,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        documento3 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 3,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        documento4 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 4,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
+        db.session.add(documento1)
+        db.session.add(documento2)
+        db.session.add(documento3)
+        db.session.add(documento4)
+        db.session.commit()
+        print("Documento creado en la base de datos")
+    except Exception as e:
+        print("Error al crear el documento", e)
+        db.session.rollback()
 
 ## RUTAS DE LA APLICACION
 
@@ -300,16 +366,19 @@ def registro():
         user = Users.query.filter_by(boleta=data.get('boleta')).first()
         if user:
             id_user = user.id
-            print("La consulta dio resultado, el ID del alumno en la tabla USERS es:")
-            print(id_user)
-            print(type(id_user))
+            ##INSERCION DE DATOS DEL ALUMNO
             insertar_data_user(data,id_user)
+            ##CREACION DE LOS DOCUMENTOS DEL ALUMNO
+            alumno = DataUsers.query.filter_by(boleta=data.get('boleta')).first()
+            if alumno:
+                id_alumno = alumno.id
+                crear_documentos(id_alumno)
             exitoso="Tu registro fue exitoso"
             session['exitoso'] = exitoso
             return redirect('/')
         else:
             id_user = None
-            print("No existe el usuario")        
+            print("No existe el usuario")
     return render_template("confirmacion.html")
         
 
@@ -321,9 +390,7 @@ def uploader():
         f.save(os.path.join(app.config['UPLOADER_FOLDER'],filename))
         print(filename)
         ruta = './app/pdfs/'+ filename
-        print(ruta)
-        registro = lectura(ruta)
-        data=registro
+        data = lectura(ruta)
         print(data)
         if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
             errorboleta = session.get('errorboleta', None)
@@ -433,12 +500,53 @@ def expedienteEstudiante(boleta):
     data={
         'titulo' : 'Alumno - Expediente'
     }
+    user = DataUsers.query.filter_by(boleta=boleta).first()
+    if user:
+        id = user.id_carrera
+        carreras = Carreras.query.filter_by(id=id).first()
+        expediente = {
+            'nombre': user.nombre,
+            'paterno': user.a_paterno,
+            'materno': user.a_materno,
+            'curp': user.curp,
+            'boleta': user.boleta,
+            'id_sexo': user.id_sexo,
+            'plantel':user.id_plantel,
+            'clave_carrera': user.clave_carrera,
+            'id_carrera': user.id_carrera,
+            'carrera':carreras.carrera,
+            'semestre': user.semestre,
+            'correo': user.correo,
+            'tel_particular':user.telefono,
+            'escolaridad':user.escolaridad,
+            'direccion':user.direccion,
+            'codigo_postal':user.cp,
+            'alcaldia':user.alcaldia,
+            'prestatario': user.prestatario,
+            'codigo': user.codigo_prestatario,
+            'programa': user.programa,
+            'clave_programa':user.clave_programa,
+            'fecha_registro': user.fecha_registro,
+            'fecha_inicio': user.fecha_inicio,
+            'fecha_termino': user.fecha_termino,
+            'responsable':user.responsable,
+            'cargo':user.cargo,
+            'tel_responsable':user.tel_responsable,
+            'correo_prestatario':user.correo_prestatario,
+            'ubicacion_calleynum':user.ubicacion_calleynum,
+            'ubicacion_colonia':user.ubicacion_colonia,
+            'ubicacion_alcaldia':user.ubicacion_alcaldia,
+            'ubicacion_codpos':user.ubicacion_codpos,
+            'numero':user.No_registro,
+        }
+        print(expediente)
+        
     # Buscar información del estudiante y mandarlo para pintar
-    expediente = {}
-    for item in registro_mock:
-        if item.get("boleta") == boleta:
-            expediente = item
-            break
+        
+    #for item in registro_mock:
+        #if item.get("boleta") == boleta:
+            #expediente = item
+            #break
     return render_template('estudiante/expediente.html', data=data, expediente=expediente)
 
 @app.route('/estudiante/perfil/<boleta>', methods=['GET'])
@@ -569,6 +677,3 @@ def cerrar_sesion():
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)
-
-
-
