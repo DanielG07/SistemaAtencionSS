@@ -91,7 +91,7 @@ class DataUsers(db.Model):
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
     token = db.Column(db.String(32), nullable=True,unique=True,name='Token')
     
-    class StatusDocumento (db.Model):
+class StatusDocumento (db.Model):
     __tablename__ = 'STATUS_DOCUMENTO'
     id_Status = db.Column(db.Integer, primary_key=True, name='Id_Status_Documento')
     Status_Documento = db.Column(db.String(20), nullable=True,  name='Status_Documento')
