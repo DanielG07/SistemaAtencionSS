@@ -14,8 +14,8 @@ from lee_pdf import lectura
 import hashlib
 import secrets
 
-#server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
+#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
 #server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
