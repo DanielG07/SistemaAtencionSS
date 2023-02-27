@@ -118,8 +118,28 @@ class StatusDocumento (db.Model):
 
 class TipoDocumento (db.Model):
     __tablename__ = 'TIPO_DOCUMENTO'
-    id_Tipo_Documento = db.Column(db.Interger, primary_key=True, name='Id_Tipo_Documento')
+    id_Tipo_Documento = db.Column(db.Integer, primary_key=True, name='Id_Tipo_Documento')
     Tipo_Documento = db.Column(db.String(40), nullable=True, name='Tipo_Documento' )
+
+class TipoUserTable (db.Model):
+    __tablename__ = 'TIPO_USERS_TABLE'
+    id_Tipo_Users = db.Column(db.Integer, primary_key=True, name='Id_Tipo_Users')
+    Descripcion_user = db.Column(db.String(20), nullable=True, name='Descripcion_user' )
+
+class TipoUserTable (db.Model):
+    __tablename__ = 'STATUS_USER'
+    id_Estatus_user = db.Column(db.Integer, primary_key=True, name='Id_Estatus_user')
+    Descripcion_Status = db.Column(db.String(10), nullable=True, name='Descripcion_Status' )
+
+class TipoUserTable (db.Model):
+    __tablename__ = 'TABLE_SEXO'
+    id_Sexo = db.Column(db.Integer, primary_key=True, name='Id_Sexo')
+    Sexo = db.Column(db.String(15), nullable=True, name='Sexo' )    
+
+
+
+ 
+
 
 def insertar_user(data):
     print(data)
