@@ -14,9 +14,9 @@ from lee_pdf import lectura
 import hashlib
 import secrets
 
-server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
+#server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
 #server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-#server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -576,12 +576,46 @@ def perfilEstudiante(boleta):
     data={
         'titulo' : 'Alumno - Perfil'
     }
+    user = DataUsers.query.filter_by(boleta=boleta).first()
+    if user:
+        id = user.id_carrera
+        carreras = Carreras.query.filter_by(id=id).first()
+        expediente = {
+            'nombre': user.nombre,
+            'paterno': user.a_paterno,
+            'materno': user.a_materno,
+            'curp': user.curp,
+            'boleta': user.boleta,
+            'id_sexo': user.id_sexo,
+            'plantel':user.id_plantel,
+            'clave_carrera': user.clave_carrera,
+            'id_carrera': user.id_carrera,
+            'carrera':carreras.carrera,
+            'semestre': user.semestre,
+            'correo': user.correo,
+            'tel_particular':user.telefono,
+            'escolaridad':user.escolaridad,
+            'direccion':user.direccion,
+            'codigo_postal':user.cp,
+            'alcaldia':user.alcaldia,
+            'prestatario': user.prestatario,
+            'codigo': user.codigo_prestatario,
+            'programa': user.programa,
+            'clave_programa':user.clave_programa,
+            'fecha_registro': user.fecha_registro,
+            'fecha_inicio': user.fecha_inicio,
+            'fecha_termino': user.fecha_termino,
+            'responsable':user.responsable,
+            'cargo':user.cargo,
+            'tel_responsable':user.tel_responsable,
+            'correo_prestatario':user.correo_prestatario,
+            'ubicacion_calleynum':user.ubicacion_calleynum,
+            'ubicacion_colonia':user.ubicacion_colonia,
+            'ubicacion_alcaldia':user.ubicacion_alcaldia,
+            'ubicacion_codpos':user.ubicacion_codpos,
+            'numero':user.No_registro,
+        }
     # Buscar información del estudiante y mandarlo para pintar
-    expediente = {}
-    for item in registro_mock:
-        if item.get("boleta") == boleta:
-            expediente = item
-            break
     return render_template('estudiante/perfil.html', data=data, expediente=expediente)
 
 
