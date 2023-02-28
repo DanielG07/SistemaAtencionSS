@@ -8,6 +8,7 @@ from flask_mail import Mail
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
@@ -15,8 +16,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+#server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -112,29 +113,29 @@ class Documentos(db.Model):
 
 class StatusDocumento (db.Model):
     __tablename__ = 'STATUS_DOCUMENTO'
-    id_Status = db.Column(db.Integer, primary_key=True, name='Id_Status_Documento')
-    Status_Documento = db.Column(db.String(20), nullable=True,  name='Status_Documento')
+    id = db.Column(db.Integer, primary_key=True, name='Id_Status_Documento')
+    status_documento = db.Column(db.String(20), nullable=True,  name='Status_Documento')
 
 
 class TipoDocumento (db.Model):
     __tablename__ = 'TIPO_DOCUMENTO'
-    id_Tipo_Documento = db.Column(db.Integer, primary_key=True, name='Id_Tipo_Documento')
-    Tipo_Documento = db.Column(db.String(40), nullable=True, name='Tipo_Documento' )
+    id = db.Column(db.Integer, primary_key=True, name='Id_Tipo_Documento')
+    tipo_documento = db.Column(db.String(40), nullable=True, name='Tipo_Documento' )
 
-class TipoUserTable (db.Model):
+class TipoUser (db.Model):
     __tablename__ = 'TIPO_USERS_TABLE'
-    id_Tipo_Users = db.Column(db.Integer, primary_key=True, name='Id_Tipo_Users')
-    Descripcion_user = db.Column(db.String(20), nullable=True, name='Descripcion_user' )
+    id = db.Column(db.Integer, primary_key=True, name='Id_Tipo_Users')
+    tipo_usuario = db.Column(db.String(20), nullable=True, name='Descripcion_user' )
 
-class TipoUserTable (db.Model):
+class StatusUser (db.Model):
     __tablename__ = 'STATUS_USER'
-    id_Estatus_user = db.Column(db.Integer, primary_key=True, name='Id_Estatus_user')
-    Descripcion_Status = db.Column(db.String(10), nullable=True, name='Descripcion_Status' )
+    id = db.Column(db.Integer, primary_key=True, name='Id_Estatus_user')
+    status = db.Column(db.String(10), nullable=True, name='Descripcion_Status' )
 
-class TipoUserTable (db.Model):
+class Sexo (db.Model):
     __tablename__ = 'TABLE_SEXO'
     id_Sexo = db.Column(db.Integer, primary_key=True, name='Id_Sexo')
-    Sexo = db.Column(db.String(15), nullable=True, name='Sexo' )    
+    sexo = db.Column(db.String(15), nullable=True, name='Sexo' )    
 
 
 
@@ -522,8 +523,42 @@ def expedienteEstudiante(boleta):
     }
     user = DataUsers.query.filter_by(boleta=boleta).first()
     if user:
-        id = user.id_carrera
-        carreras = Carreras.query.filter_by(id=id).first()
+        id = user.id
+        id_carrera = user.id_carrera
+        carreras = Carreras.query.filter_by(id=id_carrera).first()
+        documentos = db.session.query(Documentos).join(DataUsers, DataUsers.id==Documentos.id_alumno).\
+            filter(DataUsers.id==id).all()
+        print(documentos)
+        print(len(documentos))
+        documentos_list = []
+        for documento in documentos:
+            id_alumno = documento.id_alumno
+            id_tipo = documento.id_tipo
+            id_status = documento.id_status
+            tipo_doc= TipoDocumento.query.filter_by(id=id_tipo).first()
+            status_doc = StatusDocumento.query.filter_by(id=id_status).first()
+            documento_dict = {
+            'id_alumno': id_alumno,
+            'id_tipo': id_tipo,
+            'id_status': id_status,
+            'fecha_envio': documento.fecha_envio,
+            'fecha_aceptado': documento.fecha_aceptado,
+            'ubicacion': documento.ubicacion,
+            'tipo_documento': tipo_doc.tipo_documento,
+            'status_documento': status_doc.status_documento,
+            }
+            documentos_list.append(documento_dict)
+        ## SE IMPRIME CADA ELEMENTO DE LA LISTA
+        for documento in documentos_list:
+            print(documento['id_alumno'])
+            print(documento['id_tipo'])
+            print(documento['id_status'])
+            print(documento['fecha_envio'])
+            print(documento['fecha_aceptado'])
+            print(documento['ubicacion'])
+            print(documento['tipo_documento'])
+            print(documento['status_documento'])  
+
         expediente = {
             'nombre': user.nombre,
             'paterno': user.a_paterno,
@@ -567,7 +602,7 @@ def expedienteEstudiante(boleta):
         #if item.get("boleta") == boleta:
             #expediente = item
             #break
-    return render_template('estudiante/expediente.html', data=data, expediente=expediente)
+    return render_template('estudiante/expediente.html', data=data, expediente=expediente,documentos=documentos_list)
 
 @app.route('/estudiante/perfil/<boleta>', methods=['GET'])
 def perfilEstudiante(boleta):

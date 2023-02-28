@@ -42,10 +42,10 @@
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">1</td>
-                <td class="centrar-texto">Expediente</td>
-                <td class="centrar-texto">ACEPTADO</td>
-                <td class="centrar-texto">{{expediente.f_envio}}</td>
-                <td class="centrar-texto">{{expediente.f_envio}}</td>
+                <td class="centrar-texto">{{ documentos[0]['tipo_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[0]['status_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[0]['fecha_envio'] }}</td>
+                <td class="centrar-texto">{{ documentos[0]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
                 <td class="centrar-texto">
                    ACEPTADO
@@ -53,10 +53,10 @@
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">2</td>
-                <td class="centrar-texto">Evaluación de desempeño</td>
-                <td class="centrar-texto">ESPERA APROBACIÓN</td>
-                <td class="centrar-texto">{{expediente.f_envio}}</td>
-                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">{{ documentos[1]['tipo_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[1]['status_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[1]['fecha_envio'] }}</td>
+                <td class="centrar-texto">{{ documentos[1]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
                 <td class="centrar-texto">
                     <button>Aceptar</button>
@@ -65,10 +65,10 @@
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">3</td>
-                <td class="centrar-texto">Carta Término</td>
-                <td class="centrar-texto">-</td>
-                <td class="centrar-texto">-</td>
-                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">{{ documentos[2]['tipo_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[2]['status_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[2]['fecha_envio'] }}</td>
+                <td class="centrar-texto">{{ documentos[2]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
                 <td class="centrar-texto">
                     <button>Aceptar</button>
@@ -77,10 +77,10 @@
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">4</td>
-                <td class="centrar-texto">Constancia de liberación</td>
-                <td class="centrar-texto">-</td>
-                <td class="centrar-texto">-</td>
-                <td class="centrar-texto">-</td>
+                <td class="centrar-texto">{{ documentos[3]['tipo_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[3]['status_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[3]['fecha_envio'] }}</td>
+                <td class="centrar-texto">{{ documentos[3]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
                 <td class="centrar-texto">
                     <button>Aceptar</button>
