@@ -134,7 +134,7 @@ class StatusUser (db.Model):
 
 class Sexo (db.Model):
     __tablename__ = 'TABLE_SEXO'
-    id_Sexo = db.Column(db.Integer, primary_key=True, name='Id_Sexo')
+    id = db.Column(db.Integer, primary_key=True, name='Id_Sexo')
     sexo = db.Column(db.String(15), nullable=True, name='Sexo' )    
 
 
@@ -613,8 +613,10 @@ def perfilEstudiante(boleta):
     }
     user = DataUsers.query.filter_by(boleta=boleta).first()
     if user:
-        id = user.id_carrera
-        carreras = Carreras.query.filter_by(id=id).first()
+        id_carrera = user.id_carrera
+        id_sexo = user.id_sexo
+        carreras = Carreras.query.filter_by(id=id_carrera).first()
+        sexos = Sexo.query.filter_by(id=id_sexo).first()
         expediente = {
             'nombre': user.nombre,
             'paterno': user.a_paterno,
@@ -622,6 +624,7 @@ def perfilEstudiante(boleta):
             'curp': user.curp,
             'boleta': user.boleta,
             'id_sexo': user.id_sexo,
+            'sexo':sexos.sexo,
             'plantel':user.id_plantel,
             'clave_carrera': user.clave_carrera,
             'id_carrera': user.id_carrera,
