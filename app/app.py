@@ -782,12 +782,13 @@ def subirExpediente():
             'titulo': 'Alumno'
         }
         f = request.files['expediente']
-        filename= secure_filename(f.filename)
-        f.save(os.path.join(app.config['EXPEDIENTES'] ,filename))
-        print(filename)
-        ruta = './app/documentos/Expedientes/'+ filename
+        filename = secure_filename(f.filename)
+        boleta = session.get('boleta', None)
+        new_filename = "Expediente" + boleta + os.path.splitext(filename)[1]
+        f.save(os.path.join(app.config['EXPEDIENTES'], new_filename))
+        print(new_filename)
+        ruta = './app/documentos/Expedientes/' + new_filename
         print("Se ha guardado correctamente en la ruta " + ruta)
-        #boleta = session.get('boleta',None)
         return render_template('estudiante/main.html', data=data)
 
 if __name__== '__main__':
