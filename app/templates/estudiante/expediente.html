@@ -91,4 +91,70 @@
     </div>
 
 </div>
+
+{% if expediente.espera == False %}
+    {% for documento in documentos %}
+        {% if documento.id_tipo == 1 and documento.id_status == 1 %}
+        <div class="main-page">
+            <div class="wrap-datos">
+                <div id="idregistro">
+                    <h1 class="titulo_Registro_sistema">Expediente</h1>
+                    <div>
+                        <h4> Suba su expediente en el siguiente apartado, y espere la validación de los administradores </h4>
+                    </div>
+                
+                    <form action="/subir_expediente" method="post" enctype="multipart/form-data">
+                        <div class="dp-campo_registro">
+                            <div>
+                                <label class="form-label">Expediente</label>
+                                <div class="Idp-campo">
+                                    <input id="expediente" type="file" name="expediente" accept=".pdf" onchange="validarArchivo()" required >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                            <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
+                        </div>
+        
+                        <div class="dp-campo">
+                            <div>
+                                <label></label>
+                                <div class="Idp-submit_registro">
+                                    <input type="submit">
+                                </div>   
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
+        
+            
+        
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+<script>
+
+function validarArchivo() 
+{
+  const fileInput = document.getElementById('expediente');
+  const errorMessage = document.getElementById('error-message');
+  const maxFileSize = 3 * 1024 * 1024; // 3 MB
+
+  errorMessage.style.display="none";
+  
+  if (fileInput.files[0].size > maxFileSize) 
+  {
+    errorMessage.style.display="block";
+    fileInput.value = '';
+  } 
+}
+
+</script>
+
 {% endblock %}

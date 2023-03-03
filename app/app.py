@@ -23,7 +23,8 @@ user='SS_SISTEMAATENCION'
 password='Irvin19+'
 
 app = Flask(__name__)
-app.config['UPLOADER_FOLDER'] = "./app/pdfs"
+app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso"
+app.config['EXPEDIENTES'] = "./app/documentos/Expedientes"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'mysecretkey'
@@ -408,9 +409,9 @@ def uploader():
     if request.method == "POST":
         f = request.files['archivo']
         filename= secure_filename(f.filename)
-        f.save(os.path.join(app.config['UPLOADER_FOLDER'],filename))
+        f.save(os.path.join(app.config['CARTAS_COMPROMISO'],filename))
         print(filename)
-        ruta = './app/pdfs/'+ filename
+        ruta = './app/documentos/CartaCompromiso/'+ filename
         data = lectura(ruta)
         print(data)
         if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
@@ -530,6 +531,7 @@ def expedienteEstudiante(boleta):
             filter(DataUsers.id==id).all()
         print(documentos)
         print(len(documentos))
+        en_espera = False
         documentos_list = []
         for documento in documentos:
             id_alumno = documento.id_alumno
@@ -537,6 +539,8 @@ def expedienteEstudiante(boleta):
             id_status = documento.id_status
             tipo_doc= TipoDocumento.query.filter_by(id=id_tipo).first()
             status_doc = StatusDocumento.query.filter_by(id=id_status).first()
+            if id_status == 3:
+                en_espera = True
             documento_dict = {
             'id_alumno': id_alumno,
             'id_tipo': id_tipo,
@@ -593,6 +597,7 @@ def expedienteEstudiante(boleta):
             'ubicacion_alcaldia':user.ubicacion_alcaldia,
             'ubicacion_codpos':user.ubicacion_codpos,
             'numero':user.No_registro,
+            'espera':en_espera,
         }
         print(expediente)
         
@@ -766,6 +771,24 @@ def cerrar_sesion():
     session.pop('boleta', None)
     session.clear()
     return redirect('/')
+
+#SUBIR DOCUMENTACIÓN DEL ALUMNO
+@app.route("/subir_expediente", methods=['POST'])
+def subirExpediente():
+    if request.method == "POST":
+        if 'boleta' not in session:
+            return redirect('/')
+        data = {
+            'titulo': 'Alumno'
+        }
+        f = request.files['expediente']
+        filename= secure_filename(f.filename)
+        f.save(os.path.join(app.config['EXPEDIENTES'] ,filename))
+        print(filename)
+        ruta = './app/documentos/Expedientes/'+ filename
+        print("Se ha guardado correctamente en la ruta " + ruta)
+        #boleta = session.get('boleta',None)
+        return render_template('estudiante/main.html', data=data)
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)
