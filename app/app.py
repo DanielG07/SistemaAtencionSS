@@ -537,11 +537,13 @@ def expedienteEstudiante(boleta):
             id_alumno = documento.id_alumno
             id_tipo = documento.id_tipo
             id_status = documento.id_status
+            id_doc = documento.id
             tipo_doc= TipoDocumento.query.filter_by(id=id_tipo).first()
             status_doc = StatusDocumento.query.filter_by(id=id_status).first()
             if id_status == 3:
                 en_espera = True
             documento_dict = {
+            'id_doc': id_doc,   
             'id_alumno': id_alumno,
             'id_tipo': id_tipo,
             'id_status': id_status,
@@ -554,6 +556,7 @@ def expedienteEstudiante(boleta):
             documentos_list.append(documento_dict)
         ## SE IMPRIME CADA ELEMENTO DE LA LISTA
         for documento in documentos_list:
+            print(documento['id_doc'])
             print(documento['id_alumno'])
             print(documento['id_tipo'])
             print(documento['id_status'])
@@ -778,17 +781,36 @@ def subirExpediente():
     if request.method == "POST":
         if 'boleta' not in session:
             return redirect('/')
-        data = {
-            'titulo': 'Alumno'
-        }
+        boleta = session.get('boleta', None)
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
         f = request.files['expediente']
         filename = secure_filename(f.filename)
-        boleta = session.get('boleta', None)
         new_filename = "Expediente" + boleta + os.path.splitext(filename)[1]
         f.save(os.path.join(app.config['EXPEDIENTES'], new_filename))
         print(new_filename)
         ruta = './app/documentos/Expedientes/' + new_filename
         print("Se ha guardado correctamente en la ruta " + ruta)
+        #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
+        id_documento = int(request.form['id_doc'])
+        id_alumno = alumno.id 
+        id_tipo = int(request.form.get('id_tipo'))
+        id_status = int(request.form.get('id_status'))
+        fecha_actual_str = request.form.get('Idp-Factual')
+        fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
+        ubicacion = ruta
+        print(fecha_actual)
+        print(type(fecha_actual))
+        data = {
+            'titulo': 'Alumno',
+        }
+        ## CASO EN QUE SEA "NO ARCHIVO"
+        if id_status == 1:
+            print("El status es SIN ARCHIVO")
+            documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
+            documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
+            documento.fecha_envio = fecha_actual
+            documento.ubicacion = ubicacion
+            db.session.commit()
         return render_template('estudiante/main.html', data=data)
 
 if __name__== '__main__':

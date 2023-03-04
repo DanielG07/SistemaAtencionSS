@@ -113,6 +113,37 @@
                             </div>
                         </div>
 
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_doc" value="{{ documento.id_doc }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_tipo" value="{{ documento.id_tipo }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documento.id_status }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo dp-Actual">
+                            <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                            <div class="Idp-campo">
+                              <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            </div>   
+                        </div>
+
                         <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
                             <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
                         </div>
@@ -156,5 +187,14 @@ function validarArchivo()
 }
 
 </script>
+
+<script>
+    const hoy = new Date();
+    const zona_horaria = -300; // en minutos
+    const offset = hoy.getTimezoneOffset();
+    hoy.setMinutes(hoy.getMinutes() + offset + zona_horaria);
+    const fecha_formateada = hoy.toISOString().substr(0, 10);
+    document.getElementById("fecha_actual").value = fecha_formateada;
+  </script>
 
 {% endblock %}
