@@ -8,7 +8,7 @@ from flask_mail import Mail
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
@@ -16,8 +16,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-#server='DANIEL\SQLEXPRESS' #PARA DANIEL
+#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -432,27 +432,143 @@ def indexAdmin():
     }
     return render_template('admin/main.html',data=data)
 
-@app.route('/admin/expedientes')
+@app.route('/admin/reportes')
 def reportesAdmin():
     data={
-        'titulo':'Expedientes - Administrador'
+        'titulo':'Reportes - Administrador'
     }
-    return render_template('admin/expedientes.html',data=data, registros = registro_mock)
+    users = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro)
+    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(StatusUser.status == "ACEPTADO")
+    .all())
+    users_list = []
+    for user in users:
+        userSend = {
+            "boleta": user[0],
+            "nombre": user[1] + " " + user[2] + " " +user[3],
+            "carrera": user[4],
+            "semestre": user[5],
+            "genero": user[6],
+            "prestatario": user[7],
+            "f_inicio": user[8],
+            "f_termino": user[9],
+            "correo_electronico": user[10],
+            "estatus": user[11],
+            "numero": user[12],
+            "registro_lista": user[12],
+            "f_envio": user[12],
+        }
+        users_list.append(userSend)
+    return render_template('admin/reportes.html',data=data, registros = users_list)
 
 @app.route('/admin/completados')
 def completadosAdmin():
     data={
         'titulo':'Completados - Administrador'
     }
-    return render_template('admin/completados.html',data=data, registros = completados_mock)
+    users = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro)
+    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(StatusUser.status == "COMPLETADO")
+    .all())
+    users_list = []
+    for user in users:
+        userSend = {
+            "boleta": user[0],
+            "nombre": user[1] + " " + user[2] + " " +user[3],
+            "carrera": user[4],
+            "semestre": user[5],
+            "genero": user[6],
+            "prestatario": user[7],
+            "f_inicio": user[8],
+            "f_termino": user[9],
+            "correo_electronico": user[10],
+            "estatus": user[11],
+            "numero": user[12],
+            "registro_lista": user[12],
+            "f_envio": user[12],
+        }
+        users_list.append(userSend)
+    return render_template('admin/completados.html',data=data, registros = users_list)
 
 
-@app.route('/admin/preregistros')
+@app.route('/admin/expedientes')
 def preregistrosAdmin():
     data={
-        'titulo':'Preregistros - Administrador'
+        'titulo':'Expedientes - Administrador'
     }
-    return render_template('admin/preregistros.html',data=data, registros = preregistro_mock)
+    users = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
+    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(or_(StatusUser.status.like("ESPERA"), StatusUser.status.like("RECHAZADO")))
+    .all())
+    users_list = []
+    for user in users:
+        userSend = {
+            "boleta": user[0],
+            "nombre": user[1] + " " + user[2] + " " +user[3],
+            "carrera": user[4],
+            "semestre": user[5],
+            "genero": user[6],
+            "prestatario": user[7],
+            "f_inicio": user[8],
+            "f_termino": user[9],
+            "correo_electronico": user[10],
+            "estatus": user[11],
+            "numero": user[12],
+            "registro_lista": user[12],
+            "f_envio": user[13],
+        }
+        users_list.append(userSend)
+
+    return render_template('admin/expedientes.html',data=data, registros = users_list)
 
 @app.route('/admin/estadisticas')
 def estadisticasAdmin():
@@ -484,15 +600,73 @@ def expedienteAlumno(boleta=0):
     data={
         'titulo':'Expediente - ' + boleta
     }
-    # enviar_correo("jorgecruzmen2000@gmail.com", "Expediente aceptado.", "carta término")
-    # Traer datos del usuario con la boleta asignada
-    expediente = {}
-    for item in registro_mock:
-        if item.get("boleta") == boleta:
-            expediente = item
-            break
+    expediente = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
+    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(Users.boleta == boleta)
+    .first())
 
-    return render_template('admin/perfilAlumno.html',data=data, expediente=expediente, registros = preregistro_mock)
+    documentos = (db.session.query(
+        Users.boleta,
+        Documentos.fecha_envio,
+        Documentos.fecha_aceptado,
+        StatusDocumento.status_documento,
+        TipoDocumento.tipo_documento,
+        Documentos.ubicacion)
+        .join(Documentos, Users.id == Documentos.id_alumno)
+        .join(TipoDocumento, TipoDocumento.id == Documentos.id_tipo)
+        .join(StatusDocumento, StatusDocumento.id == Documentos.id_status)
+        .filter(Users.boleta == boleta)
+        .all())
+
+    expedientePage = {
+        "boleta": expediente[0],
+        "nombre": expediente[1] + " " + expediente[2] + " " + expediente[3],
+        "carrera": expediente[4],
+        "semestre": expediente[5],
+        "genero": expediente[6],
+        "prestatario": expediente[7],
+        "f_inicio": expediente[8],
+        "f_termino": expediente[9],
+        "correo_electronico": expediente[10],
+        "estatus": expediente[11],
+        "numero": expediente[12],
+        "registro_lista": expediente[12],
+        "f_envio": expediente[13],
+    }
+    print(expedientePage)
+
+    documentosPage = []
+    for documento in documentos:
+
+        documentoPage = {
+            "boleta": documento[0],
+            "f_envio": documento[1],
+            "f_aceptado": documento[2],
+            "status": documento[3],
+            "t_documento": documento[4],
+            "u_documento": documento[5]
+        }
+        documentosPage.append(documentoPage)
+
+    print(documentosPage)
+    return render_template('admin/perfilAlumno.html',data=data, expediente=expedientePage, documentos=documentosPage)
 
 @app.route("/reporte/<periodo>")
 def generarReporte(periodo):

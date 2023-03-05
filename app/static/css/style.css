@@ -89,6 +89,14 @@ table {
     text-align: center;
 }
 
+p, th, a, li {
+    font-size: 1.5em;
+}
+
+td, td>a {
+    font-size: 1.2em;
+}
+
 
 
 /* Header */
@@ -195,7 +203,7 @@ table {
 .main-page1 {
     width: 90%;
     height: auto;
-    margin: 0px auto;
+    margin: 0px auto 50px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
