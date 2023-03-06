@@ -16,8 +16,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-#server='DANIEL\SQLEXPRESS' #PARA DANIEL
+#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -32,17 +32,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + passwor
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'mysecretkey'
 Session(app)
-
-## CONFIGURACION DEL ENVIO DE CORREO PARA RECUPERACION DE CONTRASEÑA
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'enda0507@gmail.com@gmail.com'
-app.config['MAIL_PASSWORD'] = 'nkjvhfykxxtbuykb'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_DEFAULT_SENDER'] = 'enda0507@gmail.com@gmail.com'
-mail = Mail(app)
-
 
 # CONEXIÓN A LA BASE DE DATOS
 try:
