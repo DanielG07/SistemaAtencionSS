@@ -38,7 +38,6 @@
                 <th>Fecha de envio</th>
                 <th>Fecha de aceptado</th>
                 <th></th>
-                <th></th>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">1</td>
@@ -47,9 +46,6 @@
                 <td class="centrar-texto">{{ documentos[0]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[0]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
-                <td class="centrar-texto">
-                   ACEPTADO
-                </td>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">2</td>
@@ -58,10 +54,6 @@
                 <td class="centrar-texto">{{ documentos[1]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[1]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
-                <td class="centrar-texto">
-                    <button>Aceptar</button>
-                    <button>Rechazar</button>
-                </td>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">3</td>
@@ -70,10 +62,6 @@
                 <td class="centrar-texto">{{ documentos[2]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[2]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
-                <td class="centrar-texto">
-                    <button>Aceptar</button>
-                    <button>Rechazar</button>
-                </td>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">4</td>
@@ -82,10 +70,6 @@
                 <td class="centrar-texto">{{ documentos[3]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[3]['fecha_aceptado'] }}</td>
                 <td class="centrar-texto"><a href="">Visualizar</a></td>
-                <td class="centrar-texto">
-                    <button>Aceptar</button>
-                    <button id="btnAbrir">Rechazar</button>
-                </td>
             </tr>
         </table>
     </div>
@@ -119,7 +103,7 @@
                             <div>
                                 <label class="form-label">Expediente</label>
                                 <div class="Idp-campo">
-                                    <input id="expediente" type="file" name="expediente" accept=".pdf" onchange="validarArchivo()" required >
+                                    <input id="documento" type="file" name="expediente" accept=".pdf" onchange="validarArchivo()" required >
                                 </div>
                             </div>
                         </div>
@@ -180,7 +164,7 @@
                             <div>
                                 <label class="form-label">Evaluación de desempeño</label>
                                 <div class="Idp-campo">
-                                    <input id="evaluacion" type="file" name="evaluacion" accept=".pdf" onchange="validarArchivo()" required >
+                                    <input id="documento" type="file" name="evaluacion" accept=".pdf" onchange="validarArchivo()" required >
                                 </div>
                             </div>
                         </div>
@@ -241,7 +225,7 @@
                             <div>
                                 <label class="form-label">Carta término</label>
                                 <div class="Idp-campo">
-                                    <input id="carta" type="file" name="carta" accept=".pdf" onchange="validarArchivo()" required >
+                                    <input id="documento" type="file" name="carta" accept=".pdf" onchange="validarArchivo()" required >
                                 </div>
                             </div>
                         </div>
@@ -302,7 +286,7 @@
                             <div>
                                 <label class="form-label">Constacia de liberación</label>
                                 <div class="Idp-campo">
-                                    <input id="constancia" type="file" name="constancia" accept=".pdf" onchange="validarArchivo()" required >
+                                    <input id="documento" type="file" name="constancia" accept=".pdf" onchange="validarArchivo()" required >
                                 </div>
                             </div>
                         </div>
@@ -367,7 +351,7 @@
 
 function validarArchivo() 
 {
-  const fileInput = document.getElementById('expediente');
+  const fileInput = document.getElementById('documento');
   const errorMessage = document.getElementById('error-message');
   const maxFileSize = 3 * 1024 * 1024; // 3 MB
 
