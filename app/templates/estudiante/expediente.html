@@ -92,9 +92,20 @@
 
 </div>
 
+{% set EXPEDIENTE = 1 %}
+{% set EVALUACION_DESEMPENO  = 2 %}
+{% set CARTA_TERMINO = 3 %}
+{% set CONSTANCIA_LIBERACION = 4 %}
+
+{% set SIN_ARCHIVO = 1 %}
+{% set ACEPTADO = 2 %}
+{% set ESPERA_APROBACION = 3 %}
+{% set RECHAZADO = 4 %}
+
+
+
 {% if expediente.espera == False %}
-    {% for documento in documentos %}
-        {% if documento.id_tipo == 1 and documento.id_status == 1 %}
+    {%if documentos[0]['id_tipo'] == EXPEDIENTE and (documentos[0]['id_status'] == SIN_ARCHIVO or documentos[0]['id_status'] == RECHAZADO)%}
         <div class="main-page">
             <div class="wrap-datos">
                 <div id="idregistro">
@@ -116,7 +127,7 @@
                         <div class="dp-campo_registro" style="display: none;">
                             <div>
                                 <div class="Idp-campo">
-                                    <input type="hidden" name="id_doc" value="{{ documento.id_doc }}" >
+                                    <input type="hidden" name="id_doc" value="{{ documentos[0]['id_doc'] }}" >
                                 </div>
                             </div>
                         </div>
@@ -124,15 +135,7 @@
                         <div class="dp-campo_registro" style="display: none;">
                             <div>
                                 <div class="Idp-campo">
-                                    <input type="hidden" name="id_tipo" value="{{ documento.id_tipo }}" >
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="dp-campo_registro" style="display: none;">
-                            <div>
-                                <div class="Idp-campo">
-                                    <input type="hidden" name="id_status" value="{{ documento.id_status }}" >
+                                    <input type="hidden" name="id_status" value="{{ documentos[0]['id_status'] }}" >
                                 </div>
                             </div>
                         </div>
@@ -140,7 +143,7 @@
                         <div class="dp-campo dp-Actual">
                             <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
                             <div class="Idp-campo">
-                              <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
                             </div>   
                         </div>
 
@@ -160,12 +163,191 @@
                 </div>
         
             </div>
-        
-            
-        
         </div>
-        {% endif %}
-    {% endfor %}
+    {% endif %}
+
+    {%if documentos[1]['id_tipo'] == EVALUACION_DESEMPENO and (documentos[1]['id_status'] == SIN_ARCHIVO or documentos[1]['id_status'] == RECHAZADO) and documentos[0]['id_status'] == ACEPTADO%}
+        <div class="main-page">
+            <div class="wrap-datos">
+                <div id="idregistro">
+                    <h1 class="titulo_Registro_sistema">EVALUACIÓN DE DESEMPEÑO</h1>
+                    <div>
+                        <h4> Suba su evaluación de desempeño en el siguiente apartado, y espere la validación de los administradores </h4>
+                    </div>
+                
+                    <form action="/subir_evaluacion" method="post" enctype="multipart/form-data">
+                        <div class="dp-campo_registro">
+                            <div>
+                                <label class="form-label">Evaluación de desempeño</label>
+                                <div class="Idp-campo">
+                                    <input id="evaluacion" type="file" name="evaluacion" accept=".pdf" onchange="validarArchivo()" required >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_doc" value="{{ documentos[1]['id_doc'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documentos[1]['id_status'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo dp-Actual">
+                            <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                            <div class="Idp-campo">
+                            <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            </div>   
+                        </div>
+
+                        <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                            <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
+                        </div>
+        
+                        <div class="dp-campo">
+                            <div>
+                                <label></label>
+                                <div class="Idp-submit_registro">
+                                    <input type="submit">
+                                </div>   
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
+        </div>
+    {% endif %}
+
+    {%if documentos[2]['id_tipo'] == CARTA_TERMINO and (documentos[2]['id_status'] == SIN_ARCHIVO or documentos[2]['id_status'] == RECHAZADO) and documentos[1]['id_status'] == ACEPTADO%}
+        <div class="main-page">
+            <div class="wrap-datos">
+                <div id="idregistro">
+                    <h1 class="titulo_Registro_sistema">CARTA TÉRMINO </h1>
+                    <div>
+                        <h4> Suba su carta término en el siguiente apartado, y espere la validación de los administradores </h4>
+                    </div>
+                
+                    <form action="/subir_carta" method="post" enctype="multipart/form-data">
+                        <div class="dp-campo_registro">
+                            <div>
+                                <label class="form-label">Carta término</label>
+                                <div class="Idp-campo">
+                                    <input id="carta" type="file" name="carta" accept=".pdf" onchange="validarArchivo()" required >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_doc" value="{{ documentos[2]['id_doc'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documentos[2]['id_status'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo dp-Actual">
+                            <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                            <div class="Idp-campo">
+                            <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            </div>   
+                        </div>
+
+                        <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                            <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
+                        </div>
+        
+                        <div class="dp-campo">
+                            <div>
+                                <label></label>
+                                <div class="Idp-submit_registro">
+                                    <input type="submit">
+                                </div>   
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
+        </div>
+    {% endif %}
+
+    {%if documentos[3]['id_tipo'] == CONSTANCIA_LIBERACION and (documentos[3]['id_status'] == SIN_ARCHIVO or documentos[3]['id_status'] == RECHAZADO) and documentos[2]['id_status'] == ACEPTADO%}
+        <div class="main-page">
+            <div class="wrap-datos">
+                <div id="idregistro">
+                    <h1 class="titulo_Registro_sistema">CONSTANCIA DE LIBERACIÓN </h1>
+                    <div>
+                        <h4> Suba su constacia de liberación en el siguiente apartado, y espere la validación de los administradores </h4>
+                    </div>
+                
+                    <form action="/subir_constancia" method="post" enctype="multipart/form-data">
+                        <div class="dp-campo_registro">
+                            <div>
+                                <label class="form-label">Constacia de liberación</label>
+                                <div class="Idp-campo">
+                                    <input id="constancia" type="file" name="constancia" accept=".pdf" onchange="validarArchivo()" required >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_doc" value="{{ documentos[3]['id_doc'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documentos[3]['id_status'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo dp-Actual">
+                            <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                            <div class="Idp-campo">
+                            <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            </div>   
+                        </div>
+
+                        <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                            <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
+                        </div>
+        
+                        <div class="dp-campo">
+                            <div>
+                                <label></label>
+                                <div class="Idp-submit_registro">
+                                    <input type="submit">
+                                </div>   
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
+        </div>
+    {% endif %}
 {% endif %}
 
 

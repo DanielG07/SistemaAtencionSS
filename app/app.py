@@ -16,8 +16,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+#server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -25,6 +25,9 @@ password='Irvin19+'
 app = Flask(__name__)
 app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso"
 app.config['EXPEDIENTES'] = "./app/documentos/Expedientes"
+app.config['EVALUACION_DESEMPENO'] = "./app/documentos/Evaluaciones"
+app.config['CARTA_TERMINO'] = "./app/documentos/CartasTermino"
+app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'mysecretkey'
@@ -967,7 +970,6 @@ def subirExpediente():
         #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
         id_documento = int(request.form['id_doc'])
         id_alumno = alumno.id 
-        id_tipo = int(request.form.get('id_tipo'))
         id_status = int(request.form.get('id_status'))
         fecha_actual_str = request.form.get('Idp-Factual')
         fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
@@ -977,9 +979,114 @@ def subirExpediente():
         data = {
             'titulo': 'Alumno',
         }
-        ## CASO EN QUE SEA "NO ARCHIVO"
-        if id_status == 1:
+        ## CASO EN QUE SEA "NO ARCHIVO" O "RECHAZADO"
+        if id_status == 1 or id_status == 4:
             print("El status es SIN ARCHIVO")
+            documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
+            documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
+            documento.fecha_envio = fecha_actual
+            documento.ubicacion = ubicacion
+            db.session.commit()
+        return render_template('estudiante/main.html', data=data)
+
+@app.route("/subir_evaluacion", methods=['POST'])
+def subirEvaluacion():
+    if request.method == "POST":
+        if 'boleta' not in session:
+            return redirect('/')
+        boleta = session.get('boleta', None)
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
+        f = request.files['evaluacion']
+        filename = secure_filename(f.filename)
+        new_filename = "Evaluacion" + boleta + os.path.splitext(filename)[1]
+        f.save(os.path.join(app.config['EVALUACION_DESEMPENO'], new_filename))
+        print(new_filename)
+        ruta = './app/documentos/Evaluaciones/' + new_filename
+        print("Se ha guardado correctamente en la ruta " + ruta)
+        #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
+        id_documento = int(request.form['id_doc'])
+        id_alumno = alumno.id 
+        id_status = int(request.form.get('id_status'))
+        fecha_actual_str = request.form.get('Idp-Factual')
+        fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
+        ubicacion = ruta
+        print(fecha_actual)
+        print(type(fecha_actual))
+        data = {
+            'titulo': 'Alumno',
+        }
+        ## CASO EN QUE SEA "NO ARCHIVO" O "RECHAZADO"
+        if id_status == 1 or id_status == 4:
+            documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
+            documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
+            documento.fecha_envio = fecha_actual
+            documento.ubicacion = ubicacion
+            db.session.commit()
+        return render_template('estudiante/main.html', data=data)
+
+@app.route("/subir_carta", methods=['POST'])
+def subirCarta():
+    if request.method == "POST":
+        if 'boleta' not in session:
+            return redirect('/')
+        boleta = session.get('boleta', None)
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
+        f = request.files['carta']
+        filename = secure_filename(f.filename)
+        new_filename = "CartaTermino" + boleta + os.path.splitext(filename)[1]
+        f.save(os.path.join(app.config['CARTA_TERMINO'], new_filename))
+        print(new_filename)
+        ruta = './app/documentos/ConstanciasLiberacion/' + new_filename
+        print("Se ha guardado correctamente en la ruta " + ruta)
+        #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
+        id_documento = int(request.form['id_doc'])
+        id_alumno = alumno.id 
+        id_status = int(request.form.get('id_status'))
+        fecha_actual_str = request.form.get('Idp-Factual')
+        fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
+        ubicacion = ruta
+        print(fecha_actual)
+        print(type(fecha_actual))
+        data = {
+            'titulo': 'Alumno',
+        }
+        ## CASO EN QUE SEA "NO ARCHIVO" O "RECHAZADO"
+        if id_status == 1 or id_status == 4:
+            documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
+            documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
+            documento.fecha_envio = fecha_actual
+            documento.ubicacion = ubicacion
+            db.session.commit()
+        return render_template('estudiante/main.html', data=data)
+
+@app.route("/subir_constancia", methods=['POST'])
+def subirConstacia():
+    if request.method == "POST":
+        if 'boleta' not in session:
+            return redirect('/')
+        boleta = session.get('boleta', None)
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
+        f = request.files['constancia']
+        filename = secure_filename(f.filename)
+        new_filename = "Constancia" + boleta + os.path.splitext(filename)[1]
+        f.save(os.path.join(app.config['CONSTANCIA_LIBERACION'], new_filename))
+        print(new_filename)
+        ruta = './app/documentos/ConstanciasLiberacion/' + new_filename
+        print("Se ha guardado correctamente en la ruta " + ruta)
+        #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
+        id_documento = int(request.form['id_doc'])
+        id_alumno = alumno.id 
+        id_status = int(request.form.get('id_status'))
+        fecha_actual_str = request.form.get('Idp-Factual')
+        fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
+        ubicacion = ruta
+        print(fecha_actual)
+        print(type(fecha_actual))
+        data = {
+            'titulo': 'Alumno',
+        }
+        ## CASO EN QUE SEA "NO ARCHIVO" O "RECHAZADO"
+        if id_status == 1 or id_status == 4:
             documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
             documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
             documento.fecha_envio = fecha_actual
