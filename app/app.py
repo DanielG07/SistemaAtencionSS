@@ -16,8 +16,8 @@ import hashlib
 import secrets
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+#server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -45,8 +45,8 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, name='Id_user')
     boleta = db.Column(db.String(25), nullable=True, name='boleta')
     passw = db.Column(db.LargeBinary(), nullable=False,name = 'passw')
-    Tipo_user = db.Column(db.Integer, nullable=False,name='Tipo_user')
-    Id_Estatus_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')  
+    tipo_user = db.Column(db.Integer, nullable=False,name='Tipo_user')
+    id_status_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')  
 
 # MODELO PARA LA TABLA "DATA_USERS"
 class DataUsers(db.Model):
@@ -145,8 +145,8 @@ def insertar_user(data):
         new_user = Users(
             boleta = data.get('boleta'),
             passw = passwo,
-            Tipo_user = 1,
-            Id_Estatus_user=1
+            tipo_user = 2,
+            id_status_user=1
         )
         db.session.add(new_user)
         db.session.commit()
@@ -163,7 +163,7 @@ def inicio_session(data):
             password = data.get('contrasena')
             passwo = hashlib.md5(password.encode('utf-8')).hexdigest().encode('utf-8')    
             if contra==passwo:
-                print("Se realizo la consulta exitosa:")
+                print("Se realizó la consulta exitosa:")
             else:
                 print("Contraseña incorrecta")
                 exito=False
@@ -443,7 +443,7 @@ def reportesAdmin():
         DataUsers.correo, 
         StatusUser.status, 
         DataUsers.No_registro)
-    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
@@ -488,7 +488,7 @@ def completadosAdmin():
         DataUsers.correo, 
         StatusUser.status, 
         DataUsers.No_registro)
-    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
@@ -535,7 +535,7 @@ def preregistrosAdmin():
         StatusUser.status, 
         DataUsers.No_registro,
         DataUsers.fecha_registro)
-    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
@@ -607,7 +607,7 @@ def expedienteAlumno(boleta=0):
         StatusUser.status, 
         DataUsers.No_registro,
         DataUsers.fecha_registro)
-    .join(StatusUser, Users.Id_Estatus_user == StatusUser.id)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
@@ -928,8 +928,14 @@ def inicio():
     resultado = inicio_session(data)
     if resultado == True:
         user = Users.query.filter_by(boleta=data.get('boleta')).first()
-        session['boleta'] = user.boleta
-        return redirect(f'/estudiante/{user.boleta}')
+        if user.tipo_user == 2:
+            print("Estudiante")
+            session['boleta'] = user.boleta
+            return redirect(f'/estudiante/{user.boleta}')
+        if user.tipo_user == 1:
+            print("Administrador")
+            session['username'] = user.boleta
+            return redirect('/admin')
     else:
         error = "Boleta o contraseña inválidos"
         session['error'] = error
