@@ -982,7 +982,8 @@ def subirExpediente():
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
             db.session.commit()
-        return render_template('estudiante/main.html', data=data)
+            exito = "Se ha subido correctamente su documento, espere validación"
+        return render_template('estudiante/main.html', data=data,exito=exito)
 
 @app.route("/subir_evaluacion", methods=['POST'])
 def subirEvaluacion():
@@ -1017,7 +1018,8 @@ def subirEvaluacion():
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
             db.session.commit()
-        return render_template('estudiante/main.html', data=data)
+            exito = "Se ha subido correctamente su documento, espere validación"
+        return render_template('estudiante/main.html', data=data,exito=exito)
 
 @app.route("/subir_carta", methods=['POST'])
 def subirCarta():
@@ -1052,7 +1054,8 @@ def subirCarta():
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
             db.session.commit()
-        return render_template('estudiante/main.html', data=data)
+            exito = "Se ha subido correctamente su documento, espere validación"
+        return render_template('estudiante/main.html', data=data,exito=exito)
 
 @app.route("/subir_constancia", methods=['POST'])
 def subirConstacia():
@@ -1087,7 +1090,8 @@ def subirConstacia():
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
             db.session.commit()
-        return render_template('estudiante/main.html', data=data)
+            exito = "Se ha subido correctamente su documento, espere validación"
+        return render_template('estudiante/main.html', data=data,exito=exito)
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)

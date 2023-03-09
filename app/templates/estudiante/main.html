@@ -8,6 +8,12 @@
 
 {% block body %}
 
+{% if exito %}
+    <div id="error-message" style="background-color:forestgreen ;" class=" banner_error red no-margin no-padding dp-campo">
+        <p class="error-message"  > {{exito}} </p> 
+    </div>
+{% endif %}
+
 <div class="main-page">
     <div class="contenido center-content">
         <p class="">Apartados:</p>
