@@ -1,10 +1,8 @@
 import os
 from datetime import datetime
 from sqlalchemy import Date
-from flask import Flask, redirect, render_template, request, url_for, send_file, session
+from flask import Flask, redirect, render_template, request, url_for, send_file, session , send_file
 from flask_session import Session
-from flask_mail import Message
-from flask_mail import Mail
 from utils.funcion_excel import createApiResponse
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
@@ -25,6 +23,7 @@ password='Irvin19+'
 app = Flask(__name__)
 app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso"
 app.config['EXPEDIENTES'] = "./app/documentos/Expedientes"
+app.config['VER_EXPEDIENTES'] = "./documentos/Expedientes/"
 app.config['EVALUACION_DESEMPENO'] = "./app/documentos/Evaluaciones"
 app.config['CARTA_TERMINO'] = "./app/documentos/CartasTermino"
 app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
@@ -103,6 +102,7 @@ class Documentos(db.Model):
     fecha_envio = db.Column(db.Date, nullable=True, name='Fecha_Envio')
     fecha_aceptado = db.Column(db.Date, nullable=True, name='Fecha_Aceptado')
     ubicacion = db.Column(db.String(256), nullable=True, name='Ubicacion_Archivo')
+    nombre_archivo = db.Column(db.String(256), nullable=True, name='Nombre_Archivo')
 
 class StatusDocumento (db.Model):
     __tablename__ = 'STATUS_DOCUMENTO'
@@ -716,6 +716,7 @@ def expedienteEstudiante(boleta):
             'fecha_envio': documento.fecha_envio,
             'fecha_aceptado': documento.fecha_aceptado,
             'ubicacion': documento.ubicacion,
+            'nombre_archivo': documento.nombre_archivo,
             'tipo_documento': tipo_doc.tipo_documento,
             'status_documento': status_doc.status_documento,
             }
@@ -981,6 +982,7 @@ def subirExpediente():
             documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
+            documento.nombre_archivo = new_filename
             db.session.commit()
             exito = "Se ha subido correctamente su documento, espere validación"
         return render_template('estudiante/main.html', data=data,exito=exito)
@@ -1017,6 +1019,7 @@ def subirEvaluacion():
             documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
+            documento.nombre_archivo = new_filename
             db.session.commit()
             exito = "Se ha subido correctamente su documento, espere validación"
         return render_template('estudiante/main.html', data=data,exito=exito)
@@ -1053,6 +1056,7 @@ def subirCarta():
             documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
+            documento.nombre_archivo = new_filename
             db.session.commit()
             exito = "Se ha subido correctamente su documento, espere validación"
         return render_template('estudiante/main.html', data=data,exito=exito)
@@ -1089,9 +1093,29 @@ def subirConstacia():
             documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
             documento.fecha_envio = fecha_actual
             documento.ubicacion = ubicacion
+            documento.nombre_archivo = new_filename
             db.session.commit()
             exito = "Se ha subido correctamente su documento, espere validación"
         return render_template('estudiante/main.html', data=data,exito=exito)
+
+#VISUALIZACION DE DOCUMENTOS
+@app.route('/app/documentos/Expedientes/<path:filename>')
+def verExpedientepdf(filename):
+    if 'boleta' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = session.get('boleta')
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_EXPEDIENTES'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
 
 if __name__== '__main__':
     app.run(debug=True,port=5000)
