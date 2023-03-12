@@ -12,10 +12,11 @@ from werkzeug.utils import secure_filename
 from lee_pdf import lectura
 import hashlib
 import secrets
+import datetime as d
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-#server='DANIEL\SQLEXPRESS' #PARA DANIEL
+#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -25,8 +26,11 @@ app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso"
 app.config['EXPEDIENTES'] = "./app/documentos/Expedientes"
 app.config['VER_EXPEDIENTES'] = "./documentos/Expedientes/"
 app.config['EVALUACION_DESEMPENO'] = "./app/documentos/Evaluaciones"
+app.config['VER_EVALUACION_DESEMPENO'] = "./documentos/Evaluaciones/"
 app.config['CARTA_TERMINO'] = "./app/documentos/CartasTermino"
+app.config['VER_CARTA_TERMINO'] = "./documentos/CartasTermino/"
 app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
+app.config['VER_CONSTANCIA_LIBERACION'] = "./documentos/ConstanciasLiberacion/"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'mysecretkey'
@@ -419,6 +423,8 @@ def uploader():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def indexAdmin():
+    if 'username' not in session:
+        return redirect('/')
     data={
         'titulo':'Administrador'
     }
@@ -426,6 +432,8 @@ def indexAdmin():
 
 @app.route('/admin/reportes')
 def reportesAdmin():
+    if 'username' not in session:
+        return redirect('/')
     data={
         'titulo':'Reportes - Administrador'
     }
@@ -471,6 +479,8 @@ def reportesAdmin():
 
 @app.route('/admin/completados')
 def completadosAdmin():
+    if 'username' not in session:
+        return redirect('/')
     data={
         'titulo':'Completados - Administrador'
     }
@@ -515,8 +525,12 @@ def completadosAdmin():
     return render_template('admin/completados.html',data=data, registros = users_list)
 
 
-@app.route('/admin/expedientes')
+@app.route('/admin/expedientes', methods=['GET', 'POST'])
 def preregistrosAdmin():
+    if 'username' not in session:
+        return redirect('/')
+
+    print(session)
     data={
         'titulo':'Expedientes - Administrador'
     }
@@ -564,6 +578,8 @@ def preregistrosAdmin():
 
 @app.route('/admin/estadisticas')
 def estadisticasAdmin():
+    if 'username' not in session:
+        return redirect('/')
     data={
         'titulo':'Estadisitcas Reportes'
     }
@@ -571,27 +587,48 @@ def estadisticasAdmin():
 
 @app.route("/admin/generar_preregistros")
 def generarExcelPreregistro():
+    if 'username' not in session:
+        return redirect('/')
     # Traer datos de acuerdo a la pagina
     apiResponse = createApiResponse(preregistro_mock)
     return apiResponse
 
 @app.route("/admin/generar_emision")
 def generarExcelEmision():
+    if 'username' not in session:
+        return redirect('/')
     # Traer datos de acuerdo a la pagina
     apiResponse = createApiResponse(registro_mock)
     return apiResponse
 
 @app.route("/admin/generar_completados")
 def generarExcelCompletados():
+    if 'username' not in session:
+        return redirect('/')
     # Traer datos de acuerdo a la pagina
     apiResponse = createApiResponse(completados_mock)
     return apiResponse
 
 @app.route("/admin/expediente/<boleta>")
 def expedienteAlumno(boleta=0):
+    if 'username' not in session:
+        return redirect('/')
     data={
         'titulo':'Expediente - ' + boleta
     }
+
+    total = (db.session.query(
+        DataUsers.No_registro)
+        .order_by(DataUsers.No_registro.desc())
+        .first())
+
+    today = d.date.today()
+    date = today.strftime("%Y")
+    date = date.split("20")[1]
+
+    if total[0] == "SIN ASIGNAR":
+        total = 0
+
     expediente = (db.session.query(
         Users.boleta, 
         DataUsers.nombre, 
@@ -620,7 +657,8 @@ def expedienteAlumno(boleta=0):
         Documentos.fecha_aceptado,
         StatusDocumento.status_documento,
         TipoDocumento.tipo_documento,
-        Documentos.ubicacion)
+        Documentos.ubicacion,
+        Documentos.nombre_archivo)
         .join(Documentos, Users.id == Documentos.id_alumno)
         .join(TipoDocumento, TipoDocumento.id == Documentos.id_tipo)
         .join(StatusDocumento, StatusDocumento.id == Documentos.id_status)
@@ -646,19 +684,81 @@ def expedienteAlumno(boleta=0):
 
     documentosPage = []
     for documento in documentos:
-
+        print(documento)
         documentoPage = {
             "boleta": documento[0],
             "f_envio": documento[1],
             "f_aceptado": documento[2],
             "status": documento[3],
             "t_documento": documento[4],
-            "u_documento": documento[5]
+            "u_documento": documento[5],
+            "n_documento": documento[6]
         }
         documentosPage.append(documentoPage)
 
     print(documentosPage)
-    return render_template('admin/perfilAlumno.html',data=data, expediente=expedientePage, documentos=documentosPage)
+    return render_template('admin/perfilAlumno.html',data=data, expediente=expedientePage, documentos=documentosPage, total=total, today=date)
+
+@app.route("/admin/aceptarDocumento", methods=['POST'])
+def aceptarDocumento():
+    data = request.json
+    if registro in data:
+        user = DataUsers.query.filter_by(boleta = data['boleta']).first()
+        user.No_registro = data['registro']
+        db.session.commit()
+
+    id_user =  (db.session.query(
+        DataUsers.id 
+       )
+    .filter(DataUsers.boleta == data['boleta'])
+    .first())
+    
+    documento = Documentos.query.filter_by(id_alumno=id_user[0], id_status=3).first()
+    documento.id_status = 2
+    documento.fecha_aceptado = d.date.today().strftime("%Y-%m-%d")
+    db.session.commit()
+
+    if documento.id_tipo == 1:
+        user = Users.query.filter_by(boleta=data['boleta']).first()
+        user.id_status_user = 3
+        db.session.commit()
+
+    if documento.id_tipo == 3:
+        user = Users.query.filter_by(boleta=data['boleta']).first()
+        user.id_status_user = 4
+        db.session.commit()
+
+    if documento.id_tipo == 4:
+        user = Users.query.filter_by(boleta=data['boleta']).first()
+        user.id_status_user = 5
+        db.session.commit()
+
+    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "documento fue aceptado")
+
+    return {
+        "ok": False
+    }
+    
+
+@app.route("/admin/rechazarDocumento", methods=['POST'])
+def rechazarDocumento():
+    data = request.json
+    print(data)
+    id_user =  (db.session.query(
+        DataUsers.id 
+       )
+    .filter(DataUsers.boleta == data['boleta'])
+    .first())
+
+    documento = Documentos.query.filter_by(id_alumno=id_user[0], id_status=3).first()
+    documento.id_status = 4
+    db.session.commit()
+
+    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "documento fue rechazado")
+
+    return {
+        "ok": False
+    }
 
 @app.route("/reporte/<periodo>")
 def generarReporte(periodo):
@@ -1101,16 +1201,126 @@ def subirConstacia():
 #VISUALIZACION DE DOCUMENTOS
 @app.route('/app/documentos/Expedientes/<path:filename>')
 def verExpedientepdf(filename):
-    if 'boleta' not in session:
+    if 'boleta' not in session and 'username' not in session:
         return redirect('/')
     if not filename:
         return "Error: no se ha especificado el nombre del archivo PDF"
-    boleta = session.get('boleta')
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_EXPEDIENTES'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
     alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
     if alumno:
         documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
         if filename == documento.nombre_archivo:
             ruta = app.config['VER_EXPEDIENTES'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+
+@app.route('/app/documentos/Evaluacion/<path:filename>')
+def verEvaluacionpdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_EVALUACION_DESEMPENO'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_EVALUACION_DESEMPENO'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+
+@app.route('/app/documentos/CartaTermino/<path:filename>')
+def verCartaTerminopdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CARTA_TERMINO'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CARTA_TERMINO'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+
+@app.route('/app/documentos/ConstanciaLiberacion/<path:filename>')
+def verConstanciaLiberacionpdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
             return send_file(ruta, mimetype='application/pdf')
         else:
             return redirect('/')

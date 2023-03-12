@@ -45,7 +45,11 @@
                 <td class="centrar-texto">{{ documentos[0]['status_documento'] }}</td>
                 <td class="centrar-texto">{{ documentos[0]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[0]['fecha_aceptado'] }}</td>
-                <td class="centrar-texto"><a href="{{ url_for('verExpedientepdf', filename=documentos[0]['nombre_archivo']) }}" target="_blank">Visualizar</a></td>
+                <td class="centrar-texto">
+                    {% if documentos[0]['nombre_archivo'] %}
+                    <a href="{{ url_for('verExpedientepdf', filename=documentos[0]['nombre_archivo']) }}" target="_blank">Visualizar</a>
+                    {% endif %}
+                </td>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">2</td>

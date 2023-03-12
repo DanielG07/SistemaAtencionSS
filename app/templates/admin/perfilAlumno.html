@@ -45,17 +45,17 @@
                 <td class="centrar-texto">{{documentos[0].status}}</td>
                 <td class="centrar-texto">{{documentos[0].f_envio}}</td>
                 <td class="centrar-texto">{{documentos[0].f_aceptado}}</td>
-                {% if (documentos[0].status == "ACEPTADO" or documentos[0].status == "ESPERA APROBACION") %}
-                    <td class="centrar-texto"><a href="">Visualizar</a></td>
+                {% if (documentos[0].status == "ACEPTADO" or documentos[0].status == "ESPERA APROBACIÓN") %}
+                    <td class="centrar-texto"><a href="{{ url_for('verExpedientepdf', filename=documentos[0]['n_documento']) }}" target="_blank">Visualizar</a></td>
                 {% else %}
                     <td class="centrar-texto">-</td>
                 {% endif %}
                 {% if (documentos[0].status == "ACEPTADO") %}
                     <td class="centrar-texto">ACEPTADO</td>
-                {% elif (documentos[0].status == "ESPERA APROBACION") %}
+                {% elif (documentos[0].status == "ESPERA APROBACIÓN") %}
                     <td class="centrar-texto">
-                        <button>Aceptar</button>
-                        <button>Rechazar</button>
+                        <button id="btnAbrirAceptarRegistro">Aceptar</button>
+                        <button id="btnAbrirRechazar">Rechazar</button>
                     </td>
                 {% else %}
                     <td class="centrar-texto">En espera</td>
@@ -67,17 +67,17 @@
                 <td class="centrar-texto">{{documentos[1].status}}</td>
                 <td class="centrar-texto">{{documentos[1].f_envio}}</td>
                 <td class="centrar-texto">{{documentos[1].f_aceptado}}</td>
-                {% if (documentos[1].status == "ACEPTADO" or documentos[1].status == "ESPERA APROBACION") %}
-                    <td class="centrar-texto"><a href="">Visualizar</a></td>
+                {% if (documentos[1].status == "ACEPTADO" or documentos[1].status == "ESPERA APROBACIÓN") %}
+                <td class="centrar-texto"><a href="{{ url_for('verEvaluacionpdf', filename=documentos[1]['n_documento']) }}" target="_blank">Visualizar</a></td>
                 {% else %}
                     <td class="centrar-texto">-</td>
                 {% endif %}
                 {% if (documentos[1].status == "ACEPTADO") %}
                     <td class="centrar-texto">ACEPTADO</td>
-                {% elif (documentos[1].status == "ESPERA APROBACION") %}
+                {% elif (documentos[1].status == "ESPERA APROBACIÓN") %}
                     <td class="centrar-texto">
-                        <button>Aceptar</button>
-                        <button>Rechazar</button>
+                        <button id="btnAceptarDoc">Aceptar</button>
+                        <button id="btnAbrirRechazar">Rechazar</button>
                     </td>
                 {% else %}
                     <td class="centrar-texto">En espera</td>
@@ -89,17 +89,17 @@
                 <td class="centrar-texto">{{documentos[2].status}}</td>
                 <td class="centrar-texto">{{documentos[2].f_envio}}</td>
                 <td class="centrar-texto">{{documentos[2].f_aceptado}}</td>
-                {% if (documentos[2].status == "ACEPTADO" or documentos[2].status == "ESPERA APROBACION") %}
-                    <td class="centrar-texto"><a href="">Visualizar</a></td>
+                {% if (documentos[2].status == "ACEPTADO" or documentos[2].status == "ESPERA APROBACIÓN") %}
+                <td class="centrar-texto"><a href="{{ url_for('verCartaTerminopdf', filename=documentos[2]['n_documento']) }}" target="_blank">Visualizar</a></td>
                 {% else %}
                     <td class="centrar-texto">-</td>
                 {% endif %}
                 {% if (documentos[2].status == "ACEPTADO") %}
                     <td class="centrar-texto">ACEPTADO</td>
-                {% elif (documentos[2].status == "ESPERA APROBACION") %}
+                {% elif (documentos[2].status == "ESPERA APROBACIÓN") %}
                     <td class="centrar-texto">
-                        <button>Aceptar</button>
-                        <button>Rechazar</button>
+                        <button id="btnAceptarDoc">Aceptar</button>
+                        <button id="btnAbrirRechazar">Rechazar</button>
                     </td>
                 {% else %}
                     <td class="centrar-texto">En espera</td>
@@ -111,17 +111,17 @@
                 <td class="centrar-texto">{{documentos[3].status}}</td>
                 <td class="centrar-texto">{{documentos[3].f_envio}}</td>
                 <td class="centrar-texto">{{documentos[3].f_aceptado}}</td>
-                {% if (documentos[3].status == "ACEPTADO" or documentos[3].status == "ESPERA APROBACION") %}
-                    <td class="centrar-texto"><a href="">Visualizar</a></td>
+                {% if (documentos[3].status == "ACEPTADO" or documentos[3].status == "ESPERA APROBACIÓN") %}
+                <td class="centrar-texto"><a href="{{ url_for('verConstanciaLiberacionpdf', filename=documentos[3]['n_documento']) }}" target="_blank">Visualizar</a></td>
                 {% else %}
                     <td class="centrar-texto">-</td>
                 {% endif %}
                 {% if (documentos[3].status == "ACEPTADO") %}
                     <td class="centrar-texto">ACEPTADO</td>
-                {% elif (documentos[3].status == "ESPERA APROBACION") %}
+                {% elif (documentos[3].status == "ESPERA APROBACIÓN") %}
                     <td class="centrar-texto">
-                        <button>Aceptar</button>
-                        <button>Rechazar</button>
+                        <button id="btnAceptarDoc">Aceptar</button>
+                        <button id="btnAbrirRechazar">Rechazar</button>
                     </td>
                 {% else %}
                     <td class="centrar-texto">En espera</td>
@@ -132,18 +132,91 @@
 
 </div>
 
-<div class="fondo_transparente">
-    <div class="modal">
-        <div class="modal_cerrar">
-            <span>x</span>
+{%if documentos[3]['id_tipo'] == CONSTANCIA_LIBERACION and (documentos[3]['id_status'] == SIN_ARCHIVO or documentos[3]['id_status'] == RECHAZADO) and documentos[2]['id_status'] == ACEPTADO%}
+        <div class="main-page">
+            <div class="wrap-datos">
+                <div id="idregistro">
+                    <h1 class="titulo_Registro_sistema">CONSTANCIA DE LIBERACIÓN </h1>
+                    <div>
+                        <h4> Suba la constacia de liberación en el siguiente apartado</h4>
+                    </div>
+                
+                    <form action="/subir_constancia" method="post" enctype="multipart/form-data">
+                        <div class="dp-campo_registro">
+                            <div>
+                                <label class="form-label">Constacia de liberación</label>
+                                <div class="Idp-campo">
+                                    <input id="documento" type="file" name="constancia" accept=".pdf" onchange="validarArchivo()" required >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_doc" value="{{ documentos[3]['id_doc'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documentos[3]['id_status'] }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo dp-Actual">
+                            <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                            <div class="Idp-campo">
+                            <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            </div>   
+                        </div>
+
+                        <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                            <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
+                        </div>
+        
+                        <div class="dp-campo">
+                            <div>
+                                <label></label>
+                                <div class="Idp-submit_registro">
+                                    <input type="submit">
+                                </div>   
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
         </div>
-        <div class="modal_titulo">VENTANA MODAL</div>
-        <div class=" red">
-            <textarea class="textArea" name="razonRechazo" id="" ></textarea>
+    {% endif %}
+
+<div class="fondo_transparente_rechazar">
+    <div class="modal">
+        <div class="modal_titulo">Motivo de rechazo</div>
+        <div class="modal_mensaje">
+            <p>Describa el motivo de rechazo</p>
+            <textarea class="textArea" name="razonRechazo" id="razonRechazo" ></textarea>
         </div>
         <div class="modal_botones">
-            <a href="" class="boton">Cancelar</a>
-            <a href="" class="boton">Enviar</a>
+            <a id="btnCerrarRechazar" href="" class="boton">Cancelar</a>
+            <a id="btnRechazar" href="" class="boton">Enviar</a>
+        </div>
+    </div>
+</div>
+
+<div class="fondo_transparente_acceptar_registro">
+    <div class="modal">
+        <div class="modal_titulo">Aceptar</div>
+        <div class="modal_mensaje">
+            <p>El # de registro sera el siguiente:</p>
+            <textarea class="textArea" name="registro" id="registro" >{{today}}140-{{'%04d' % (total + 1)}}</textarea>
+        </div>
+        <div class="modal_botones">
+            <a id="btnCerrarAceptar" href="" class="boton">Cancelar</a>
+            <a id="btnAceptarRegistro"href="" class="boton">Enviar</a>
         </div>
     </div>
 </div>
@@ -166,7 +239,7 @@
         justify-content: center;
         align-items: center;
     }
-    .fondo_transparente{
+    .fondo_transparente_acceptar, .fondo_transparente_rechazar, .fondo_transparente_acceptar_registro{
         top: 0;
         left: 0;
         background: rgba(0, 0, 0, 0.226);
@@ -176,7 +249,7 @@
         display: none;
     }
     .modal{
-        background: linear-gradient(0deg,white 70%, crimson 30%);
+        background: linear-gradient(0deg,white 70%, rgba(104, 36, 68, 1) 30%);
         width: 600px;
         height: 300px;
         top: 50%;
@@ -188,48 +261,43 @@
         justify-content: space-evenly;
         align-items: center;
         border-radius: 30px;
-
-    }
-    .modal_cerrar{
-        background: white;
-        position: absolute;
-        right: -20px;
-        color: crimson;
-        top: -20px;
-        width: 40px;
-        height: 40px;
-        border-radius: 25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
     }
     .modal_titulo{
         color: white;
         font-size: 40px;
     }
-    .modal_mensaje{            
-       padding: 10px 30px;
+    .modal_mensaje{   
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        padding: 10px 30px;
     }
     .modal_botones{      
         width: 100%;    
-       background: whitesmoke;
-       border-top:whitesmoke 1px;
+       background: white;
+       border-top:white 1px;
        padding-top: 20px;
        display: flex;
        justify-content: space-evenly;
+    }
+
+    .textArea{
+        width: 100%;
+        font-size: 1.5em;
+        flex-grow: 1;
     }
     
     .boton{
         background: white;
         padding: 8px 30px;
-        color: crimson;
+        color: rgba(104, 36, 68, 1);
         text-decoration: none;
         border-radius: 25px;
-        border:1px solid crimson
+        border:1px solid rgba(104, 36, 68, 1)
     }
     .boton:hover{
-        background: crimson;
+        background: rgba(104, 36, 68, 1);
         color: white;
     }
         
@@ -237,17 +305,111 @@
 
 <script>
     document
-    .getElementById("btnAbrir")
+    .getElementById("btnAbrirRechazar")
     .addEventListener("click",function() {
-        document.getElementsByClassName("fondo_transparente")[0].style.display="block"
+        document.getElementsByClassName("fondo_transparente_rechazar")[0].style.display="block"
         return false
     })
 
+    if(document
+    .getElementById("btnAbrirAceptarRegistro"))
+        document
+        .getElementById("btnAbrirAceptarRegistro")
+        .addEventListener("click",function() {
+            document.getElementsByClassName("fondo_transparente_acceptar_registro")[0].style.display="block"
+            return false
+        })
+
     document
-    .getElementsByClassName("modal_cerrar")[0].
-    addEventListener("click",function(){
+    .getElementById("btnCerrarRechazar").
+    addEventListener("click", (event) => {
+        event.preventDefault();
         document.getElementsByClassName
-        ("fondo_transparente")[0].style.display="none"
+        ("fondo_transparente_rechazar")[0].style.display="none"
+        document.getElementsByClassName
+        ("fondo_transparente_acceptar")[0].style.display="none"
     })
+
+    document
+    .getElementById("btnRechazar").
+    addEventListener("click", async (event) => {
+        
+        const motivo = document.getElementById('razonRechazo').value
+        
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if(!JSON.parse(xhr.response).ok){
+                    event.preventDefault();
+                }
+            }
+        }
+        xhr.open("POST", "{{ url_for('rechazarDocumento') }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            boleta: "{{expediente.boleta}}",
+            motivo: motivo,
+            email: "{{expediente.correo_electronico}}"
+        }));
+    })
+
+    document
+    .getElementById("btnCerrarAceptar").
+    addEventListener("click", (event) => {
+        event.preventDefault();
+        document.getElementsByClassName
+        ("fondo_transparente_acceptar_registro")[0].style.display="none"
+    })
+
+    if(document.getElementById("btnAceptarRegistro"))
+        document
+        .getElementById("btnAceptarRegistro").
+        addEventListener("click", (event) => {
+            const registro = document.getElementById('registro').value
+            
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    console.log(!JSON.parse(xhr.response).ok)
+                    if(!JSON.parse(xhr.response).ok){
+                        event.preventDefault();
+                    }
+                }
+            }
+            xhr.open("POST", "{{ url_for('aceptarDocumento') }}", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                boleta: "{{expediente.boleta}}",
+                registro: registro,
+                noRegistro: parseInt("{{total + 1}}"),
+                email: "{{expediente.correo_electronico}}"
+            }));
+        })
+    
+    if(document.getElementById("btnAceptarDoc"))
+        document
+        .getElementById("btnAceptarDoc").
+        addEventListener("click", (event) => {
+            
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    console.log(!JSON.parse(xhr.response).ok)
+                    if(!JSON.parse(xhr.response).ok){
+                        event.preventDefault();
+                    }
+                    else {
+                        location.reload()
+                    }
+                    location.reload()
+                }
+            }
+            xhr.open("POST", "{{ url_for('aceptarDocumento') }}", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                boleta: "{{expediente.boleta}}",
+                email: "{{expediente.correo_electronico}}"
+            }));
+        })
 </script>
 {% endblock %}
