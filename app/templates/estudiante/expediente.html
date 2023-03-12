@@ -57,7 +57,11 @@
                 <td class="centrar-texto">{{ documentos[1]['status_documento'] }}</td>
                 <td class="centrar-texto">{{ documentos[1]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[1]['fecha_aceptado'] }}</td>
-                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                    {% if documentos[1]['nombre_archivo'] %}
+                    <a href="{{ url_for('verEvaluacionpdf', filename=documentos[1]['nombre_archivo']) }}" target="_blank">Visualizar</a>
+                    {% endif %}
+                </td>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">3</td>
@@ -65,7 +69,11 @@
                 <td class="centrar-texto">{{ documentos[2]['status_documento'] }}</td>
                 <td class="centrar-texto">{{ documentos[2]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[2]['fecha_aceptado'] }}</td>
-                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                    {% if documentos[2]['nombre_archivo'] %}
+                    <a href="{{ url_for('verCartaTerminopdf', filename=documentos[2]['nombre_archivo']) }}" target="_blank">Visualizar</a>
+                    {% endif %}
+                </td>
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">4</td>
@@ -73,7 +81,11 @@
                 <td class="centrar-texto">{{ documentos[3]['status_documento'] }}</td>
                 <td class="centrar-texto">{{ documentos[3]['fecha_envio'] }}</td>
                 <td class="centrar-texto">{{ documentos[3]['fecha_aceptado'] }}</td>
-                <td class="centrar-texto"><a href="">Visualizar</a></td>
+                <td class="centrar-texto">
+                    {% if documentos[3]['nombre_archivo'] %}
+                    <a href="{{ url_for('verConstanciaLiberacionpdf', filename=documentos[3]['nombre_archivo']) }}" target="_blank">Visualizar</a>
+                    {% endif %}
+                </td>
             </tr>
         </table>
     </div>

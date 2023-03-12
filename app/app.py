@@ -15,8 +15,8 @@ import secrets
 import datetime as d
 
 #server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-#server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
+#server='DANIEL\SQLEXPRESS' #PARA DANIEL
 bd='Sistema_Atencion_SS'
 user='SS_SISTEMAATENCION'
 password='Irvin19+'
@@ -33,7 +33,7 @@ app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
 app.config['VER_CONSTANCIA_LIBERACION'] = "./documentos/ConstanciasLiberacion/"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
 app.config['SESSION_TYPE'] = 'filesystem'
-app.secret_key = 'mysecretkey'
+app.secret_key = os.urandom(24)
 Session(app)
 
 # CONEXIÓN A LA BASE DE DATOS
@@ -1254,7 +1254,7 @@ def verEvaluacionpdf(filename):
     alumno = DataUsers.query.filter_by(boleta=boleta).first()
     print(alumno)
     if alumno:
-        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=2).first()
         if filename == documento.nombre_archivo:
             ruta = app.config['VER_EVALUACION_DESEMPENO'] + filename
             return send_file(ruta, mimetype='application/pdf')
@@ -1286,7 +1286,7 @@ def verCartaTerminopdf(filename):
     alumno = DataUsers.query.filter_by(boleta=boleta).first()
     print(alumno)
     if alumno:
-        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=3).first()
         if filename == documento.nombre_archivo:
             ruta = app.config['VER_CARTA_TERMINO'] + filename
             return send_file(ruta, mimetype='application/pdf')
@@ -1318,7 +1318,7 @@ def verConstanciaLiberacionpdf(filename):
     alumno = DataUsers.query.filter_by(boleta=boleta).first()
     print(alumno)
     if alumno:
-        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=1).first()
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=4).first()
         if filename == documento.nombre_archivo:
             ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
             return send_file(ruta, mimetype='application/pdf')
