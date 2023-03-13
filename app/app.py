@@ -89,6 +89,7 @@ class DataUsers(db.Model):
     ubicacion_codpos = db.Column(db.String(30), nullable=True, name='Ubicacion_codpos')
     token = db.Column(db.String(32), nullable=True,unique=True,name='Token')
     No_registro = db.Column(db.String(20), nullable=True, name='No_Registro')
+    numero_registro = db.Column(db.Integer, nullable=True, name='Numero_Registro')
 
 # MODELO PARA EL CATALOGO DE CARRERAS
 class Carreras(db.Model):
@@ -230,6 +231,7 @@ def insertar_data_user(data,id_user):
             ubicacion_alcaldia=data.get('ubicacion_alcaldia'),
             ubicacion_codpos=data.get('ubicacion_codpos'),
             No_registro = "SIN ASIGNAR",
+            numero_registro = -1
         )
         print(new_user)
         db.session.add(new_user)
@@ -450,7 +452,8 @@ def reportesAdmin():
         DataUsers.fecha_termino, 
         DataUsers.correo, 
         StatusUser.status, 
-        DataUsers.No_registro)
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
     .join(StatusUser, Users.id_status_user == StatusUser.id)
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
@@ -471,8 +474,7 @@ def reportesAdmin():
             "correo_electronico": user[10],
             "estatus": user[11],
             "numero": user[12],
-            "registro_lista": user[12],
-            "f_envio": user[12],
+            "f_envio": user[13],
         }
         users_list.append(userSend)
     return render_template('admin/reportes.html',data=data, registros = users_list)
@@ -497,7 +499,8 @@ def completadosAdmin():
         DataUsers.fecha_termino, 
         DataUsers.correo, 
         StatusUser.status, 
-        DataUsers.No_registro)
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
     .join(StatusUser, Users.id_status_user == StatusUser.id)
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
@@ -518,8 +521,7 @@ def completadosAdmin():
             "correo_electronico": user[10],
             "estatus": user[11],
             "numero": user[12],
-            "registro_lista": user[12],
-            "f_envio": user[12],
+            "f_envio": user[13],
         }
         users_list.append(userSend)
     return render_template('admin/completados.html',data=data, registros = users_list)
@@ -569,12 +571,58 @@ def preregistrosAdmin():
             "correo_electronico": user[10],
             "estatus": user[11],
             "numero": user[12],
-            "registro_lista": user[12],
             "f_envio": user[13],
         }
         users_list.append(userSend)
 
     return render_template('admin/expedientes.html',data=data, registros = users_list)
+
+@app.route('/admin/finalizado')
+def finalizadosAdmin():
+    if 'username' not in session:
+        return redirect('/')
+    data={
+        'titulo':'Finalizados - Administrador'
+    }
+    users = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(StatusUser.status == "CONCLUIDO")
+    .all())
+    users_list = []
+    for user in users:
+        userSend = {
+            "boleta": user[0],
+            "nombre": user[1] + " " + user[2] + " " +user[3],
+            "carrera": user[4],
+            "semestre": user[5],
+            "genero": user[6],
+            "prestatario": user[7],
+            "f_inicio": user[8],
+            "f_termino": user[9],
+            "correo_electronico": user[10],
+            "estatus": user[11],
+            "numero": user[12],
+            "f_envio": user[13],
+        }
+        users_list.append(userSend)
+    return render_template('admin/finalizado.html',data=data, registros = users_list)
 
 @app.route('/admin/estadisticas')
 def estadisticasAdmin():
@@ -618,16 +666,18 @@ def expedienteAlumno(boleta=0):
     }
 
     total = (db.session.query(
-        DataUsers.No_registro)
-        .order_by(DataUsers.No_registro.desc())
+        DataUsers.numero_registro)
+        .order_by(DataUsers.numero_registro.desc())
         .first())
 
     today = d.date.today()
     date = today.strftime("%Y")
     date = date.split("20")[1]
 
-    if total[0] == "SIN ASIGNAR":
+    if total[0] == -1:
         total = 0
+    else:
+        total = total[0]
 
     expediente = (db.session.query(
         Users.boleta, 
@@ -658,7 +708,9 @@ def expedienteAlumno(boleta=0):
         StatusDocumento.status_documento,
         TipoDocumento.tipo_documento,
         Documentos.ubicacion,
-        Documentos.nombre_archivo)
+        Documentos.nombre_archivo,
+        Documentos.id,
+        Documentos.id_status)
         .join(Documentos, Users.id == Documentos.id_alumno)
         .join(TipoDocumento, TipoDocumento.id == Documentos.id_tipo)
         .join(StatusDocumento, StatusDocumento.id == Documentos.id_status)
@@ -692,7 +744,9 @@ def expedienteAlumno(boleta=0):
             "status": documento[3],
             "t_documento": documento[4],
             "u_documento": documento[5],
-            "n_documento": documento[6]
+            "n_documento": documento[6],
+            "id_documento": documento[7],
+            "id_status": documento[8]
         }
         documentosPage.append(documentoPage)
 
@@ -702,9 +756,10 @@ def expedienteAlumno(boleta=0):
 @app.route("/admin/aceptarDocumento", methods=['POST'])
 def aceptarDocumento():
     data = request.json
-    if registro in data:
+    if 'registro' in data:
         user = DataUsers.query.filter_by(boleta = data['boleta']).first()
         user.No_registro = data['registro']
+        user.numero_registro = data['noRegistro']
         db.session.commit()
 
     id_user =  (db.session.query(
@@ -1163,11 +1218,15 @@ def subirCarta():
 
 @app.route("/subir_constancia", methods=['POST'])
 def subirConstacia():
+    
     if request.method == "POST":
-        if 'boleta' not in session:
+        print(session)
+        if 'boleta' not in session and 'username' not in session:
             return redirect('/')
-        boleta = session.get('boleta', None)
-        alumno = DataUsers.query.filter_by(boleta=boleta).first()
+        
+        print(request.form)
+        boleta = request.form.get('boleta')
+        alumno = Users.query.filter_by(boleta=boleta).first()
         f = request.files['constancia']
         filename = secure_filename(f.filename)
         new_filename = "Constancia" + boleta + os.path.splitext(filename)[1]
@@ -1179,8 +1238,7 @@ def subirConstacia():
         id_documento = int(request.form['id_doc'])
         id_alumno = alumno.id 
         id_status = int(request.form.get('id_status'))
-        fecha_actual_str = request.form.get('Idp-Factual')
-        fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
+        fecha_actual = d.date.today().strftime("%Y-%m-%d")
         ubicacion = ruta
         print(fecha_actual)
         print(type(fecha_actual))
@@ -1196,7 +1254,7 @@ def subirConstacia():
             documento.nombre_archivo = new_filename
             db.session.commit()
             exito = "Se ha subido correctamente su documento, espere validación"
-        return render_template('estudiante/main.html', data=data,exito=exito)
+        return redirect(f'/admin/expediente/{boleta}')
 
 #VISUALIZACION DE DOCUMENTOS
 @app.route('/app/documentos/Expedientes/<path:filename>')

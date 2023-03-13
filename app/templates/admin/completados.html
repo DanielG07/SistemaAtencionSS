@@ -12,11 +12,9 @@
     <div class="contenido center-content">
         <div class="row-container">
             <div>
-                <h3>Completados</h3>
-                <p>Permite visualizar y descargar excel de los alumnos que ya terminaron el servicio social.</p>
+                <h3>Carta Termino</h3>
+                <p>Permite subir la carta termino a los alumnos que ya cubrieron sus horas de servicio social.</p>
             </div>
-            
-            <a><button class="btnExport button">Generar Excel</button></a>
         </div>
         <table>
             <tr>
@@ -31,7 +29,6 @@
                 <th>Correo Electronico</th>
                 <th>Estatus</th>
                 <th># Registro</th>
-                <th>Registro Lista</th>
                 <th>Fecha de envio</th>
             </tr>
             {% for item in registros %}
@@ -51,7 +48,6 @@
                 <td class="centrar-texto">{{item.correo_electronico}}</td>
                 <td class="centrar-texto">{{item.estatus}}</td>
                 <td class="centrar-texto">{{item.numero}}</td>
-                <td class="centrar-texto">{{item.registro_lista}}</td>
                 <td class="centrar-texto">{{item.f_envio}}</td>
             </tr>
             {% endfor %}
