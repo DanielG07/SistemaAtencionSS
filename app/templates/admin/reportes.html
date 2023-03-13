@@ -31,7 +31,6 @@
                 <th>Correo Electronico</th>
                 <th>Estatus</th>
                 <th># Registro</th>
-                <th>Registro Lista</th>
                 <th>Fecha de envio</th>
             </tr>
             {% for item in registros %}
@@ -51,7 +50,6 @@
                 <td class="centrar-texto">{{item.correo_electronico}}</td>
                 <td class="centrar-texto">{{item.estatus}}</td>
                 <td class="centrar-texto">{{item.numero}}</td>
-                <td class="centrar-texto">{{item.registro_lista}}</td>
                 <td class="centrar-texto">{{item.f_envio}}</td>
             </tr>
             {% endfor %}

@@ -132,7 +132,7 @@
 
 </div>
 
-{%if documentos[3]['id_tipo'] == CONSTANCIA_LIBERACION and (documentos[3]['id_status'] == SIN_ARCHIVO or documentos[3]['id_status'] == RECHAZADO) and documentos[2]['id_status'] == ACEPTADO%}
+{%if (documentos[3].status == "SIN_ARCHIVO" or documentos[3].status == "RECHAZADO") and documentos[2].status == "ACEPTADO" %}
         <div class="main-page">
             <div class="wrap-datos">
                 <div id="idregistro">
@@ -154,7 +154,7 @@
                         <div class="dp-campo_registro" style="display: none;">
                             <div>
                                 <div class="Idp-campo">
-                                    <input type="hidden" name="id_doc" value="{{ documentos[3]['id_doc'] }}" >
+                                    <input type="hidden" name="id_doc" value="{{ documentos[3].id_documento }}" >
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,15 @@
                         <div class="dp-campo_registro" style="display: none;">
                             <div>
                                 <div class="Idp-campo">
-                                    <input type="hidden" name="id_status" value="{{ documentos[3]['id_status'] }}" >
+                                    <input type="hidden" name="boleta" value="{{ expediente.boleta }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documentos[3].id_status }}" >
                                 </div>
                             </div>
                         </div>
@@ -339,9 +347,7 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
-                if(!JSON.parse(xhr.response).ok){
-                    event.preventDefault();
-                }
+                location.reload()
             }
         }
         xhr.open("POST", "{{ url_for('rechazarDocumento') }}", true);
@@ -353,13 +359,14 @@
         }));
     })
 
-    document
-    .getElementById("btnCerrarAceptar").
-    addEventListener("click", (event) => {
-        event.preventDefault();
-        document.getElementsByClassName
-        ("fondo_transparente_acceptar_registro")[0].style.display="none"
-    })
+    if(document.getElementById("btnCerrarAceptar"))
+        document
+        .getElementById("btnCerrarAceptar").
+        addEventListener("click", (event) => {
+            event.preventDefault();
+            document.getElementsByClassName
+            ("fondo_transparente_acceptar_registro")[0].style.display="none"
+        })
 
     if(document.getElementById("btnAceptarRegistro"))
         document
@@ -370,10 +377,7 @@
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
-                    console.log(!JSON.parse(xhr.response).ok)
-                    if(!JSON.parse(xhr.response).ok){
-                        event.preventDefault();
-                    }
+                    location.reload()
                 }
             }
             xhr.open("POST", "{{ url_for('aceptarDocumento') }}", true);
@@ -393,16 +397,9 @@
             
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    console.log(!JSON.parse(xhr.response).ok)
-                    if(!JSON.parse(xhr.response).ok){
-                        event.preventDefault();
-                    }
-                    else {
-                        location.reload()
-                    }
+                
                     location.reload()
-                }
+                
             }
             xhr.open("POST", "{{ url_for('aceptarDocumento') }}", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
