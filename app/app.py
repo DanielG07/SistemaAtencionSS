@@ -409,7 +409,7 @@ def uploader():
         filename= secure_filename(f.filename)
         f.save(os.path.join(app.config['CARTAS_COMPROMISO'],filename))
         print(filename)
-        ruta = './app/documentos/CartaCompromiso/'+ filename
+        ruta = app.config['CARTAS_COMPROMISO'] + filename
         data = lectura(ruta)
         print(data)
         if data['titulo1']=="INSTITUTO POLITÉCNICO NACIONAL":
