@@ -4,17 +4,17 @@ USE Sistema_Atencion_SS;
 
 CREATE TABLE TIPO_USERS_TABLE (
     Id_Tipo_Users INT PRIMARY KEY NOT NULL,
-    Descripcion_user VARCHAR(20)
+    Descripcion_user VARCHAR(32)
 );
 
 CREATE TABLE TABLE_SEXO (
     Id_Sexo INT PRIMARY KEY NOT NULL,
-    Sexo VARCHAR(15)
+    Sexo VARCHAR(16)
 );
 
 CREATE TABLE TABLE_CARRERA (
     Id_Carrera INT PRIMARY KEY NOT NULL,
-    Descripcion_Carrera VARCHAR(200)
+    Descripcion_Carrera VARCHAR(128)
 );
 
 CREATE TABLE STATUS_USER (
@@ -24,17 +24,17 @@ CREATE TABLE STATUS_USER (
 
 CREATE TABLE STATUS_DOCUMENTO (
     Id_Status_Documento INT PRIMARY KEY NOT NULL,
-    Status_Documento VARCHAR(20)
+    Status_Documento VARCHAR(32)
 );
 
 CREATE TABLE TIPO_DOCUMENTO (
     Id_Tipo_Documento INT PRIMARY KEY NOT NULL,
-    Tipo_Documento VARCHAR(40)
+    Tipo_Documento VARCHAR(64)
 );
 
 CREATE TABLE USERS (
     Id_user INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    boleta VARCHAR(25) NOT NULL,
+    boleta VARCHAR(32) NOT NULL,
     passw VARBINARY(1024) NOT NULL,
     Tipo_user INT,
     Id_Estatus_user INT,
@@ -45,39 +45,39 @@ CREATE TABLE USERS (
 CREATE TABLE DATA_USERS (
   Id_data_users INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   user_id INT NOT NULL,
-  Nombre VARCHAR(40),
-  A_Paterno VARCHAR(40),
-  A_Materno VARCHAR(40),
-  CURP VARCHAR(30),
-  Boleta VARCHAR(25),
+  Nombre VARCHAR(64),
+  A_Paterno VARCHAR(64),
+  A_Materno VARCHAR(64),
+  CURP VARCHAR(32),
+  Boleta VARCHAR(32),
   Id_Sexo INT,
   Id_Plantel INT,
   Semestre INT, 
-  CP VARCHAR(30),
-  Tel_particular VARCHAR(30),
-  Direccion TEXT,
-  Alcaldia VARCHAR(75),
-  Escolaridad VARCHAR(10),
-  Correo VARCHAR(50),
+  CP VARCHAR(32),
+  Tel_particular VARCHAR(32),
+  Direccion VARCHAR(1024),
+  Alcaldia VARCHAR(128),
+  Escolaridad VARCHAR(16),
+  Correo VARCHAR(64),
   Id_carrera INT,
-  Clave_carrera VARCHAR(10),
+  Clave_carrera VARCHAR(16),
   Prestatario VARCHAR(1024),
-  Codigo_Prestatario VARCHAR(30),
-  Responsable VARCHAR(75),
+  Codigo_Prestatario VARCHAR(32),
+  Responsable VARCHAR(128),
   Programa TEXT,
-  Clave_programa VARCHAR(30),
-  Cargo VARCHAR(75),
-  Tel_responsable VARCHAR(40),
+  Clave_programa VARCHAR(32),
+  Cargo VARCHAR(128),
+  Tel_responsable VARCHAR(64),
   Fecha_registro DATE,
   Fecha_inicio DATE,
   Fecha_termino DATE,
-  Correo_prestatario VARCHAR(50),
-  Ubicacion_calleynum VARCHAR(75),
-  Ubicacion_colonia VARCHAR(75),
-  Ubicacion_alcaldia VARCHAR(75),
-  Ubicacion_codpos VARCHAR(30),
+  Correo_prestatario VARCHAR(64),
+  Ubicacion_calleynum VARCHAR(128),
+  Ubicacion_colonia VARCHAR(128),
+  Ubicacion_alcaldia VARCHAR(128),
+  Ubicacion_codpos VARCHAR(128),
   Token VARCHAR(32),
-  No_Registro VARCHAR(20),
+  No_Registro VARCHAR(32),
   Numero_Registro INT,
   FOREIGN KEY (Id_carrera) REFERENCES TABLE_CARRERA (Id_Carrera),
   FOREIGN KEY (Id_Sexo) REFERENCES TABLE_SEXO (Id_Sexo),
