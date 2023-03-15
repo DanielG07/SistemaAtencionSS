@@ -10,15 +10,14 @@ from sqlalchemy import func, or_
 from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
 from lee_pdf import lectura
+import pymysql
 import hashlib
 import secrets
 import datetime as d
 
-#server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-#server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='localhost'
 bd='Sistema_Atencion_SS'
-user='SS_SISTEMAATENCION'
+username='SS_SISTEMAATENCION'
 password='Irvin19+'
 
 app = Flask(__name__)
@@ -31,7 +30,8 @@ app.config['CARTA_TERMINO'] = "./app/documentos/CartasTermino"
 app.config['VER_CARTA_TERMINO'] = "./documentos/CartasTermino/"
 app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
 app.config['VER_CONSTANCIA_LIBERACION'] = "./documentos/ConstanciasLiberacion/"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + username + ':' + password + '@' + server + '/' + bd
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = os.urandom(24)
 Session(app)
@@ -711,7 +711,8 @@ def expedienteAlumno(boleta=0):
         Documentos.nombre_archivo,
         Documentos.id,
         Documentos.id_status)
-        .join(Documentos, Users.id == Documentos.id_alumno)
+        .join(DataUsers, Users.id == DataUsers.user_id)
+        .join(Documentos, DataUsers.id == Documentos.id_alumno)
         .join(TipoDocumento, TipoDocumento.id == Documentos.id_tipo)
         .join(StatusDocumento, StatusDocumento.id == Documentos.id_status)
         .filter(Users.boleta == boleta)

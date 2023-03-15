@@ -3,17 +3,14 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 import hashlib
 
-#server='DESKTOP-A8TJQDL\SQLEXPRESS01'  #PARA JOSHEP
-server='LAPTOP-9T4B4IDA' #PARA JORGE CRUZ
-#server='DANIEL\SQLEXPRESS' #PARA DANIEL
+server='localhost' 
 bd='Sistema_Atencion_SS'
-user='SS_SISTEMAATENCION'
+username ='SS_SISTEMAATENCION'
 password='Irvin19+'
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://' + user + ':' + password + '@' + server + '/' + bd + '?driver=ODBC+Driver+17+for+SQL+Server'
-app.config['SESSION_TYPE'] = 'filesystem'
-app.secret_key = 'mysecretkey'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + username + ':' + password + '@' + server + '/' + bd
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Session(app)
 try:
     db = SQLAlchemy(app)
