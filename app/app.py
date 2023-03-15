@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, or_
 from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
-from lee_pdf import lectura
+from utils.lee_pdf import lectura
 import pymysql
 import hashlib
 import secrets
