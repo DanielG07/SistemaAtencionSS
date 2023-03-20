@@ -10,7 +10,6 @@ from sqlalchemy import func, or_
 from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
 from utils.lee_pdf import lectura
-import pymysql
 import hashlib
 import secrets
 import datetime as d
@@ -21,7 +20,7 @@ username='SS_SISTEMAATENCION'
 password='Irvin19+'
 
 app = Flask(__name__)
-app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso"
+app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso/"
 app.config['EXPEDIENTES'] = "./app/documentos/Expedientes"
 app.config['VER_EXPEDIENTES'] = "./documentos/Expedientes/"
 app.config['EVALUACION_DESEMPENO'] = "./app/documentos/Evaluaciones"
