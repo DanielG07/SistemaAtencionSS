@@ -1226,7 +1226,7 @@ def subirConstacia():
         
         print(request.form)
         boleta = request.form.get('boleta')
-        alumno = Users.query.filter_by(boleta=boleta).first()
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
         f = request.files['constancia']
         filename = secure_filename(f.filename)
         new_filename = "Constancia" + boleta + os.path.splitext(filename)[1]
