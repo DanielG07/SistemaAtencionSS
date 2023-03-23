@@ -66,9 +66,9 @@
     }
 
     async function exportExcel() {
-        let response = await fetch( '/admin/generar_completados' )
+        let response = await fetch( '/admin/generar_finalizado')
         let blobResponse = await response.blob()
-        const fileName = 'completados.xlsx'
+        const fileName = 'termino.xlsx'
         downloadExcelSilently( blobResponse, fileName )
     }
     function downloadExcelSilently( blobExcelFile, filename ) {
