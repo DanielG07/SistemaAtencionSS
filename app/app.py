@@ -48,7 +48,8 @@ class Users(db.Model):
     boleta = db.Column(db.String(25), nullable=True, name='boleta')
     passw = db.Column(db.LargeBinary(), nullable=False,name = 'passw')
     tipo_user = db.Column(db.Integer, nullable=False,name='Tipo_user')
-    id_status_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')  
+    id_status_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')
+    actualizacion_estatus=db.Column(db.DataTime, nullable=False, name='Actualizacion_Estatus')  
 
 # MODELO PARA LA TABLA "DATA_USERS"
 class DataUsers(db.Model):

@@ -38,6 +38,7 @@ CREATE TABLE USERS (
     passw VARBINARY(1024) NOT NULL,
     Tipo_user INT,
     Id_Estatus_user INT,
+    Actualizacion_Estatus DATETIME,
     FOREIGN KEY (Id_Estatus_user) REFERENCES STATUS_USER(Id_Estatus_user),
     FOREIGN KEY (Tipo_user) REFERENCES TIPO_USERS_TABLE(Id_Tipo_Users)
 );
