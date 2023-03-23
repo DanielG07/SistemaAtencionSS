@@ -603,6 +603,7 @@ def finalizadosAdmin():
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
     .filter(StatusUser.status == "CONCLUIDO")
+    .order_by(desc)
     .all())
     users_list = []
     for user in users:
@@ -620,7 +621,7 @@ def finalizadosAdmin():
             "numero": user[12],
             "f_envio": user[13],
         }
-        users_list.append(userSend)
+        users_list.insert(0,userSend)
     return render_template('admin/finalizado.html',data=data, registros = users_list)
 
 @app.route('/admin/estadisticas')
@@ -648,12 +649,52 @@ def generarExcelEmision():
     apiResponse = createApiResponse(registro_mock)
     return apiResponse
 
-@app.route("/admin/generar_completados")
+@app.route("/admin/generar_finalizado")
 def generarExcelCompletados():
     if 'username' not in session:
         return redirect('/')
+
+    users = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(StatusUser.status == "CONCLUIDO")
+    .all())
+
+    users_list = []
+    for user in users:
+        userSend = {
+            "boleta": user[0],
+            "nombre": user[1] + " " + user[2] + " " +user[3],
+            "carrera": user[4],
+            "semestre": user[5],
+            "genero": user[6],
+            "prestatario": user[7],
+            "f_inicio": user[8],
+            "f_termino": user[9],
+            "correo_electronico": user[10],
+            "estatus": user[11],
+            "numero": user[12],
+            "f_envio": user[13],
+        }
+        users_list.append(userSend)
     # Traer datos de acuerdo a la pagina
-    apiResponse = createApiResponse(completados_mock)
+    apiResponse = createApiResponse(users_list)
     return apiResponse
 
 @app.route("/admin/expediente/<boleta>")
