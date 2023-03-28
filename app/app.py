@@ -4,6 +4,7 @@ from sqlalchemy import Date
 from flask import Flask, redirect, render_template, request, url_for, send_file, session , send_file
 from flask_session import Session
 from utils.funcion_excel import createApiResponse
+from utils.funcion_excel_2 import createApiResponse2
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, or_
@@ -49,7 +50,7 @@ class Users(db.Model):
     passw = db.Column(db.LargeBinary(), nullable=False,name = 'passw')
     tipo_user = db.Column(db.Integer, nullable=False,name='Tipo_user')
     id_status_user = db.Column(db.Integer, nullable=False, name='Id_Estatus_user')
-    actualizacion_estatus=db.Column(db.DataTime, nullable=False, name='Actualizacion_Estatus')  
+    actualizacion_estatus=db.Column(db.DateTime, nullable=False, name='Actualizacion_Estatus')  
 
 # MODELO PARA LA TABLA "DATA_USERS"
 class DataUsers(db.Model):
@@ -604,7 +605,6 @@ def finalizadosAdmin():
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
     .filter(StatusUser.status == "CONCLUIDO")
-    .order_by(desc)
     .all())
     users_list = []
     for user in users:
@@ -642,12 +642,52 @@ def generarExcelPreregistro():
     apiResponse = createApiResponse(preregistro_mock)
     return apiResponse
 
-@app.route("/admin/generar_emision")
+@app.route("/admin/generar_completados")
 def generarExcelEmision():
     if 'username' not in session:
         return redirect('/')
+    
+    users = (db.session.query(
+        Users.boleta, 
+        DataUsers.nombre, 
+        DataUsers.a_paterno, 
+        DataUsers.a_materno, 
+        Carreras.carrera, 
+        DataUsers.semestre, 
+        Sexo.sexo, 
+        DataUsers.prestatario, 
+        DataUsers.fecha_inicio, 
+        DataUsers.fecha_termino, 
+        DataUsers.correo, 
+        StatusUser.status, 
+        DataUsers.No_registro,
+        DataUsers.fecha_registro)
+    .join(StatusUser, Users.id_status_user == StatusUser.id)
+    .join(DataUsers, Users.id == DataUsers.user_id)
+    .join(Carreras, Carreras.id == DataUsers.id_carrera)
+    .join(Sexo, Sexo.id == DataUsers.id_sexo)
+    .filter(StatusUser.status == "COMPLETADO")
+    .all())
+
+    users_list = []
+    for user in users:
+        userSend = {
+            "boleta": user[0],
+            "nombre": user[1] + " " + user[2] + " " +user[3],
+            "carrera": user[4],
+            "semestre": user[5],
+            "genero": user[6],
+            "prestatario": user[7],
+            "f_inicio": user[8],
+            "f_termino": user[9],
+            "correo_electronico": user[10],
+            "estatus": user[11],
+            "numero": user[12],
+            "f_envio": user[13],
+        }
+        users_list.append(userSend)
     # Traer datos de acuerdo a la pagina
-    apiResponse = createApiResponse(registro_mock)
+    apiResponse = createApiResponse2(users_list)
     return apiResponse
 
 @app.route("/admin/generar_finalizado")
