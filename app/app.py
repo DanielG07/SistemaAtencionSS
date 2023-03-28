@@ -634,14 +634,6 @@ def estadisticasAdmin():
     }
     return render_template('admin/estadisticas.html',data=data)
 
-@app.route("/admin/generar_preregistros")
-def generarExcelPreregistro():
-    if 'username' not in session:
-        return redirect('/')
-    # Traer datos de acuerdo a la pagina
-    apiResponse = createApiResponse(preregistro_mock)
-    return apiResponse
-
 @app.route("/admin/generar_completados")
 def generarExcelEmision():
     if 'username' not in session:
@@ -666,7 +658,7 @@ def generarExcelEmision():
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
-    .filter(StatusUser.status == "COMPLETADO")
+    .filter(StatusUser.status == "ACEPTADO")
     .all())
 
     users_list = []
@@ -687,6 +679,7 @@ def generarExcelEmision():
         }
         users_list.append(userSend)
     # Traer datos de acuerdo a la pagina
+    print(users_list)
     apiResponse = createApiResponse2(users_list)
     return apiResponse
 
