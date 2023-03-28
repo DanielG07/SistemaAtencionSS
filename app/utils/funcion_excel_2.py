@@ -5,6 +5,7 @@ import datetime
 from flask import send_file
 
 def createApiResponse2(data):
+    print(data)
     bufferFile = writeBufferExcelFile(data)
     mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     return send_file(bufferFile, mimetype=mimetype)
