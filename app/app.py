@@ -7,7 +7,7 @@ from utils.funcion_excel import createApiResponse
 from utils.funcion_excel_2 import createApiResponse2
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, and_
 from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
 from werkzeug.utils import secure_filename
 from utils.lee_pdf import lectura
@@ -556,7 +556,8 @@ def preregistrosAdmin():
     .join(DataUsers, Users.id == DataUsers.user_id)
     .join(Carreras, Carreras.id == DataUsers.id_carrera)
     .join(Sexo, Sexo.id == DataUsers.id_sexo)
-    .filter(or_(StatusUser.status.like("ESPERA"), StatusUser.status.like("RECHAZADO")))
+    .join(Documentos, Documentos.id_alumno == DataUsers.id)
+    .filter(and_(or_(StatusUser.status.like("ESPERA"), StatusUser.status.like("RECHAZADO")), and_(Documentos.id_status.like(3), Documentos.id_tipo.like(1))))
     .all())
     users_list = []
     for user in users:
@@ -884,7 +885,7 @@ def rechazarDocumento():
     documento.id_status = 4
     db.session.commit()
 
-    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "documento fue rechazado")
+    enviar_correo(data['email'], "Sistema Servicio Social - Documento Rechazado", "documento fue rechazado por " + data.motivo)
 
     return {
         "ok": False
