@@ -884,7 +884,7 @@ def rechazarDocumento():
     documento.id_status = 4
     db.session.commit()
 
-    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "documento fue rechazado")
+    enviar_correo(data['email'], "Sistema Servicio Social - Documento Rechazado", "documento fue rechazado por " + data.motivo)
 
     return {
         "ok": False
