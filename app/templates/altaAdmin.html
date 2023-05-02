@@ -1,0 +1,125 @@
+{% extends './layout.html' %}
+
+{% block title %}Restablecer contraseña{% endblock %}
+
+{% block header %}
+{% include 'components/headerAdmin.html' %}
+{% endblock %}
+
+{% block body %}
+
+    
+<div class="main-page">
+    <div class="wrap-datos">
+        <div id="idregistro">
+            <h1 class="titulo_Registro_sistema">ALTA ADMINISTRADOR </h1>
+            <div>
+                <h4> Ingrese usuario y contraseña </h4>
+                <h4> Se envió un correo con un código de verificación al correo Institucional para crear un nuevo usuario administrador </h4>
+                {% if correo %}
+                <h4>{{correo}}</h4>
+                {% endif %}
+            </div>
+
+            <form action="" method="post">
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Código de verificación</label>
+                    <div class="Idp-campo">
+                        <input id="codigo" name="Idp-codigo"  placeholder="Código" required/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Usuario</label>
+                    <div class="Idp-campo">
+                        <input id="usuario" name="Idp-usuario" type="text"  placeholder="Usuario" required/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Contraseña</label>
+                    <div class="Idp-campo">
+                        <input id="password" name="Idp-contraseña" type="password"  placeholder="Contraseña" required/>
+                    </div>   
+                </div>
+
+                <div class="dp-campo ">
+                    <label class="label_confirmacion">Confirmar Contraseña</label>
+                    <div class="Idp-campo">
+                        <input id="confirmPassword" name="Idp-Confirmar-contraseña" type="password"  placeholder="Confirmar Contraseña" required/>
+                    </div>   
+                </div>
+
+                <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > Las contraseñas deben ser iguales </p> 
+                </div>
+
+                <div id="error-message-2" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message"  > La contraseña debe tener al menos 8 caracteres, una mayúscula y un número </p> 
+                </div>
+
+                {% if errorToken %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ errorToken }}</p> 
+                </div>                     
+                {% endif %}
+                
+                {% if UsuarioExistente %}
+                <div class=" banner_error red no-margin no-padding dp-campo">
+                    <p class="error-message" >{{ UsuarioExistente }}</p> 
+                </div>                     
+                {% endif %}
+
+                {% if exito %}
+                <div class=" banner_error red no-margin no-padding dp-campo" style="background-color: rgb(17, 184, 17);">
+                    <p class="error-message">{{ exito }}</p> 
+                </div>
+                                    
+                {% endif %}
+
+                <div  class="dp-campo">
+                    <input class="Idp-campo label_confirmacion" type="submit" id="boton" value="Crear Usuario"> 
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    
+
+</div>
+<script>
+    
+    document.addEventListener("submit", (Event)=>{
+        console.log("Presionaste el boton guardar")
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        var errorMessage = document.getElementById("error-message");
+        var errorMessage2 = document.getElementById("error-message-2");
+        var regex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/;
+
+        errorMessage.style.display="none";
+        errorMessage2.style.display="none";
+        
+        if (!regex.test(password)) 
+        {
+            //errorMessage2.innerHTML = "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número";
+            Event.preventDefault();
+            console.log("Contraseña no cumple con los requisitos");
+            errorMessage2.style.display="block";
+        }
+        
+        if (password != confirmPassword) 
+        {
+            // errorMessage.innerHTML = "Las contraseñas no coinciden";
+            Event.preventDefault();
+            console.log("Contraseñas diferentes");
+            errorMessage.style.display="block";
+        }
+
+    })
+  </script>
+    
+{% endblock %}

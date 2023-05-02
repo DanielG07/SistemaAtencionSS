@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime,timedelta
 from sqlalchemy import Date
 from flask import Flask, redirect, render_template, request, url_for, send_file, session , send_file
 from flask_session import Session
@@ -8,12 +8,13 @@ from utils.funcion_excel_2 import createApiResponse2
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, or_, and_
-from utils.funcion_correo import enviar_correo, enviar_correo_contrasena
+from utils.funcion_correo import enviar_correo, enviar_correo_contrasena,enviar_correo_altaAdmin, sender
 from werkzeug.utils import secure_filename
 from utils.lee_pdf import lectura
 import hashlib
 import secrets
 import datetime as d
+from random import randint
 
 server='localhost'
 bd='Sistema_Atencion_SS'
@@ -136,7 +137,20 @@ class Sexo (db.Model):
     id = db.Column(db.Integer, primary_key=True, name='Id_Sexo')
     sexo = db.Column(db.String(15), nullable=True, name='Sexo' )    
 
+class Token(db.Model):
+    __tablename__ = 'tokens'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.Integer, nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    expiration_time = db.Column(db.DateTime, nullable=False)
 
+    def __init__(self, token, email):
+        self.token = token
+        self.email = email
+        self.expiration_time = datetime.now() + timedelta(minutes=30)  # el tiempo de vencimiento puede ser ajustado según tus necesidades
+
+    def is_valid(self):
+        return datetime.now() < self.expiration_time
 
  
 
@@ -626,6 +640,86 @@ def finalizadosAdmin():
         users_list.insert(0,userSend)
     return render_template('admin/finalizado.html',data=data, registros = users_list)
 
+@app.route('/admin/crear-token')
+def crear_token():
+    # Eliminar tokens expirados
+    Token.query.filter(Token.expiration_time < datetime.utcnow()).delete()
+    db.session.commit()
+
+    email = sender # aquí se asume que se recibe la dirección de correo electrónico desde un formulario
+    token = randint(100000, 999999)  # genera un número aleatorio de 6 dígitos para el token
+    print(token)
+    nuevo_token = Token(token=token, email=email)  # crea una instancia de Token con los valores correspondientes
+    db.session.add(nuevo_token)  # agrega el nuevo token a la sesión de la base de datos
+    db.session.commit()# confirma los cambios en la base de datos
+    asunto = 'Alta de Usuario Administrador'
+    texto = "Código: " + str(nuevo_token.token)
+    print(texto)
+    enviar_correo_altaAdmin(asunto,texto)
+    # aquí se debe enviar el token por correo electrónico al destinatario
+    return redirect(url_for('altaAdmin'))
+
+@app.route('/admin/alta', methods=['GET', 'POST'])
+def altaAdmin():
+    errorToken = session.get('errorToken')
+    UsuarioExistente = session.get('UsuarioExistente')
+    exito = session.get('exito')
+    fail = session.get('fail')
+    session.pop('errorToken', None)
+    session.pop('UsuarioExistente', None)
+    session.pop('exito', None)
+    session.pop('fail', None)
+
+    if request.method == 'POST':
+        usuario = request.form['Idp-usuario']
+        contrasena = request.form['Idp-contraseña']
+        codigo = request.form['Idp-codigo']
+        # Buscar el código en la base de datos
+        token = Token.query.filter_by(token=codigo).first()
+        if token is None:
+            # si el token no existe, redirige a la página de alta con un mensaje de error
+            session['errorToken'] = 'El código ingresado no es válido.'
+            print("El código ingresado no es válido.")
+            return redirect(url_for('altaAdmin'))
+        elif not token.is_valid():
+            # si el token existe pero ya expiró, redirige a la página de alta con un mensaje de error
+            session['errorToken'] = 'El código ingresado ha expirado. Por favor, solicita uno nuevo.'
+            return redirect(url_for('altaAdmin'))
+        else:
+            # verifica si existe el usuario
+            existe_usuario = Users.query.filter_by(boleta=usuario).first()
+            if existe_usuario:
+                session['UsuarioExistente'] = 'El usuario ingresado ya existe'
+                return redirect(url_for('altaAdmin'))
+            else:
+                # si no existe usuario, crea el usuario administrador
+                passwo = hashlib.md5(contrasena.encode('utf-8')).hexdigest().encode('utf-8')
+                print(contrasena)
+                print(passwo)
+                try:
+                    new_user = Users(
+                        boleta=usuario,
+                        passw=passwo,
+                        tipo_user=1,
+                    )
+                    db.session.add(new_user)
+                    db.session.commit()
+                    print("Se insertó un nuevo administrador en la tabla USERS")
+                    session['exito'] = "Se creó correctamente el usaurio administrador"
+                    return redirect(url_for('altaAdmin'))
+                except Exception as e:
+                    print("Error al insertar el administrador: ", e)
+                    session['fail'] = "Error al crear el usuario administrador"
+                    db.session.rollback()
+
+    data = {
+        'titulo': 'Alta de administrador',
+        'fail': fail
+    }
+    correo=sender
+    return render_template('altaAdmin.html', data=data,errorToken=errorToken,UsuarioExistente=UsuarioExistente,exito=exito,correo=correo)
+
+
 @app.route('/admin/estadisticas')
 def estadisticasAdmin():
     if 'username' not in session:
@@ -864,7 +958,7 @@ def aceptarDocumento():
         user.id_status_user = 5
         db.session.commit()
 
-    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "documento fue aceptado")
+    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "Su documento fue aceptado")
 
     return {
         "ok": False
@@ -885,7 +979,7 @@ def rechazarDocumento():
     documento.id_status = 4
     db.session.commit()
 
-    enviar_correo(data['email'], "Sistema Servicio Social - Documento Rechazado", "documento fue rechazado por " + data.motivo)
+    enviar_correo(data['email'], "Sistema Servicio Social - Documento Rechazado", "Su documento fue rechazado por: '" + data['motivo']+"'")
 
     return {
         "ok": False
