@@ -642,6 +642,8 @@ def finalizadosAdmin():
 
 @app.route('/admin/crear-token')
 def crear_token():
+    if 'username' not in session:
+        return redirect('/')
     # Eliminar tokens expirados
     Token.query.filter(Token.expiration_time < datetime.utcnow()).delete()
     db.session.commit()
@@ -661,6 +663,8 @@ def crear_token():
 
 @app.route('/admin/alta', methods=['GET', 'POST'])
 def altaAdmin():
+    if 'username' not in session:
+        return redirect('/')
     errorToken = session.get('errorToken')
     UsuarioExistente = session.get('UsuarioExistente')
     exito = session.get('exito')
