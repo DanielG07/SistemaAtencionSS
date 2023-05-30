@@ -31,6 +31,8 @@ app.config['CARTA_TERMINO'] = "./app/documentos/CartasTermino"
 app.config['VER_CARTA_TERMINO'] = "./documentos/CartasTermino/"
 app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
 app.config['VER_CONSTANCIA_LIBERACION'] = "./documentos/ConstanciasLiberacion/"
+app.config['CONSTANCIA_LIBERACION_SELLADA'] = "./app/documentos/ConstanciasLiberacionSelladas"
+app.config['VER_CONSTANCIA_LIBERACION_SELLADA'] = "./documentos/ConstanciasLiberacionSelladas/"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + username + ':' + password + '@' + server + '/' + bd
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -292,12 +294,21 @@ def crear_documentos(Id_alumno):
             fecha_aceptado=None,
             ubicacion=None,
         )
+        documento5 = Documentos(
+            id_alumno = Id_alumno,
+            id_tipo = 5,
+            id_status = 1,
+            fecha_envio= None,
+            fecha_aceptado=None,
+            ubicacion=None,
+        )
         db.session.add(documento1)
         db.session.add(documento2)
         db.session.add(documento3)
         db.session.add(documento4)
+        db.session.add(documento5)
         db.session.commit()
-        print("Documento creado en la base de datos")
+        print("Documentos creados en la base de datos")
     except Exception as e:
         print("Error al crear el documento", e)
         db.session.rollback()
@@ -1365,7 +1376,7 @@ def subirCarta():
         new_filename = "CartaTermino" + boleta + os.path.splitext(filename)[1]
         f.save(os.path.join(app.config['CARTA_TERMINO'], new_filename))
         print(new_filename)
-        ruta = './app/documentos/ConstanciasLiberacion/' + new_filename
+        ruta = './app/documentos/CartaTermino/' + new_filename
         print("Se ha guardado correctamente en la ruta " + ruta)
         #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
         id_documento = int(request.form['id_doc'])
@@ -1429,6 +1440,43 @@ def subirConstacia():
             db.session.commit()
             exito = "Se ha subido correctamente su documento, espere validación"
         return redirect(f'/admin/expediente/{boleta}')
+
+@app.route("/subir_constancia_sellada", methods=['POST'])
+def subirConstaciaSellada():
+    if request.method == "POST":
+        if 'boleta' not in session:
+            return redirect('/')
+        boleta = session.get('boleta', None)
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
+        f = request.files['constancia_sellada']
+        filename = secure_filename(f.filename)
+        new_filename = "ConstanciaSellada" + boleta + os.path.splitext(filename)[1]
+        f.save(os.path.join(app.config['CONSTANCIA_LIBERACION_SELLADA'], new_filename))
+        print(new_filename)
+        ruta = './app/documentos/ConstanciasLiberacionSelladas/' + new_filename
+        print("Se ha guardado correctamente en la ruta " + ruta)
+        #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
+        id_documento = int(request.form['id_doc'])
+        id_alumno = alumno.id 
+        id_status = int(request.form.get('id_status'))
+        fecha_actual_str = request.form.get('Idp-Factual')
+        fecha_actual = datetime.strptime(fecha_actual_str, '%Y-%m-%d').date()
+        ubicacion = ruta
+        print(fecha_actual)
+        print(type(fecha_actual))
+        data = {
+            'titulo': 'Alumno',
+        }
+        ## CASO EN QUE SEA "NO ARCHIVO" O "RECHAZADO"
+        if id_status == 1 or id_status == 4:
+            documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
+            documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
+            documento.fecha_envio = fecha_actual
+            documento.ubicacion = ubicacion
+            documento.nombre_archivo = new_filename
+            db.session.commit()
+            exito = "Se ha subido correctamente su documento, espere validación"
+        return render_template('estudiante/main.html', data=data,exito=exito)
 
 #VISUALIZACION DE DOCUMENTOS
 @app.route('/app/documentos/Expedientes/<path:filename>')
@@ -1553,6 +1601,38 @@ def verConstanciaLiberacionpdf(filename):
         documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=4).first()
         if filename == documento.nombre_archivo:
             ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+    
+@app.route('/app/documentos/ConstanciaLiberacionSellada/<path:filename>')
+def verConstanciaLiberacionSelladapdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION_SELLADA'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=5).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION_SELLADA'] + filename
             return send_file(ruta, mimetype='application/pdf')
         else:
             return redirect('/')

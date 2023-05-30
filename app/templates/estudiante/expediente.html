@@ -135,6 +135,30 @@
                     {% endif %}
                 </td>
             </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">5</td>
+                <td class="centrar-texto">{{ documentos[4]['tipo_documento'] }}</td>
+                <td class="centrar-texto">{{ documentos[4]['status_documento'] }}</td>
+                <td class="centrar-texto">
+                    {% if documentos[4]['fecha_envio'] %}
+                      {{ documentos[4]['fecha_envio'] }}
+                    {% else %}
+                      -
+                    {% endif %}
+                </td>
+                <td class="centrar-texto">
+                    {% if documentos[4]['fecha_aceptado'] %}
+                      {{ documentos[4]['fecha_aceptado'] }}
+                    {% else %}
+                      -
+                    {% endif %}
+                </td>
+                <td class="centrar-texto">
+                    {% if documentos[4]['nombre_archivo'] %}
+                    <a href="{{ url_for('verConstanciaLiberacionSelladapdf', filename=documentos[4]['nombre_archivo']) }}" target="_blank">Visualizar</a>
+                    {% endif %}
+                </td>
+            </tr>
         </table>
     </div>
 
@@ -144,6 +168,7 @@
 {% set EVALUACION_DESEMPENO  = 2 %}
 {% set CARTA_TERMINO = 3 %}
 {% set CONSTANCIA_LIBERACION = 4 %}
+{% set CONSTANCIA_LIBERACION_SELLADA = 5 %}
 
 {% set SIN_ARCHIVO = 1 %}
 {% set ACEPTADO = 2 %}
@@ -335,6 +360,67 @@
             </div>
         </div>
     {% endif %}
+    
+    {%if documentos[4]['id_tipo'] == CONSTANCIA_LIBERACION_SELLADA and (documentos[4]['id_status'] == SIN_ARCHIVO or documentos[4]['id_status'] == RECHAZADO) and documentos[3]['id_status'] == ACEPTADO%}
+    <div class="main-page">
+        <div class="wrap-datos">
+            <div id="idregistro">
+                <h1 class="titulo_Registro_sistema">CONSTANCIA DE LIBERACIÓN SELLADA </h1>
+                <div>
+                    <h4> Suba su constancia de liberación sellada en el siguiente apartado, y espere la validación de los administradores </h4>
+                </div>
+            
+                <form action="/subir_constancia_sellada" method="post" enctype="multipart/form-data">
+                    <div class="dp-campo_registro">
+                        <div>
+                            <label class="form-label">Constancia de Liberación Sellada</label>
+                            <div class="Idp-campo">
+                                <input id="documento" type="file" name="constancia_sellada" accept=".pdf" onchange="validarArchivo()" required >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo_registro" style="display: none;">
+                        <div>
+                            <div class="Idp-campo">
+                                <input type="hidden" name="id_doc" value="{{ documentos[4]['id_doc'] }}" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo_registro" style="display: none;">
+                        <div>
+                            <div class="Idp-campo">
+                                <input type="hidden" name="id_status" value="{{ documentos[4]['id_status'] }}" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dp-campo dp-Actual">
+                        <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                        <div class="Idp-campo">
+                        <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                        </div>   
+                    </div>
+
+                    <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                        <p class="error-message"  > El archivo debe pesar menos de 2MB </p> 
+                    </div>
+    
+                    <div class="dp-campo">
+                        <div>
+                            <label></label>
+                            <div class="Idp-submit_registro">
+                                <input type="submit">
+                            </div>   
+                        </div>
+                    </div>
+                </form>
+            </div>
+    
+        </div>
+    </div>
+{% endif %}    
 
     <!--{%if documentos[3]['id_tipo'] == CONSTANCIA_LIBERACION and (documentos[3]['id_status'] == SIN_ARCHIVO or documentos[3]['id_status'] == RECHAZADO) and documentos[2]['id_status'] == ACEPTADO%}
         +<div class="main-page">
@@ -417,7 +503,7 @@ function validarArchivo()
 {
   const fileInput = document.getElementById('documento');
   const errorMessage = document.getElementById('error-message');
-  const maxFileSize = 3 * 1024 * 1024; // 3 MB
+  const maxFileSize = 2 * 1024 * 1024; // 3 MB
 
   errorMessage.style.display="none";
   
