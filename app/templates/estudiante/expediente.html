@@ -155,7 +155,8 @@
                 </td>
                 <td class="centrar-texto">
                     {% if documentos[4]['nombre_archivo'] %}
-                    <a href="{{ url_for('verConstanciaLiberacionpdf', filename=documentos[4]['nombre_archivo']) }}" target="_blank">Visualizar</a>
+                    <a href="{{ url_for('verConstanciaLiberacionpdf', filename=documentos[4]['nombre_archivo']) }}" target="_blank">Visualizar</a> /
+                    <a href="{{ url_for('descargarConstanciaLiberacionpdf', filename=documentos[4]['nombre_archivo']) }}">Descargar</a>
                     {% endif %}
                 </td>
             </tr>

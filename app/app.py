@@ -1,14 +1,14 @@
 import os
 from datetime import datetime,timedelta
 from sqlalchemy import Date
-from flask import Flask, redirect, render_template, request, url_for, send_file, session , send_file
+from flask import Flask, redirect, render_template, request, url_for, send_file, session , send_file, send_from_directory
 from flask_session import Session
 from utils.funcion_excel import createApiResponse
 from utils.funcion_excel_2 import createApiResponse2
 from utils.mocks import preregistro_mock, registro_mock, completados_mock
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, or_, and_
-from utils.funcion_correo import enviar_correo, enviar_correo_contrasena,enviar_correo_altaAdmin, sender
+from utils.funcion_correo import enviar_correo, enviar_correo_contrasena,enviar_correo_altaAdmin,EnviarCorreoDocumentoDescargado, sender
 from werkzeug.utils import secure_filename
 from utils.lee_pdf import lectura
 import hashlib
@@ -1681,5 +1681,50 @@ def verConstanciaLiberacionpdf(filename):
     else:
         return redirect('/')
     
+##DESCARGAR DE LA CONSTANCIA DE LIBERACIÓN
+@app.route('/app/documentos/ConstanciaLiberacion/download/<path:filename>')
+def descargarConstanciaLiberacionpdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    print("Si hay boleta o username")
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+    print("Busco al usuario")
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
+            return send_from_directory(app.config['VER_CONSTANCIA_LIBERACION'], filename, as_attachment=True)
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(boleta)
+    if alumno:
+        nombre_alumno = alumno.nombre +" "+ alumno.a_paterno + " " + alumno.a_materno
+        print(nombre_alumno)
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=5).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
+            print("DESCARGA!!!")
+            try:
+                asunto = "Constancia de Liberación Descargada"
+                texto = nombre_alumno + " con número de boleta " + boleta + " ha descargado correctamente su constacia de liberación"
+                print(asunto)
+                print(texto)
+                EnviarCorreoDocumentoDescargado(asunto,texto)
+            except:
+                print("An exception occurred")
+            
+            return send_from_directory(app.config['VER_CONSTANCIA_LIBERACION'], filename, as_attachment=True)
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+
 if __name__== '__main__':
     app.run(debug=True,port=5000)
