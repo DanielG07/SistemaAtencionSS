@@ -1617,70 +1617,6 @@ def verCartaTerminopdf(filename):
     else:
         return redirect('/')
 
-@app.route('/app/documentos/ConstanciaLiberacion/<path:filename>')
-def verConstanciaLiberacionpdf(filename):
-    if 'boleta' not in session and 'username' not in session:
-        return redirect('/')
-    if not filename:
-        return "Error: no se ha especificado el nombre del archivo PDF"
-    boleta = ""
-    if 'boleta' in session:
-        boleta = session.get('boleta')
-    else:
-        boleta = session.get('username')
-
-    alumno = Users.query.filter_by(boleta=boleta).first()
-    if alumno.tipo_user == 1:
-        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
-        if filename == documento.nombre_archivo:
-            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
-            return send_file(ruta, mimetype='application/pdf')
-
-
-    alumno = DataUsers.query.filter_by(boleta=boleta).first()
-    print(alumno)
-    if alumno:
-        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=4).first()
-        if filename == documento.nombre_archivo:
-            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
-            return send_file(ruta, mimetype='application/pdf')
-        else:
-            return redirect('/')
-    else:
-        return redirect('/')
-    
-@app.route('/app/documentos/ConstanciaLiberacionSellada/<path:filename>')
-def verConstanciaLiberacionSelladapdf(filename):
-    if 'boleta' not in session and 'username' not in session:
-        return redirect('/')
-    if not filename:
-        return "Error: no se ha especificado el nombre del archivo PDF"
-    boleta = ""
-    if 'boleta' in session:
-        boleta = session.get('boleta')
-    else:
-        boleta = session.get('username')
-
-    alumno = Users.query.filter_by(boleta=boleta).first()
-    if alumno.tipo_user == 1:
-        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
-        if filename == documento.nombre_archivo:
-            ruta = app.config['VER_CONSTANCIA_LIBERACION_SELLADA'] + filename
-            return send_file(ruta, mimetype='application/pdf')
-
-
-    alumno = DataUsers.query.filter_by(boleta=boleta).first()
-    print(alumno)
-    if alumno:
-        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=5).first()
-        if filename == documento.nombre_archivo:
-            ruta = app.config['VER_CONSTANCIA_LIBERACION_SELLADA'] + filename
-            return send_file(ruta, mimetype='application/pdf')
-        else:
-            return redirect('/')
-    else:
-        return redirect('/')
-
 @app.route('/app/documentos/CartaTerminoSellada/<path:filename>')
 def verCartaTerminoSelladapdf(filename):
     if 'boleta' not in session and 'username' not in session:
@@ -1713,5 +1649,37 @@ def verCartaTerminoSelladapdf(filename):
     else:
         return redirect('/')
 
+@app.route('/app/documentos/ConstanciaLiberacion/<path:filename>')
+def verConstanciaLiberacionpdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=5).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CONSTANCIA_LIBERACION'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+    
 if __name__== '__main__':
     app.run(debug=True,port=5000)
