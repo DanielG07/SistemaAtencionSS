@@ -107,6 +107,28 @@
             </tr>
             <tr class="item-table">
                 <td class="centrar-texto">4</td>
+                <td class="centrar-texto">Carta Término Sellada</td>
+                <td class="centrar-texto">{{documentos[4].status}}</td>
+                <td class="centrar-texto">{{documentos[4].f_envio}}</td>
+                <td class="centrar-texto">{{documentos[4].f_aceptado}}</td>
+                {% if (documentos[4].status == "ACEPTADO" or documentos[4].status == "ESPERA APROBACIÓN") %}
+                <td class="centrar-texto"><a href="{{ url_for('verCartaTerminoSelladapdf', filename=documentos[4]['n_documento']) }}" target="_blank">Visualizar</a></td>
+                {% else %}
+                    <td class="centrar-texto">-</td>
+                {% endif %}
+                {% if (documentos[4].status == "ACEPTADO") %}
+                    <td class="centrar-texto">ACEPTADO</td>
+                {% elif (documentos[4].status == "ESPERA APROBACIÓN") %}
+                    <td class="centrar-texto">
+                        <button id="btnAceptarDoc">Aceptar</button>
+                        <button id="btnAbrirRechazar">Rechazar</button>
+                    </td>
+                {% else %}
+                    <td class="centrar-texto">En espera</td>
+                {% endif %}
+            </tr>
+            <tr class="item-table">
+                <td class="centrar-texto">5 </td>
                 <td class="centrar-texto">Constancia de liberación</td>
                 <td class="centrar-texto">{{documentos[3].status}}</td>
                 <td class="centrar-texto">{{documentos[3].f_envio}}</td>
@@ -132,7 +154,76 @@
 
 </div>
 
-{%if (documentos[3].status == "SIN ARCHIVO" or documentos[3].status == "RECHAZADO") and documentos[2].status == "ACEPTADO" %}
+{%if (documentos[4].status == "SIN ARCHIVO" or documentos[4].status == "RECHAZADO") and documentos[2].status == "ACEPTADO" %}
+        <div class="main-page">
+            <div class="wrap-datos">
+                <div id="idregistro">
+                    <h1 class="titulo_Registro_sistema">CARTA DE TERMINO SELLADA</h1>
+                    <div>
+                        <h4> Suba la carta de termino sellada en el siguiente apartado</h4>
+                    </div>
+                
+                    <form action="/subir_carta_sellada" method="post" enctype="multipart/form-data">
+                        <div class="dp-campo_registro">
+                            <div>
+                                <label class="form-label">Carta de termino</label>
+                                <div class="Idp-campo">
+                                    <input id="documento" type="file" name="carta_termino" accept=".pdf" onchange="validarArchivo()" required >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_doc" value="{{ documentos[4].id_documento }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="boleta" value="{{ expediente.boleta }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo_registro" style="display: none;">
+                            <div>
+                                <div class="Idp-campo">
+                                    <input type="hidden" name="id_status" value="{{ documentos[4].id_status }}" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dp-campo dp-Actual">
+                            <label class="label_confirmacion" style="display: none;" >Fecha Actual </label>
+                            <div class="Idp-campo">
+                            <input  id="fecha_actual"name="Idp-Factual" type="date" placeholder="Fecha Actual" style="display: none;"/>
+                            </div>   
+                        </div>
+
+                        <div id="error-message" style="display:none ;" class=" banner_error red no-margin no-padding dp-campo">
+                            <p class="error-message"  > El archivo debe pesar menos de 3MB </p> 
+                        </div>
+        
+                        <div class="dp-campo">
+                            <div>
+                                <label></label>
+                                <div class="Idp-submit_registro">
+                                    <input type="submit">
+                                </div>   
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
+        </div>
+    {% endif %}
+
+{%if (documentos[3].status == "SIN ARCHIVO" or documentos[3].status == "RECHAZADO") and documentos[4].status == "ACEPTADO" %}
         <div class="main-page">
             <div class="wrap-datos">
                 <div id="idregistro">

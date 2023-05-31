@@ -29,6 +29,8 @@ app.config['EVALUACION_DESEMPENO'] = "./app/documentos/Evaluaciones"
 app.config['VER_EVALUACION_DESEMPENO'] = "./documentos/Evaluaciones/"
 app.config['CARTA_TERMINO'] = "./app/documentos/CartasTermino"
 app.config['VER_CARTA_TERMINO'] = "./documentos/CartasTermino/"
+app.config['CARTA_TERMINO_SELLADA'] = "./app/documentos/CartasTerminoSelladas"
+app.config['VER_CARTA_TERMINO_SELLADA'] = "./documentos/CartasTerminoSelladas/"
 app.config['CONSTANCIA_LIBERACION'] = "./app/documentos/ConstanciasLiberacion"
 app.config['VER_CONSTANCIA_LIBERACION'] = "./documentos/ConstanciasLiberacion/"
 app.config['CONSTANCIA_LIBERACION_SELLADA'] = "./app/documentos/ConstanciasLiberacionSelladas"
@@ -1401,6 +1403,46 @@ def subirCarta():
             exito = "Se ha subido correctamente su documento, espere validación"
         return render_template('estudiante/main.html', data=data,exito=exito)
 
+@app.route("/subir_carta_sellada", methods=['POST'])
+def subirCartaSellada():
+    
+    if request.method == "POST":
+        print(session)
+        if 'boleta' not in session and 'username' not in session:
+            return redirect('/')
+        
+        print(request.form)
+        boleta = request.form.get('boleta')
+        alumno = DataUsers.query.filter_by(boleta=boleta).first()
+        f = request.files['carta_termino']
+        filename = secure_filename(f.filename)
+        new_filename = "Carta_Termino_Sellada" + boleta + os.path.splitext(filename)[1]
+        f.save(os.path.join(app.config['CARTA_TERMINO_SELLADA'], new_filename))
+        print(new_filename)
+        ruta = './app/documentos/CartaTerminoSellada/' + new_filename
+        print("Se ha guardado correctamente en la ruta " + ruta)
+        #RECUPERAMOS LOS DATOS PARA MODIFICAR EN BD
+        id_documento = int(request.form['id_doc'])
+        id_alumno = alumno.id 
+        id_status = int(request.form.get('id_status'))
+        fecha_actual = d.date.today().strftime("%Y-%m-%d")
+        ubicacion = ruta
+        print(fecha_actual)
+        print(type(fecha_actual))
+        data = {
+            'titulo': 'Alumno',
+        }
+        ## CASO EN QUE SEA "NO ARCHIVO" O "RECHAZADO"
+        if id_status == 1 or id_status == 4:
+            documento = Documentos.query.filter_by(id=id_documento, id_alumno=id_alumno).first()
+            documento.id_status = 3 #CAMBIAMOS EL STATUS A ESPERA
+            documento.fecha_envio = fecha_actual
+            documento.ubicacion = ubicacion
+            documento.nombre_archivo = new_filename
+            db.session.commit()
+            exito = "Se ha subido correctamente su documento, espere validación"
+        return redirect(f'/admin/expediente/{boleta}')
+
 @app.route("/subir_constancia", methods=['POST'])
 def subirConstacia():
     
@@ -1633,6 +1675,38 @@ def verConstanciaLiberacionSelladapdf(filename):
         documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=5).first()
         if filename == documento.nombre_archivo:
             ruta = app.config['VER_CONSTANCIA_LIBERACION_SELLADA'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
+
+@app.route('/app/documentos/CartaTerminoSellada/<path:filename>')
+def verCartaTerminoSelladapdf(filename):
+    if 'boleta' not in session and 'username' not in session:
+        return redirect('/')
+    if not filename:
+        return "Error: no se ha especificado el nombre del archivo PDF"
+    boleta = ""
+    if 'boleta' in session:
+        boleta = session.get('boleta')
+    else:
+        boleta = session.get('username')
+
+    alumno = Users.query.filter_by(boleta=boleta).first()
+    if alumno.tipo_user == 1:
+        documento = Documentos.query.filter_by(nombre_archivo=filename).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CARTA_TERMINO_SELLADA'] + filename
+            return send_file(ruta, mimetype='application/pdf')
+
+
+    alumno = DataUsers.query.filter_by(boleta=boleta).first()
+    print(alumno)
+    if alumno:
+        documento = Documentos.query.filter_by(id_alumno=alumno.id, id_tipo=4).first()
+        if filename == documento.nombre_archivo:
+            ruta = app.config['VER_CARTA_TERMINO_SELLADA'] + filename
             return send_file(ruta, mimetype='application/pdf')
         else:
             return redirect('/')
