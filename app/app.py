@@ -954,6 +954,9 @@ def aceptarDocumento():
        )
     .filter(DataUsers.boleta == data['boleta'])
     .first())
+
+    title = "Sistema Servicio Social - Documento Aceptado"
+    message = "Su documento fue aceptado"
     
     documento = Documentos.query.filter_by(id_alumno=id_user[0], id_status=3).first()
     documento.id_status = 2
@@ -961,21 +964,37 @@ def aceptarDocumento():
     db.session.commit()
 
     if documento.id_tipo == 1:
+        title = "Sistema Servicio Social - Expediente Aceptado"
+        message = "El expediente fue aceptado"
         user = Users.query.filter_by(boleta=data['boleta']).first()
         user.id_status_user = 3
         db.session.commit()
 
+    if documento.id_tipo == 2:
+        title = "Sistema Servicio Social - Evaluación de Desempeño Aceptado"
+        message = "La evaluación de desempeño fue aceptada"
+
     if documento.id_tipo == 3:
+        title = "Sistema Servicio Social - Carta Término Aceptado"
+        message = "La carta término fue aceptada"
         user = Users.query.filter_by(boleta=data['boleta']).first()
         user.id_status_user = 4
         db.session.commit()
 
     if documento.id_tipo == 4:
+        title = "Sistema Servicio Social - Carta de Término Sellada"
+        message = "Ya puedes de descargar tu carta de término sellada"
+
+    if documento.id_tipo == 5:
+        title = "Sistema Servicio Social - Constancia de Liberación Aceptado"
+        message = "Ya puedes de descargar tu constancia de liberación sellada"
         user = Users.query.filter_by(boleta=data['boleta']).first()
         user.id_status_user = 5
         db.session.commit()
 
-    enviar_correo(data['email'], "Sistema Servicio Social - Documento Aceptado", "Su documento fue aceptado")
+    
+
+    enviar_correo(data['email'], title, message)
 
     return {
         "ok": False
@@ -996,7 +1015,23 @@ def rechazarDocumento():
     documento.id_status = 4
     db.session.commit()
 
-    enviar_correo(data['email'], "Sistema Servicio Social - Documento Rechazado", "Su documento fue rechazado por: '" + data['motivo']+"'")
+    title = ""
+    message = ""
+
+    if documento.id_tipo == 1:
+        title = "Sistema Servicio Social - Expediente Rechazado"
+        message = "El expediente fue rechazada por:"
+        enviar_correo(data['email'], title, message + " '" + data['motivo'] + "'")
+
+    if documento.id_tipo == 2:
+        title = "Sistema Servicio Social - Evaluación de Desempeño Rechazado"
+        message = "La evaluación de desempeño fue rechazada por:"
+        enviar_correo(data['email'], title, message + " '" + data['motivo'] + "'")
+
+    if documento.id_tipo == 3:
+        title = "Sistema Servicio Social - Carta Término Rechazado"
+        message = "La carta término fue rechazada por:"
+        enviar_correo(data['email'], title, message + " '" + data['motivo'] + "'")
 
     return {
         "ok": False
