@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from datetime import datetime,timedelta
 from sqlalchemy import Date
 from flask import Flask, redirect, render_template, request, url_for, send_file, session , send_file, send_from_directory
@@ -16,10 +17,12 @@ import secrets
 import datetime as d
 from random import randint
 
-server='localhost'
-bd='Sistema_Atencion_SS'
-username='SS_SISTEMAATENCION'
-password='Irvin19+'
+load_dotenv()
+
+server=os.getenv('SERVER')
+bd=os.getenv('DATABASE')
+username =os.getenv('USERNAMEBD')
+password=os.getenv('PASSWORDBD')
 
 app = Flask(__name__)
 app.config['CARTAS_COMPROMISO'] = "./app/documentos/CartaCompromiso/"

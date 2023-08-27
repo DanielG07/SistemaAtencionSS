@@ -1,12 +1,16 @@
+import os
+import hashlib
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-import hashlib
+from dotenv import load_dotenv
 
-server='localhost' 
-bd='Sistema_Atencion_SS'
-username ='SS_SISTEMAATENCION'
-password='Irvin19+'
+load_dotenv()
+
+server=os.getenv('SERVER')
+bd=os.getenv('DATABASE')
+username =os.getenv('USERNAMEBD')
+password=os.getenv('PASSWORDBD')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + username + ':' + password + '@' + server + '/' + bd

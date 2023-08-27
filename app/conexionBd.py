@@ -1,11 +1,15 @@
+import os
+import pymysql
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-import pymysql
+from dotenv import load_dotenv
 
-server='localhost' 
-bd='Sistema_Atencion_SS'
-username ='SS_SISTEMAATENCION'
-password='Irvin19+'
+load_dotenv()
+
+server=os.getenv('SERVER')
+bd=os.getenv('DATABASE')
+username =os.getenv('USERNAMEBD')
+password=os.getenv('PASSWORDBD')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://' + username + ':' + password + '@' + server + '/' + bd
